@@ -1,4 +1,4 @@
-import { getHeatMap } from "@/lib/dummy-data";
+import { getHeatMap } from '@/lib/dummy-data';
 
 export default function HeatMap() {
   const { weeks } = getHeatMap();
@@ -9,12 +9,12 @@ export default function HeatMap() {
         {weeks.map((w, wi) => (
           <div key={wi} className="flex gap-2">
             {w.map((v, di) => (
-              <div 
-                key={di} 
-                className="flex-1 aspect-square border border-border group relative transition-all duration-500 hover:scale-110" 
+              <div
+                key={di}
+                className="border-border group relative aspect-square flex-1 border transition-all duration-500 hover:scale-110"
                 style={{ opacity: Math.max(0.05, v / 500), backgroundColor: '#000' }}
               >
-                <div className="hidden group-hover:flex absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-foreground text-background px-2 py-1 text-[8px] font-black italic whitespace-nowrap z-50">
+                <div className="bg-foreground text-background absolute bottom-full left-1/2 z-50 mb-2 hidden -translate-x-1/2 px-2 py-1 text-[8px] font-black whitespace-nowrap italic group-hover:flex">
                   {v}M
                 </div>
               </div>
@@ -22,9 +22,9 @@ export default function HeatMap() {
           </div>
         ))}
       </div>
-      <div className="mt-8 flex justify-between label-pro italic !text-[8px]">
-         <span>Mon - Sun</span>
-         <span>Week 1 - 4</span>
+      <div className="label-pro mt-8 flex justify-between !text-[8px] italic">
+        <span>Mon - Sun</span>
+        <span>Week 1 - 4</span>
       </div>
     </div>
   );

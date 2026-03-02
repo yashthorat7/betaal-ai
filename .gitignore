@@ -1,0 +1,70 @@
+# ===========================
+# Betaal AI Monorepo .gitignore
+# ===========================
+
+# ---- Python (betaal_ai) ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+venv/
+.venv/
+env/
+*.egg-info/
+dist/
+build/
+*.egg
+.env
+*.pkl
+
+# ---- Flutter / Dart (betaal_app) ----
+.dart_tool/
+.packages
+.pub/
+build/
+*.iml
+*.lock
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# ---- Node.js / Next.js (betaal_web) ----
+node_modules/
+.next/
+out/
+.env.local
+.env.*.local
+npm-debug.log*
+yarn-error.log*
+
+# ---- Chrome Extension (betaal_ex) ----
+# Nothing specific — extension is plain JS
+
+# ---- Firebase ----
+service_account_key.json
+google-services.json
+firebase-debug.log
+
+# ---- IDE / Editor ----
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ---- OS ----
+.DS_Store
+Desktop.ini
+Thumbs.db
+ehthumbs.db
+
+# ---- ML Models (large files) ----
+*.h5
+*.hdf5
+saved_models/
+
+# ---- Misc ----
+*.log
+*.tmp
+*.bak

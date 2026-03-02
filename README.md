@@ -8,16 +8,16 @@ An AI-powered digital rehabilitation ecosystem that combats smartphone addiction
 
 | Component | Directory | Tech | Status |
 |-----------|-----------|------|--------|
-| Mobile App | `mobile-app/` | Flutter + Kotlin | 🔨 Building |
-| AI Backend | `ai-backend/` | Python FastAPI | 🔨 Building |
-| Website | `web-dashboard/` | Next.js + Tailwind | 🔨 Building |
-| Extension | `browser-extension/` | Chrome Manifest V3 | 🔨 Building |
+| AI Backend | `betaal_ai/` | Python FastAPI | ⏳ Not started |
+| Mobile App | `betaal_app/` | Flutter + Kotlin | ⏳ Not started |
+| Website | `betaal_web/` | Next.js + Tailwind | ⏳ Not started |
+| Extension | `betaal_ex/` | Chrome Manifest V3 | ⏳ Not started |
 
 ## Quick Start
 
 ### AI Backend
 ```bash
-cd ai-backend
+cd betaal_ai
 python -m venv venv
 source venv/bin/activate  # or venv\Scripts\activate on Windows
 pip install -r requirements.txt
@@ -27,7 +27,7 @@ uvicorn main:app --reload
 
 ### Mobile App
 ```bash
-cd mobile-app
+cd betaal_app
 flutter pub get
 # Put google-services.json in android/app/
 flutter run
@@ -35,7 +35,7 @@ flutter run
 
 ### Website
 ```bash
-cd web-dashboard
+cd betaal_web
 npm install
 cp .env.local.example .env.local  # fill in your keys
 npm run dev
@@ -46,12 +46,14 @@ npm run dev
 1. Open chrome://extensions
 2. Enable "Developer mode"
 3. Click "Load unpacked"
-4. Select the browser-extension/ folder
+4. Select the betaal_ex/ folder
 ```
 
 ## Documentation
 
 All vibecoding docs live in `vibecoding/`. Start with `vibecoding/rules.md`.
+
+Each component folder also has copies of its relevant vibecoding docs (`prd.md`, `tech_stack.md`, `directory_structure.md`, `progress.md`).
 
 ## Team
 

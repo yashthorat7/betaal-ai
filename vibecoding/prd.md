@@ -13,6 +13,8 @@
 - **Safety Cooldown** — 10–15 min grace period on unlock so users can handle emergencies
 - **Stealth Mode** — app disguises itself as a calculator/notes app (parental control)
 - **AI Chat Assistant** — Gemini-powered chatbot that knows your stats and gives personalized rehab feedback
+- **Achievement System** — Gamified badges (e.g., Focus Master, 7-Day Streak) to incentivize goal hitting
+- **Social Monitoring** — Compare stats with friends, view their profiles, and share rehab milestones
 - **Cross-Platform Sync** — phone + desktop usage combined into one rehab plan
 
 ---
@@ -130,15 +132,6 @@ Duration formula: `base = addiction_level × 3`, `modifier = 6 - strictness`, `d
 | Top bar | User name (left), profile avatar (right) |
 | 7-day summary | Horizontal row of day indicators (green=under, red=over) |
 | Monitoring ring | Large circular progress ring — remaining time, quota, urgency color |
-| AI Chat FAB | Floating button → opens chat screen |
-
-### Personalization Screen
-
-| Section | Content |
-|---------|---------|
-| Stealth mode | Icon picker, name input, toggle |
-| Rehab params | Addiction + strictness steppers, computed days |
-| Interruption prefs | Cooldown duration selector, preview interruptions |
 
 ### Report Screen
 
@@ -146,15 +139,29 @@ Duration formula: `base = addiction_level × 3`, `modifier = 6 - strictness`, `d
 |---------|---------|
 | Today's summary | Total time, unlocks, most-used app, vs. yesterday |
 | Weekly chart | Bar/line graph (Mon–Sun) |
+| Achievements | Grid of unlocked badges + milestone progress |
 | Rehab progress | Linear progress bar (Day X of Y) |
 | App breakdown | Horizontal bars — top 5 apps with time |
 | Monthly trend | Line graph — 30 day avg |
 | Interruption log | Count and types triggered |
 
-### Settings Screen
+### AI Chat Screen
 
 | Section | Content |
 |---------|---------|
+| Header | "Betaal AI Chat" title |
+| Chat area | Scrollable message list with bubbles (user right, AI left) |
+| Input | Text field + send button at bottom |
+| Backend | POST /chat → FastAPI → Gemini API with user stats as context |
+
+### Settings (Personalization) Screen
+
+| Section | Content |
+|---------|---------|
+| Social Monitoring | Friends list, view profiles, screen time comparison |
+| Stealth mode | Icon picker, name input, toggle |
+| Rehab params | Addiction + strictness steppers, computed days |
+| Interruption prefs | Cooldown duration selector, preview interruptions |
 | Profile | Edit name, age, photo |
 | Language | Language selector |
 | Notifications | Toggles for summary, milestones, reminders |

@@ -25,6 +25,8 @@ mobile-app/
 │   │   ├── usage_record.dart              # Daily usage data
 │   │   ├── rehab_plan.dart                # RehabPlan, RehabPhase
 │   │   ├── interruption.dart              # InterruptionItem, InterruptionArray
+│   │   ├── badge_model.dart               # Achievements/Badges
+│   │   ├── friend_model.dart              # Social/Friend data
 │   │   └── chat_message.dart              # ChatMessage
 │   │
 │   ├── services/                          # Business logic & API calls
@@ -42,6 +44,8 @@ mobile-app/
 │   │   ├── usage_provider.dart
 │   │   ├── rehab_provider.dart
 │   │   ├── report_provider.dart
+│   │   ├── achievement_provider.dart
+│   │   ├── social_provider.dart
 │   │   ├── personalization_provider.dart
 │   │   └── chat_provider.dart
 │   │
@@ -49,11 +53,11 @@ mobile-app/
 │   │   ├── splash_screen.dart
 │   │   ├── sign_in_screen.dart
 │   │   ├── onboarding_screen.dart         # 4-step walkthrough
-│   │   ├── home_screen.dart               # Monitoring ring + 7-day summary
-│   │   ├── personalization_screen.dart    # Stealth, rehab params, interruption prefs
-│   │   ├── report_screen.dart             # Analytics dashboard
-│   │   ├── settings_screen.dart
-│   │   └── chat_screen.dart               # AI chat assistant
+│   │   ├── home_screen.dart               # Tab 1: Home
+│   │   ├── report_screen.dart             # Tab 2: Analytics dashboard
+│   │   ├── ai_screen.dart                 # Tab 3: AI chat assistant
+│   │   ├── settings_screen.dart           # Tab 4: Settings (including Personalization)
+│   │   └── friend_profile_screen.dart     # Friend profile viewer
 │   │
 │   ├── widgets/                           # Reusable components
 │   │   ├── monitoring_ring.dart           # Circular progress ring

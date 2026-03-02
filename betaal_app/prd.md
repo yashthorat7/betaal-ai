@@ -34,9 +34,9 @@ Navigation: Arrow buttons (< >) at bottom. Step 4 completion → Home Screen.
 | Tab | Label | Screen |
 |-----|-------|--------|
 | 1 | Home | Home Screen |
-| 2 | Personalization | Personalization Screen |
-| 3 | Report | Analytics Dashboard |
-| 4 | Settings | Settings Screen |
+| 2 | Report | Analytics Dashboard |
+| 3 | AI | AI Chat Assistant |
+| 4 | Settings | Settings (Personalization) |
 
 ---
 
@@ -51,39 +51,20 @@ Navigation: Arrow buttons (< >) at bottom. Step 4 completion → Home Screen.
 | Top bar | User display name (left), profile avatar (right) |
 | 7-day summary | Horizontal row of 7 day-indicators (green=under, red=over limit) |
 | Monitoring ring | Large circular progress ring — remaining time, daily limit, urgency indicator |
-| AI Chat FAB | Floating action button (bottom-right) → opens Chat Screen |
 
-### 3.2 Personalization Screen
-
-| Section | Content |
-|---------|---------|
-| Stealth Mode | Icon picker (calculator, notes, weather), name input, toggle |
-| Rehab Parameters | Addiction level stepper, strictness stepper, computed days |
-| Interruption Preferences | Cooldown duration selector, preview interruption types |
-
-### 3.3 Report Screen
+### 3.2 Report Screen
 
 | Section | Content |
 |---------|---------|
 | Today's summary card | Total time, unlocks, most-used app, vs yesterday |
 | Weekly chart | Bar/line graph (Mon–Sun), red highlights for over-limit days |
+| Achievements (Badges) | Grid of earned badges (e.g., "7-Day Streak", "Focus Master", "Alpha Rehabber") |
 | Rehab progress | Linear progress bar (Day X of Y), milestone markers |
 | App breakdown | Horizontal bar chart — top 5 apps with time |
 | Monthly trend | Line graph — 30-day avg daily screen time |
 | Interruption log | Count today/week, types triggered |
 
-### 3.4 Settings Screen
-
-| Section | Content |
-|---------|---------|
-| Profile | Edit name, age, photo; linked Google email |
-| Language | Language selector (follows system locale by default) |
-| Notifications | Toggles: daily summary, milestone alerts, rehab reminders |
-| Data & Privacy | Export data, delete account, privacy policy |
-| About | App version, licenses, contact |
-| Sign Out | Button |
-
-### 3.5 Chat Screen (via FAB)
+### 3.3 AI Chat Screen
 
 | Section | Content |
 |---------|---------|
@@ -91,6 +72,21 @@ Navigation: Arrow buttons (< >) at bottom. Step 4 completion → Home Screen.
 | Chat area | Scrollable message list with bubbles (user right, AI left) |
 | Input | Text field + send button at bottom |
 | Backend | POST /chat → FastAPI → Gemini API with user stats as context |
+
+### 3.4 Settings (Personalization) Screen
+
+| Section | Content |
+|---------|---------|
+| Profile Monitoring | View friends' profiles, real-time screen time comparison, shared streaks |
+| Stealth Mode | Icon picker (calculator, notes, weather), name input, toggle |
+| Rehab Parameters | Addiction level stepper, strictness stepper, computed days |
+| Interruption Preferences | Cooldown duration selector, preview interruption types |
+| Profile | Edit name, age, photo; linked Google email |
+| Language | Language selector (follows system locale by default) |
+| Notifications | Toggles: daily summary, milestone alerts, rehab reminders |
+| Data & Privacy | Export data, delete account, privacy policy |
+| About | App version, licenses, contact |
+| Sign Out | Button |
 
 ---
 

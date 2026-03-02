@@ -1,7 +1,5 @@
-import { getRehabPlan } from '@/lib/dummy-data';
-
-export default function RehabProgress() {
-  const plan = getRehabPlan();
+export default function RehabProgress({ plan = null }) {
+  if (!plan) return null;
   const current = plan.phases.find((p) => p.phase === plan.current_phase);
   const pct = (plan.current_day / plan.duration_days) * 100;
 

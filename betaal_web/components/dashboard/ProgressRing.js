@@ -1,9 +1,9 @@
 'use client';
 
-export default function ProgressRing() {
+export default function ProgressRing({ usage = 0, quota = 100 }) {
   const r = 90;
   const c = 2 * Math.PI * r;
-  const p = 65;
+  const p = Math.min(100, Math.max(0, (usage / quota) * 100));
   const off = c - (p / 100) * c;
 
   return (
@@ -34,11 +34,11 @@ export default function ProgressRing() {
           />
         </svg>
         <div className="absolute flex flex-col text-center">
-          <span className="text-5xl font-black italic">185m</span>
-          <span className="label-pro mt-2">of 273m</span>
+          <span className="text-5xl font-black italic">{usage}m</span>
+          <span className="label-pro mt-2">of {quota}m</span>
         </div>
       </div>
-      <div className="label-pro mt-12">Under Quota</div>
+      <div className="label-pro mt-12">{usage <= quota ? 'Under Quota' : 'Over Quota'}</div>
     </div>
   );
 }

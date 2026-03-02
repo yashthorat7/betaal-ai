@@ -1,7 +1,4 @@
-import { getAppBreakdown } from '@/lib/dummy-data';
-
-export default function AppBreakdown() {
-  const { apps } = getAppBreakdown();
+export default function AppBreakdown({ apps = [] }) {
   return (
     <div className="card-pro flex flex-col">
       <h3 className="heading-md mb-12 italic">Today's Data</h3>

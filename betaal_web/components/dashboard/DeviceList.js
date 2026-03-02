@@ -1,7 +1,4 @@
-import { getConnectedDevices } from '@/lib/dummy-data';
-
-export default function DeviceList() {
-  const devices = getConnectedDevices();
+export default function DeviceList({ devices = [] }) {
   return (
     <div className="card-pro h-full">
       <h3 className="heading-md mb-12 italic">Connected Devices</h3>

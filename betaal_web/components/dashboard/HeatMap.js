@@ -1,7 +1,4 @@
-import { getHeatMap } from '@/lib/dummy-data';
-
-export default function HeatMap() {
-  const { weeks } = getHeatMap();
+export default function HeatMap({ weeks = [] }) {
   return (
     <div className="card-pro h-full">
       <h3 className="heading-md mb-12 italic">Usage Density</h3>

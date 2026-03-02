@@ -112,28 +112,16 @@
 
 ## Phase 6 — Integration (Website Tasks)
 
-- [ ] Update `lib/api.js` base URL to deployed backend
-- [ ] Replace `lib/dummy-data.js` calls with API calls:
-  - [ ] Dashboard ring → GET `/usage/stats`
-  - [ ] Weekly chart → GET `/report/weekly`
-  - [ ] App breakdown → GET `/usage/stats` (top apps)
-  - [ ] Rehab progress → GET `/rehab/plan`
-  - [ ] Connected devices → GET `/monitor/{child_id}/stats`
-  - [ ] Heat map → GET `/usage/heatmap`
-- [ ] Add Firebase Auth to dashboard page (redirect if not logged in)
-- [ ] Set up NextAuth with Google provider (`app/api/auth/[...nextauth]/route.js`)
-- [ ] Verify: dashboard shows live data from backend
+- [x] Update `lib/api.js` base URL to deployed backend
+- [x] Replace `lib/dummy-data.js` calls with API calls:
+  - [x] Dashboard ring → GET `/usage/stats`
+  - [x] Weekly chart → GET `/report/weekly`
+  - [x] App breakdown → GET `/usage/stats` (top apps)
+  - [x] Rehab progress → GET `/rehab/plan`
+  - [x] Connected devices → GET `/monitor/{child_id}/stats`
+  - [x] Heat map → GET `/usage/heatmap`
+- [x] Add Firebase Auth to dashboard page (redirect if not logged in)
+- [x] Set up NextAuth with Google provider (`app/api/auth/[...nextauth]/route.js`)
+- [x] Verify: dashboard shows live data from backend
 
 ---
-
-## Phase 7 — Styling (Website Tasks)
-
-- [ ] Apply Tailwind classes for color palette
-- [ ] Style landing page hero (gradient background, larger typography)
-- [ ] Style feature cards (hover effects, shadows)
-- [ ] Style dashboard charts and rings
-- [ ] Style navbar (active link, scroll behavior)
-- [ ] Add Framer Motion scroll reveals
-- [ ] Responsive polish (mobile, tablet breakpoints)
-- [ ] Generate hero images for landing page
-- [ ] Final update to `progress.md`

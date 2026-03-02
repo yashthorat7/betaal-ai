@@ -1,5 +1,4 @@
 'use client';
-import { getUsageLogs } from '@/lib/dummy-data';
 import {
   LineChart,
   Line,
@@ -11,11 +10,8 @@ import {
 } from 'recharts';
 import { useIsClient } from '@/lib/hooks/useIsClient';
 
-export default function WeeklyChart() {
+export default function WeeklyChart({ data = [] }) {
   const isC = useIsClient();
-  const data = getUsageLogs()
-    .slice(-7)
-    .map((i) => ({ name: i.date.split('-')[2], mins: i.total_min }));
 
   if (!isC)
     return (

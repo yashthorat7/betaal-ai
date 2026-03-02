@@ -1,8 +1,19 @@
+import HeroSection from "@/components/landing/HeroSection";
+import ProblemStats from "@/components/landing/ProblemStats";
+import HowItWorks from "@/components/landing/HowItWorks";
+import FeaturesGrid from "@/components/landing/FeaturesGrid";
+import ResearchSection from "@/components/landing/ResearchSection";
+import CTABanner from "@/components/landing/CTABanner";
+
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      <h1 className="text-4xl font-bold">Betaal AI Website</h1>
-      <p className="mt-4 text-xl">Digital Rehabilitation for Screen Addiction</p>
-    </main>
+    <div className="flex flex-col">
+      <HeroSection />
+      <ProblemStats />
+      <HowItWorks />
+      <FeaturesGrid />
+      <ResearchSection />
+      <CTABanner />
+    </div>
   );
 }

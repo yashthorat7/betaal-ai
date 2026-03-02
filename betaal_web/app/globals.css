@@ -1,26 +1,62 @@
 @import "tailwindcss";
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:is(.dark *));
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #000000;
+  --muted: #f5f5f5;
+  --muted-foreground: #737373;
+  --border: #e5e5e5;
+  --primary: #000000;
+  --primary-foreground: #ffffff;
+  --radius: 0.5rem;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    @apply bg-background text-foreground antialiased selection:bg-foreground selection:text-background;
+    font-family: system-ui, -apple-system, sans-serif;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .container-pro { @apply max-w-7xl mx-auto px-6 md:px-12; }
+  .section-pad { @apply py-24 border-b border-border; }
+  
+  .heading-xl { @apply text-5xl md:text-7xl font-black tracking-tighter uppercase leading-[0.9]; }
+  .heading-lg { @apply text-3xl md:text-5xl font-black tracking-tight uppercase leading-none; }
+  .heading-md { @apply text-xl md:text-2xl font-bold tracking-tight uppercase; }
+
+  .text-pro { @apply text-sm md:text-base font-medium leading-relaxed text-muted-foreground; }
+  .label-pro { @apply text-[10px] font-black uppercase tracking-[0.25em] text-muted-foreground; }
+
+  .card-pro { @apply border border-border p-8 transition-all hover:border-foreground; }
+  .btn-pro { @apply inline-flex items-center justify-center px-8 py-4 text-xs font-black uppercase tracking-widest transition-all active:scale-95; }
+  .btn-solid { @apply bg-foreground text-background hover:opacity-90; }
+  .btn-outline { @apply border border-foreground hover:bg-foreground hover:text-background; }
+}
+
+.dark {
+  --background: #000000;
+  --foreground: #ffffff;
+  --muted: #171717;
+  --muted-foreground: #a3a3a3;
+  --border: #262626;
+  --primary: #ffffff;
+  --primary-foreground: #000000;
 }

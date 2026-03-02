@@ -5,7 +5,7 @@
 | Component | Technology | Why |
 |-----------|-----------|-----|
 | Framework | Next.js 14 (App Router) | SSR, file-based routing, optimized for Vercel |
-| Language | TypeScript + React | Type safety, component-based UI |
+| Language | JavaScript + React | Component-based UI, rapid development |
 | Styling | Tailwind CSS | Utility-first, rapid iteration, zero unused CSS |
 | State Management | Zustand | Lightweight, zero-boilerplate |
 | Animations | Framer Motion | Subtle scroll reveals, hover effects |

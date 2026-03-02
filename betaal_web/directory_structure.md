@@ -4,53 +4,53 @@
 web-dashboard/
 │
 ├── app/                              # Next.js App Router
-│   ├── layout.tsx                    # Root layout (navbar, footer, providers)
-│   ├── page.tsx                      # Landing page (/)
+│   ├── layout.jsx                    # Root layout (navbar, footer, providers)
+│   ├── page.jsx                      # Landing page (/)
 │   ├── globals.css                   # Global styles + Tailwind imports
 │   │
 │   ├── dashboard/
-│   │   └── page.tsx                  # Dashboard (/dashboard) — auth required
+│   │   └── page.jsx                  # Dashboard (/dashboard) — auth required
 │   │
 │   ├── resources/
-│   │   └── page.tsx                  # Resources page (/resources)
+│   │   └── page.jsx                  # Resources page (/resources)
 │   │
 │   ├── about/
-│   │   └── page.tsx                  # About & Contact (/about)
+│   │   └── page.jsx                  # About & Contact (/about)
 │   │
 │   └── api/                          # API routes (if needed)
 │       └── auth/
 │           └── [...nextauth]/
-│               └── route.ts          # NextAuth config
+│               └── route.js          # NextAuth config
 │
 ├── components/                       # Reusable React components
-│   ├── Navbar.tsx                    # Sticky nav with auth state
-│   ├── Footer.tsx                    # Site footer
-│   ├── HeroSection.tsx               # Landing page hero
-│   ├── ProblemStats.tsx              # 3 stat cards
-│   ├── HowItWorks.tsx                # 3-step cards
-│   ├── FeaturesGrid.tsx              # 2×3 feature card grid
-│   ├── ResearchSection.tsx           # Science explanation
-│   ├── CTABanner.tsx                 # Bottom call-to-action
-│   ├── ProgressRing.tsx              # Circular SVG progress ring
-│   ├── WeeklyChart.tsx               # Line chart (Recharts)
-│   ├── AppBreakdown.tsx              # App usage cards row
-│   ├── RehabProgress.tsx             # Progress bar + milestones
-│   ├── DeviceList.tsx                # Connected devices table
-│   ├── HeatMap.tsx                   # GitHub-style usage grid
-│   ├── GuidedSteps.tsx               # Expandable resource cards
-│   ├── ArticleGrid.tsx               # Blog post cards
-│   ├── FAQ.tsx                       # Accordion FAQ
-│   ├── TeamGrid.tsx                  # Team member cards
-│   └── ContactForm.tsx               # Name, email, message form
+│   ├── Navbar.jsx                    # Sticky nav with auth state
+│   ├── Footer.jsx                    # Site footer
+│   ├── HeroSection.jsx               # Landing page hero
+│   ├── ProblemStats.jsx              # 3 stat cards
+│   ├── HowItWorks.jsx                # 3-step cards
+│   ├── FeaturesGrid.jsx              # 2×3 feature card grid
+│   ├── ResearchSection.jsx           # Science explanation
+│   ├── CTABanner.jsx                 # Bottom call-to-action
+│   ├── ProgressRing.jsx              # Circular SVG progress ring
+│   ├── WeeklyChart.jsx               # Line chart (Recharts)
+│   ├── AppBreakdown.jsx              # App usage cards row
+│   ├── RehabProgress.jsx             # Progress bar + milestones
+│   ├── DeviceList.jsx                # Connected devices table
+│   ├── HeatMap.jsx                   # GitHub-style usage grid
+│   ├── GuidedSteps.jsx               # Expandable resource cards
+│   ├── ArticleGrid.jsx               # Blog post cards
+│   ├── FAQ.jsx                       # Accordion FAQ
+│   ├── TeamGrid.jsx                  # Team member cards
+│   └── ContactForm.jsx               # Name, email, message form
 │
 ├── lib/                              # Utilities & config
-│   ├── firebase.ts                   # Firebase client initialization
-│   ├── auth.ts                       # NextAuth config / Firebase auth helpers
-│   └── api.ts                        # Axios/fetch wrapper for FastAPI calls
+│   ├── firebase.js                   # Firebase client initialization
+│   ├── auth.js                       # NextAuth config / Firebase auth helpers
+│   └── api.js                        # Axios/fetch wrapper for FastAPI calls
 │
 ├── store/                            # Zustand state stores
-│   ├── useAuthStore.ts               # User session state
-│   └── useDashboardStore.ts          # Dashboard data & filters
+│   ├── useAuthStore.js               # User session state
+│   └── useDashboardStore.js          # Dashboard data & filters
 │
 ├── public/                           # Static assets
 │   ├── images/                       # Hero mockups, thumbnails
@@ -58,7 +58,7 @@ web-dashboard/
 │
 ├── package.json                      # Node dependencies
 ├── tailwind.config.js                # Tailwind configuration
-├── tsconfig.json                     # TypeScript config
+├── jsconfig.json                     # JS configuration (path aliases)
 ├── next.config.js                    # Next.js config
 ├── .env.local                        # Environment variables (gitignored)
 └── .gitignore

@@ -11,7 +11,7 @@
 
 1. Initialize Next.js in `web-dashboard/`:
    ```bash
-   npx -y create-next-app@latest ./ --typescript --tailwind --app --src-dir=false --import-alias="@/*" --eslint
+   npx -y create-next-app@latest ./ --tailwind --app --src-dir=false --import-alias="@/*" --eslint
    ```
 2. Install dependencies:
    ```bash
@@ -26,7 +26,7 @@
 
 ## Step 2: Firebase Client Setup
 
-**File:** `lib/firebase.ts`
+**File:** `lib/firebase.js`
 
 1. Initialize Firebase client SDK with env vars
 2. Export `auth` and `firestore` instances
@@ -37,9 +37,9 @@
 
 ## Step 3: Dummy Data
 
-**File:** `lib/dummy-data.ts`
+**File:** `lib/dummy-data.js`
 
-1. Port the JSON from `vibecoding/seed_data.md` into TypeScript objects
+1. Port the JSON from `vibecoding/seed_data.md` into JavaScript objects
 2. Export functions: `getUser()`, `getUsageLogs()`, `getRehabPlan()`, `getTodayApps()`, etc.
 3. All pages import from here until Phase 6
 
@@ -49,7 +49,7 @@
 
 ## Step 4: Global Layout + Navbar + Footer
 
-**Files:** `app/layout.tsx`, `components/Navbar.tsx`, `components/Footer.tsx`
+**Files:** `app/layout.jsx`, `components/Navbar.jsx`, `components/Footer.jsx`
 
 1. Layout: wraps all pages with Navbar + Footer
 2. Navbar: text logo, 4 links (Home, Dashboard, Resources, About), sign-in button placeholder
@@ -63,7 +63,7 @@ All minimal — plain text, basic flex layout, no colors.
 
 ## Step 5: Landing Page (`/`)
 
-**File:** `app/page.tsx` + components
+**File:** `app/page.jsx` + components
 
 Build sections top to bottom:
 1. **HeroSection** — headline text, subtitle, 2 placeholder buttons, empty image spot
@@ -81,7 +81,7 @@ Each component is its own file in `components/`. All B&W.
 
 ## Step 6: Dashboard (`/dashboard`)
 
-**File:** `app/dashboard/page.tsx` + components
+**File:** `app/dashboard/page.jsx` + components
 
 1. **Header bar** — "Welcome back, [Name]" text
 2. **ProgressRing** — SVG circle showing dummy usage/limit
@@ -91,7 +91,7 @@ Each component is its own file in `components/`. All B&W.
 6. **DeviceList** — list of 3 dummy devices
 7. **HeatMap** — grid of colored squares (or just placeholder text)
 
-All data from `lib/dummy-data.ts`. No auth check yet (add in Phase 6).
+All data from `lib/dummy-data.js`. No auth check yet (add in Phase 6).
 
 **Checkpoint:** Dashboard shows all sections with dummy data
 
@@ -99,7 +99,7 @@ All data from `lib/dummy-data.ts`. No auth check yet (add in Phase 6).
 
 ## Step 7: Resources (`/resources`)
 
-**File:** `app/resources/page.tsx` + components
+**File:** `app/resources/page.jsx` + components
 
 1. **GuidedSteps** — 4 expandable divs (click to toggle content)
 2. **ArticleGrid** — 3 cards with placeholder titles and read times
@@ -112,7 +112,7 @@ All data from `lib/dummy-data.ts`. No auth check yet (add in Phase 6).
 
 ## Step 8: About (`/about`)
 
-**File:** `app/about/page.tsx` + components
+**File:** `app/about/page.jsx` + components
 
 1. **Mission** — centered large text block
 2. **TeamGrid** — 4 cards with name, role, 1-line bio

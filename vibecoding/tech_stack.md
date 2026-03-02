@@ -37,7 +37,7 @@ Global summary. Each component's `tech_stack.md` has the full breakdown.
 |-----------|-----------|----------|-----------------|
 | **Mobile App** | Flutter 3.x | Dart + Kotlin | firebase_auth, cloud_firestore, dio, flutter_overlay_window, usage_stats, fl_chart |
 | **AI Backend** | FastAPI | Python 3.11+ | uvicorn, firebase-admin, scikit-learn, numpy, pandas, google-generativeai, pydantic |
-| **Website** | Next.js 14 (App Router) | TypeScript + React | tailwindcss, recharts, firebase, zustand, next-auth |
+| **Website** | Next.js 14 (App Router) | JavaScript + React | tailwindcss, recharts, firebase, zustand, next-auth |
 | **Extension** | Chrome Manifest V3 | Vanilla JavaScript | chrome.alarms, chrome.idle, chrome.storage, fetch API |
 
 ---

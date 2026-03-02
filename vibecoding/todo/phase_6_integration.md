@@ -35,8 +35,8 @@
 
 ## Step 3: Website → Backend
 
-1. Update `lib/api.ts` base URL to deployed backend
-2. Replace `lib/dummy-data.ts` calls with API calls:
+1. Update `lib/api.js` base URL to deployed backend
+2. Replace `lib/dummy-data.js` calls with API calls:
    - Dashboard ring → GET `/usage/stats`
    - Weekly chart → GET `/report/weekly`
    - App breakdown → GET `/usage/stats` (top apps)

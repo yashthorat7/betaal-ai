@@ -59,20 +59,35 @@ class MainActivity : FlutterActivity() {
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, OVERLAY_CHANNEL).setMethodCallHandler { call, result ->
             when (call.method) {
                 "showOverlay" -> {
-                    val type = call.argument<String>("type") ?: "black"
-                    val message = call.argument<String>("message") ?: ""
-                    val intensity = call.argument<Double>("intensity") ?: 1.0
+                    val type = call.argument<String>("type") ?: "black_screen"
                     val intent = Intent(this, OverlayService::class.java).apply {
+                        action = OverlayService.ACTION_SHOW
                         putExtra("type", type)
-                        putExtra("message", message)
-                        putExtra("intensity", intensity.toFloat())
                     }
-                    startService(intent)
+                    startForegroundService(intent)
                     result.success(true)
                 }
                 "hideOverlay" -> {
-                    val intent = Intent(this, OverlayService::class.java)
-                    stopService(intent)
+                    val intent = Intent(this, OverlayService::class.java).apply {
+                        action = OverlayService.ACTION_HIDE
+                    }
+                    startForegroundService(intent)
+                    result.success(true)
+                }
+                "startCycle" -> {
+                    val types = call.argument<List<String>>("types") ?: listOf()
+                    val intent = Intent(this, OverlayService::class.java).apply {
+                        action = OverlayService.ACTION_START_CYCLE
+                        putStringArrayListExtra("types", ArrayList(types))
+                    }
+                    startForegroundService(intent)
+                    result.success(true)
+                }
+                "stopAll" -> {
+                    val intent = Intent(this, OverlayService::class.java).apply {
+                        action = OverlayService.ACTION_STOP_ALL
+                    }
+                    startForegroundService(intent)
                     result.success(true)
                 }
                 "hasOverlayPermission" -> {
@@ -81,6 +96,17 @@ class MainActivity : FlutterActivity() {
                 "requestOverlayPermission" -> {
                     val intent = Intent(
                         android.provider.Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        android.net.Uri.parse("package:$packageName")
+                    )
+                    startActivity(intent)
+                    result.success(true)
+                }
+                "hasWriteSettingsPermission" -> {
+                    result.success(android.provider.Settings.System.canWrite(this))
+                }
+                "requestWriteSettingsPermission" -> {
+                    val intent = Intent(
+                        android.provider.Settings.ACTION_MANAGE_WRITE_SETTINGS,
                         android.net.Uri.parse("package:$packageName")
                     )
                     startActivity(intent)

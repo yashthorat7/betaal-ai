@@ -38,7 +38,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     if (_currentPage < 3) {
       _pageController.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
     } else {
-      // Complete onboarding
       context.read<AuthProvider>().completeOnboarding(
         name: _nameController.text,
         age: _age,
@@ -161,7 +160,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           const Text('Higher strictness = shorter but harder rehab', style: TextStyle(color: Colors.grey)),
           const SizedBox(height: 32),
           Center(
-            child: Text('$_strictness / 10', style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+            child: Text('$_strictness / 5', style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
           ),
           const SizedBox(height: 16),
           Slider(

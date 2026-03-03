@@ -1,10 +1,32 @@
 enum RehabPhaseName { awareness, reduction, discipline, freedom }
 
 enum InterruptionType {
-  blurScreen,
+  // Original 12
   blackScreen,
-  reverseScroll,
-  touchOffset,
+  blurScreen,
+  warning,
+  loading,
+  tint,
+  halfBlock,
+  mistouch,
+  fly,
+  statusBar,
+  brightnessZero,
+  lockScreen,
   flicker,
-  motivationalQuote,
+  // New 14
+  grayscale,
+  invertColors,
+  pixelRain,
+  staticNoise,
+  delayedTouch,
+  swappedTouch,
+  stickyTouch,
+  vibratePulse,
+  timerOverlay,
+  shameCounter,
+  quizGate,
+  forceRotate,
+  volumeZero,
+  closeApp,
 }

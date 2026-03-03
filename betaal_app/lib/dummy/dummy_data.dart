@@ -61,10 +61,29 @@ class DummyData {
   ];
 
   static List<Interruption> getTodayInterruptions() => [
-    Interruption(timeOffsetMin: 5, type: 'blur_screen', intensity: 0.3, durationSec: 10),
-    Interruption(timeOffsetMin: 12, type: 'motivational_quote', intensity: 0.5, durationSec: 8),
-    Interruption(timeOffsetMin: 20, type: 'black_screen', intensity: 0.8, durationSec: 15),
-    Interruption(timeOffsetMin: 25, type: 'reverse_scroll', intensity: 0.7, durationSec: 30),
+    Interruption(timeOffsetMin: 3, type: 'blur_screen', intensity: 0.3, durationSec: 10),
+    Interruption(timeOffsetMin: 6, type: 'tint', intensity: 0.5, durationSec: 15),
+    Interruption(timeOffsetMin: 10, type: 'grayscale', intensity: 0.8, durationSec: 30),
+    Interruption(timeOffsetMin: 14, type: 'black_screen', intensity: 0.8, durationSec: 12),
+    Interruption(timeOffsetMin: 18, type: 'pixel_rain', intensity: 0.6, durationSec: 15),
+    Interruption(timeOffsetMin: 22, type: 'loading', intensity: 0.6, durationSec: 8),
+    Interruption(timeOffsetMin: 26, type: 'delayed_touch', intensity: 0.7, durationSec: 20),
+    Interruption(timeOffsetMin: 30, type: 'mistouch', intensity: 0.9, durationSec: 30),
+    Interruption(timeOffsetMin: 34, type: 'static_noise', intensity: 0.7, durationSec: 12),
+    Interruption(timeOffsetMin: 38, type: 'fly', intensity: 0.5, durationSec: 25),
+    Interruption(timeOffsetMin: 42, type: 'vibrate_pulse', intensity: 0.8, durationSec: 10),
+    Interruption(timeOffsetMin: 46, type: 'timer_overlay', intensity: 0.4, durationSec: 60),
+    Interruption(timeOffsetMin: 50, type: 'swapped_touch', intensity: 0.6, durationSec: 20),
+    Interruption(timeOffsetMin: 54, type: 'shame_counter', intensity: 1.0, durationSec: 15),
+    Interruption(timeOffsetMin: 58, type: 'quiz_gate', intensity: 1.0, durationSec: 0),
+    Interruption(timeOffsetMin: 62, type: 'flicker', intensity: 0.8, durationSec: 10),
+    Interruption(timeOffsetMin: 66, type: 'invert_colors', intensity: 1.0, durationSec: 20),
+    Interruption(timeOffsetMin: 70, type: 'half_block', intensity: 0.7, durationSec: 20),
+    Interruption(timeOffsetMin: 74, type: 'sticky_touch', intensity: 0.5, durationSec: 25),
+    Interruption(timeOffsetMin: 78, type: 'force_rotate', intensity: 1.0, durationSec: 30),
+    Interruption(timeOffsetMin: 82, type: 'volume_zero', intensity: 1.0, durationSec: 60),
+    Interruption(timeOffsetMin: 86, type: 'warning', intensity: 1.0, durationSec: 15),
+    Interruption(timeOffsetMin: 90, type: 'close_app', intensity: 1.0, durationSec: 0),
   ];
 
   static List<AchievementBadge> getBadges() => [

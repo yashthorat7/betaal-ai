@@ -34,6 +34,25 @@ class BetaalApp extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: true,
           brightness: Brightness.light,
+          scaffoldBackgroundColor: const Color(0xFFF2F2F2),
+          navigationBarTheme: NavigationBarThemeData(
+            backgroundColor: Colors.white.withOpacity(0.8),
+            indicatorColor: const Color(0xFF2DD4BF).withOpacity(0.15),
+            labelTextStyle: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.selected)) {
+                return const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF101018),
+                );
+              }
+              return TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                color: Colors.grey.shade400,
+              );
+            }),
+          ),
         ),
         initialRoute: '/splash',
         routes: {

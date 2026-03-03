@@ -21,7 +21,6 @@ enum InterruptionType {
   staticNoise,
   delayedTouch,
   swappedTouch,
-  stickyTouch,
   vibratePulse,
   timerOverlay,
   shameCounter,
@@ -29,4 +28,11 @@ enum InterruptionType {
   forceRotate,
   volumeZero,
   closeApp,
+  // Intense modes
+  screenShake,
+  progressiveDim,
+  glitchEffect,
+  screenShrink,
+  randomPopup,
+  earthquake,
 }

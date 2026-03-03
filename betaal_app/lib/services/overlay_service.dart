@@ -60,4 +60,16 @@ class OverlayService {
   static Future<void> requestWriteSettingsPermission() async {
     await _channel.invokeMethod('requestWriteSettingsPermission');
   }
+
+  /// Check if Device Admin permission is active (needed for lock screen)
+  static Future<bool> hasDeviceAdminPermission() async {
+    final result =
+        await _channel.invokeMethod<bool>('hasDeviceAdminPermission');
+    return result ?? false;
+  }
+
+  /// Open system dialog to grant Device Admin permission
+  static Future<void> requestDeviceAdminPermission() async {
+    await _channel.invokeMethod('requestDeviceAdminPermission');
+  }
 }

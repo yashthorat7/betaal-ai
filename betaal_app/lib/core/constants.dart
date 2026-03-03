@@ -51,7 +51,7 @@ class AppConstants {
     },
     'lock_screen': {
       'name': 'Lock Screen',
-      'description': 'Triggers device lock immediately',
+      'description': 'Locks device immediately (requires Device Admin)',
     },
     'flicker': {
       'name': 'Flicker',
@@ -81,10 +81,6 @@ class AppConstants {
       'name': 'Swapped Touch',
       'description': 'Touch registers in wrong/offset positions',
     },
-    'sticky_touch': {
-      'name': 'Sticky Touch',
-      'description': 'Dark blob follows your finger blocking content',
-    },
     'vibrate_pulse': {
       'name': 'Vibrate Pulse',
       'description': 'Continuous annoying vibration pattern',
@@ -112,6 +108,30 @@ class AppConstants {
     'close_app': {
       'name': 'Close App',
       'description': 'Force sends user to home screen',
+    },
+    'screen_shake': {
+      'name': 'Screen Shake',
+      'description': 'Rapid screen vibration making it impossible to read',
+    },
+    'progressive_dim': {
+      'name': 'Progressive Dim',
+      'description': 'Screen gradually fades to complete black',
+    },
+    'glitch_effect': {
+      'name': 'Glitch Effect',
+      'description': 'Broken display effect with random color blocks',
+    },
+    'screen_shrink': {
+      'name': 'Screen Shrink',
+      'description': 'Thick black borders shrink the usable screen area',
+    },
+    'random_popup': {
+      'name': 'Random Popups',
+      'description': 'Annoying messages popping up all over the screen',
+    },
+    'earthquake': {
+      'name': 'Earthquake',
+      'description': 'Intense screen shake combined with vibration',
     },
   };
 

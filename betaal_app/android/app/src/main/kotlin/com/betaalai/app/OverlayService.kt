@@ -6,7 +6,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
-import android.app.admin.DevicePolicyManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -69,11 +68,18 @@ class OverlayService : Service() {
     private var pixelRainView: ImageView? = null
     private var staticNoiseView: ImageView? = null
     private var delayedTouchView: View? = null
-    private var stickyTouchView: View? = null
     private var timerOverlayView: TextView? = null
     private var shameCounterView: TextView? = null
     private var quizGateView: FrameLayout? = null
     private val swappedTouchViews = ArrayList<View>()
+
+    // --- VIEWS (intense modes) ---
+    private var shakeView: View? = null
+    private var dimView: View? = null
+    private var glitchView: ImageView? = null
+    private val shrinkViews = ArrayList<View>() // 4 border views
+    private val popupViews = ArrayList<View>()
+    private var earthquakeView: View? = null
 
     // --- FLAGS ---
     private var isCycleActive = false
@@ -83,7 +89,6 @@ class OverlayService : Service() {
     private var isStaticNoiseActive = false
     private var isDelayedTouchActive = false
     private var isSwappedTouchActive = false
-    private var isStickyTouchActive = false
     private var isTimerActive = false
     private var isVibrateActive = false
     private var isGrayscaleApplied = false
@@ -91,6 +96,11 @@ class OverlayService : Service() {
     private var isForceRotateApplied = false
     private var isVolumeMuted = false
     private var savedVolumes: IntArray? = null
+    private var isShakeActive = false
+    private var isDimActive = false
+    private var isGlitchActive = false
+    private var isPopupActive = false
+    private var isEarthquakeActive = false
 
     // --- CYCLE ---
     private var activeDisturbances = ArrayList<String>()
@@ -183,7 +193,6 @@ class OverlayService : Service() {
             "static_noise" -> startStaticNoise()
             "delayed_touch" -> startDelayedTouch()
             "swapped_touch" -> startSwappedTouch()
-            "sticky_touch" -> startStickyTouch()
             "vibrate_pulse" -> startVibratePulse()
             "timer_overlay" -> showTimerOverlay()
             "shame_counter" -> showShameCounter()
@@ -191,6 +200,13 @@ class OverlayService : Service() {
             "force_rotate" -> enableForceRotate()
             "volume_zero" -> muteVolume()
             "close_app" -> closeApp()
+            // Intense modes
+            "screen_shake" -> startScreenShake()
+            "progressive_dim" -> startProgressiveDim()
+            "glitch_effect" -> startGlitchEffect()
+            "screen_shrink" -> startScreenShrink()
+            "random_popup" -> startRandomPopup()
+            "earthquake" -> startEarthquake()
         }
     }
 
@@ -363,11 +379,21 @@ class OverlayService : Service() {
     }
 
     // --- 11. LOCK SCREEN ---
+    // Uses DevicePolicyManager to actually lock the device.
+    // Requires Device Admin permission (user grants via system dialog).
     private fun triggerLockScreen() {
         try {
-            val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
-            dpm.lockNow()
-        } catch (e: Exception) { Log.e(TAG, "Lock fail: ${e.message}") }
+            val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as android.app.admin.DevicePolicyManager
+            val adminComponent = android.content.ComponentName(this, BetaalDeviceAdmin::class.java)
+            if (dpm.isAdminActive(adminComponent)) {
+                dpm.lockNow()
+                Log.d(TAG, "Device locked via DevicePolicyManager")
+            } else {
+                Log.w(TAG, "Device Admin not active — cannot lock screen")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Lock fail: ${e.message}")
+        }
     }
 
     // --- 12. FLICKER ---
@@ -392,47 +418,75 @@ class OverlayService : Service() {
 
     // ==================== NEW 14 MODES ====================
 
-    // --- 13. GRAYSCALE ---
-    // Requires WRITE_SECURE_SETTINGS granted via ADB:
-    // adb shell pm grant com.betaalai.app android.permission.WRITE_SECURE_SETTINGS
+    // --- 13. GRAYSCALE (overlay-based) ---
+    // Uses a high-opacity grey overlay to drain color from the screen
+    private var grayscaleView: View? = null
+
     private fun enableGrayscale() {
-        try {
-            // Enable color correction (daltonizer)
-            Settings.Secure.putInt(contentResolver, "accessibility_display_daltonizer_enabled", 1)
-            // 0 = grayscale (monochromacy simulation)
-            Settings.Secure.putInt(contentResolver, "accessibility_display_daltonizer", 0)
-            isGrayscaleApplied = true
-            Log.d(TAG, "Grayscale enabled")
-        } catch (e: Exception) {
-            Log.e(TAG, "Grayscale fail (need WRITE_SECURE_SETTINGS via ADB): ${e.message}")
+        grayscaleView = View(this).apply {
+            // A strong grey semi-transparent overlay that desaturates everything beneath
+            setBackgroundColor(Color.argb(180, 128, 128, 128))
         }
+        val params = createParams(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT
+        )
+        params.flags = params.flags or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        addToWindow(grayscaleView, params)
+        isGrayscaleApplied = true
+        Log.d(TAG, "Grayscale overlay enabled")
     }
 
     private fun disableGrayscale() {
         if (!isGrayscaleApplied) return
-        try {
-            Settings.Secure.putInt(contentResolver, "accessibility_display_daltonizer_enabled", 0)
-            isGrayscaleApplied = false
-        } catch (_: Exception) {}
+        removeView(grayscaleView); grayscaleView = null
+        isGrayscaleApplied = false
     }
 
-    // --- 14. INVERT COLORS ---
+    // --- 14. INVERT COLORS (overlay-based) ---
+    // Uses a bright harsh overlay with inverted-feel color that makes screen painful to read
+    private var invertView: View? = null
+    private var isInvertFlashing = false
+
     private fun enableInvertColors() {
-        try {
-            Settings.Secure.putInt(contentResolver, "accessibility_display_inversion_enabled", 1)
-            isInvertApplied = true
-            Log.d(TAG, "Invert colors enabled")
-        } catch (e: Exception) {
-            Log.e(TAG, "Invert fail (need WRITE_SECURE_SETTINGS via ADB): ${e.message}")
+        isInvertApplied = true
+        isInvertFlashing = true
+        invertView = View(this).apply {
+            setBackgroundColor(Color.argb(160, 255, 255, 0)) // harsh yellow-white
+        }
+        val params = createParams(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT
+        )
+        params.flags = params.flags or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        addToWindow(invertView, params)
+        // Alternate between harsh inverted-feel tints
+        mainHandler.post(invertFlashRunnable)
+        Log.d(TAG, "Invert colors overlay enabled")
+    }
+
+    private val invertFlashRunnable = object : Runnable {
+        private var phase = 0
+        private val tints = intArrayOf(
+            Color.argb(150, 255, 255, 0),   // harsh yellow
+            Color.argb(150, 0, 255, 255),    // cyan
+            Color.argb(150, 255, 0, 255),    // magenta
+            Color.argb(140, 200, 255, 200),  // sickly green
+        )
+        override fun run() {
+            if (!isInvertFlashing || invertView == null) return
+            phase = (phase + 1) % tints.size
+            invertView?.setBackgroundColor(tints[phase])
+            mainHandler.postDelayed(this, 3000) // slow cycle between ugly tints
         }
     }
 
     private fun disableInvertColors() {
         if (!isInvertApplied) return
-        try {
-            Settings.Secure.putInt(contentResolver, "accessibility_display_inversion_enabled", 0)
-            isInvertApplied = false
-        } catch (_: Exception) {}
+        isInvertFlashing = false
+        mainHandler.removeCallbacks(invertFlashRunnable)
+        removeView(invertView); invertView = null
+        isInvertApplied = false
     }
 
     // --- 15. PIXEL RAIN ---
@@ -595,31 +649,7 @@ class OverlayService : Service() {
         }
     }
 
-    // --- 19. STICKY TOUCH ---
-    // A dark blob that follows your finger and expands, blocking content around it
-    @SuppressLint("ClickableViewAccessibility")
-    private fun startStickyTouch() {
-        isStickyTouchActive = true
-        stickyTouchView = View(this).apply {
-            setBackgroundColor(Color.argb(220, 0, 0, 0))
-            setOnTouchListener { v, event ->
-                try {
-                    val params = v.layoutParams as WindowManager.LayoutParams
-                    params.x = event.rawX.toInt() - 150
-                    params.y = event.rawY.toInt() - 150
-                    windowManager?.updateViewLayout(v, params)
-                } catch (_: Exception) {}
-                true
-            }
-        }
-        val params = createParams(300, 300)
-        params.gravity = Gravity.TOP or Gravity.START
-        params.x = resources.displayMetrics.widthPixels / 2 - 150
-        params.y = resources.displayMetrics.heightPixels / 2 - 150
-        addToWindow(stickyTouchView, params)
-    }
-
-    // --- 20. VIBRATE PULSE ---
+    // --- 19. VIBRATE PULSE ---
     @SuppressLint("MissingPermission")
     private fun startVibratePulse() {
         isVibrateActive = true
@@ -890,6 +920,263 @@ class OverlayService : Service() {
         } catch (e: Exception) { Log.e(TAG, "Close app fail: ${e.message}") }
     }
 
+    // ==================== INTENSE MODES ====================
+
+    // --- 27. SCREEN SHAKE ---
+    // Overlay that rapidly shifts position, making screen feel like it's shaking
+    private fun startScreenShake() {
+        isShakeActive = true
+        shakeView = View(this).apply {
+            setBackgroundColor(Color.argb(30, 255, 0, 0))
+        }
+        val params = createParams(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT
+        )
+        params.flags = params.flags or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        addToWindow(shakeView, params)
+        mainHandler.post(shakeRunnable)
+    }
+
+    private val shakeRunnable = object : Runnable {
+        override fun run() {
+            if (!isShakeActive || shakeView == null) return
+            try {
+                val params = shakeView?.layoutParams as WindowManager.LayoutParams
+                params.x = random.nextInt(40) - 20
+                params.y = random.nextInt(40) - 20
+                // Alternate between red/orange tints for disorienting effect
+                val alpha = random.nextInt(60) + 20
+                shakeView?.setBackgroundColor(Color.argb(alpha, 255, random.nextInt(100), 0))
+                windowManager?.updateViewLayout(shakeView, params)
+            } catch (_: Exception) {}
+            mainHandler.postDelayed(this, 50) // very fast
+        }
+    }
+
+    // --- 28. PROGRESSIVE DIM ---
+    // Screen gets progressively darker every second until completely black
+    private var dimAlpha = 0
+
+    private fun startProgressiveDim() {
+        isDimActive = true
+        dimAlpha = 0
+        dimView = View(this).apply {
+            setBackgroundColor(Color.argb(0, 0, 0, 0))
+        }
+        val params = createParams(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT
+        )
+        params.flags = params.flags or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        addToWindow(dimView, params)
+        mainHandler.post(dimRunnable)
+    }
+
+    private val dimRunnable = object : Runnable {
+        override fun run() {
+            if (!isDimActive || dimView == null) return
+            dimAlpha = (dimAlpha + 5).coerceAtMost(250)
+            dimView?.setBackgroundColor(Color.argb(dimAlpha, 0, 0, 0))
+            if (dimAlpha < 250) {
+                mainHandler.postDelayed(this, 200) // fully dark in ~10 seconds
+            }
+        }
+    }
+
+    // --- 29. GLITCH EFFECT ---
+    // Random colored blocks jumping around the screen like a broken display
+    private fun startGlitchEffect() {
+        isGlitchActive = true
+        glitchView = ImageView(this)
+        val params = createParams(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT
+        )
+        params.flags = params.flags or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        addToWindow(glitchView, params)
+        mainHandler.post(glitchRunnable)
+    }
+
+    private val glitchRunnable = object : Runnable {
+        override fun run() {
+            if (!isGlitchActive || glitchView == null) return
+            try {
+                val scale = 10
+                val bw = resources.displayMetrics.widthPixels / scale
+                val bh = resources.displayMetrics.heightPixels / scale
+                val bmp = Bitmap.createBitmap(bw, bh, Bitmap.Config.ARGB_8888)
+                val canvas = Canvas(bmp)
+                val paint = Paint()
+                // Clear with transparent
+                canvas.drawColor(Color.TRANSPARENT)
+                // Draw random glitch blocks
+                for (i in 0 until 15) {
+                    paint.color = Color.argb(
+                        random.nextInt(200) + 55,
+                        random.nextInt(256),
+                        random.nextInt(50),
+                        random.nextInt(256)
+                    )
+                    val x = random.nextFloat() * bw
+                    val y = random.nextFloat() * bh
+                    val w = random.nextFloat() * bw * 0.4f + 10
+                    val h2 = random.nextFloat() * 6f + 2
+                    canvas.drawRect(x, y, x + w, y + h2, paint)
+                }
+                // A few horizontal scan lines
+                paint.color = Color.argb(100, 0, 255, 0)
+                for (i in 0 until 3) {
+                    val y = random.nextFloat() * bh
+                    canvas.drawRect(0f, y, bw.toFloat(), y + 1f, paint)
+                }
+                glitchView?.scaleType = ImageView.ScaleType.FIT_XY
+                glitchView?.setImageBitmap(bmp)
+            } catch (_: Exception) {}
+            mainHandler.postDelayed(this, 80)
+        }
+    }
+
+    // --- 30. SCREEN SHRINK ---
+    // Thick black borders that make the usable area smaller and smaller
+    private fun startScreenShrink() {
+        val w = resources.displayMetrics.widthPixels
+        val h = resources.displayMetrics.heightPixels
+        val borderSize = (w * 0.2).toInt() // 20% from each side
+
+        // Top border
+        val topView = View(this).apply { setBackgroundColor(Color.BLACK); setOnTouchListener { _, _ -> true } }
+        val topParams = createParams(WindowManager.LayoutParams.MATCH_PARENT, borderSize)
+        topParams.gravity = Gravity.TOP
+        topParams.format = PixelFormat.OPAQUE
+        addToWindow(topView, topParams)
+        shrinkViews.add(topView)
+
+        // Bottom border
+        val bottomView = View(this).apply { setBackgroundColor(Color.BLACK); setOnTouchListener { _, _ -> true } }
+        val bottomParams = createParams(WindowManager.LayoutParams.MATCH_PARENT, borderSize)
+        bottomParams.gravity = Gravity.BOTTOM
+        bottomParams.format = PixelFormat.OPAQUE
+        addToWindow(bottomView, bottomParams)
+        shrinkViews.add(bottomView)
+
+        // Left border
+        val leftView = View(this).apply { setBackgroundColor(Color.BLACK); setOnTouchListener { _, _ -> true } }
+        val leftParams = createParams(borderSize, WindowManager.LayoutParams.MATCH_PARENT)
+        leftParams.gravity = Gravity.START
+        leftParams.format = PixelFormat.OPAQUE
+        addToWindow(leftView, leftParams)
+        shrinkViews.add(leftView)
+
+        // Right border
+        val rightView = View(this).apply { setBackgroundColor(Color.BLACK); setOnTouchListener { _, _ -> true } }
+        val rightParams = createParams(borderSize, WindowManager.LayoutParams.MATCH_PARENT)
+        rightParams.gravity = Gravity.END
+        rightParams.format = PixelFormat.OPAQUE
+        addToWindow(rightView, rightParams)
+        shrinkViews.add(rightView)
+    }
+
+    // --- 31. RANDOM POPUP ---
+    // Annoying popup messages that appear at random positions
+    @SuppressLint("SetTextI18n")
+    private fun startRandomPopup() {
+        isPopupActive = true
+        mainHandler.post(popupRunnable)
+    }
+
+    private val popupMessages = arrayOf(
+        "Are you sure you need this app?",
+        "Time is ticking...",
+        "Your future self is watching.",
+        "Every second counts.",
+        "Put. The. Phone. Down.",
+        "Is this really important?",
+        "You're wasting your life.",
+        "Go drink some water instead.",
+        "Close this app. NOW.",
+        "Your screen time is embarrassing.",
+    )
+
+    private val popupRunnable = object : Runnable {
+        override fun run() {
+            if (!isPopupActive) return
+            val w = resources.displayMetrics.widthPixels
+            val h = resources.displayMetrics.heightPixels
+
+            val tv = TextView(this@OverlayService).apply {
+                text = popupMessages[random.nextInt(popupMessages.size)]
+                setTextColor(Color.WHITE)
+                textSize = 16f
+                setBackgroundColor(Color.argb(230, 200, 30, 30))
+                setPadding(30, 20, 30, 20)
+                gravity = Gravity.CENTER
+                setOnTouchListener { v, _ ->
+                    removeView(v)
+                    popupViews.remove(v)
+                    true
+                }
+            }
+            val params = createParams(
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT
+            )
+            // Remove NOT_FOCUSABLE so touch works
+            params.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+            params.gravity = Gravity.TOP or Gravity.START
+            params.x = random.nextInt((w - 400).coerceAtLeast(1))
+            params.y = random.nextInt((h - 200).coerceAtLeast(1))
+            addToWindow(tv, params)
+            popupViews.add(tv)
+
+            // Remove old popups if too many
+            if (popupViews.size > 5) {
+                val old = popupViews.removeAt(0)
+                removeView(old)
+            }
+
+            mainHandler.postDelayed(this, 1500)
+        }
+    }
+
+    // --- 32. EARTHQUAKE ---
+    // Combines intense vibration with a shaking red overlay
+    @SuppressLint("MissingPermission")
+    private fun startEarthquake() {
+        isEarthquakeActive = true
+        // Shaking overlay
+        earthquakeView = View(this).apply {
+            setBackgroundColor(Color.argb(50, 255, 0, 0))
+        }
+        val params = createParams(
+            WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.MATCH_PARENT
+        )
+        params.flags = params.flags or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        addToWindow(earthquakeView, params)
+        // Start vibration
+        isVibrateActive = true
+        mainHandler.post(vibrateRunnable)
+        mainHandler.post(earthquakeRunnable)
+    }
+
+    private val earthquakeRunnable = object : Runnable {
+        override fun run() {
+            if (!isEarthquakeActive || earthquakeView == null) return
+            try {
+                val params = earthquakeView?.layoutParams as WindowManager.LayoutParams
+                // More aggressive shake than screen_shake
+                params.x = random.nextInt(60) - 30
+                params.y = random.nextInt(60) - 30
+                val r = random.nextInt(100) + 155
+                earthquakeView?.setBackgroundColor(Color.argb(random.nextInt(80) + 30, r, 0, 0))
+                windowManager?.updateViewLayout(earthquakeView, params)
+            } catch (_: Exception) {}
+            mainHandler.postDelayed(this, 40) // even faster than screen_shake
+        }
+    }
+
     // ==================== CLEANUP ====================
 
     private fun clearViews() {
@@ -902,6 +1189,13 @@ class OverlayService : Service() {
         mainHandler.removeCallbacks(delayedTouchRunnable)
         mainHandler.removeCallbacks(swappedTouchRunnable)
         mainHandler.removeCallbacks(timerRunnable)
+        mainHandler.removeCallbacks(invertFlashRunnable)
+        mainHandler.removeCallbacks(shakeRunnable)
+        mainHandler.removeCallbacks(dimRunnable)
+        mainHandler.removeCallbacks(glitchRunnable)
+        mainHandler.removeCallbacks(popupRunnable)
+        mainHandler.removeCallbacks(earthquakeRunnable)
+        isInvertFlashing = false
 
         // Reset flags
         isMistouchActive = false
@@ -910,8 +1204,12 @@ class OverlayService : Service() {
         isStaticNoiseActive = false
         isDelayedTouchActive = false
         isSwappedTouchActive = false
-        isStickyTouchActive = false
         isTimerActive = false
+        isShakeActive = false
+        isDimActive = false
+        isGlitchActive = false
+        isPopupActive = false
+        isEarthquakeActive = false
 
         // Remove original 12 views
         removeView(blackView); blackView = null
@@ -931,12 +1229,23 @@ class OverlayService : Service() {
         removeView(pixelRainView); pixelRainView = null
         removeView(staticNoiseView); staticNoiseView = null
         removeView(delayedTouchView); delayedTouchView = null
-        removeView(stickyTouchView); stickyTouchView = null
         removeView(timerOverlayView); timerOverlayView = null
         removeView(shameCounterView); shameCounterView = null
         removeView(quizGateView); quizGateView = null
+        removeView(grayscaleView); grayscaleView = null
+        removeView(invertView); invertView = null
         swappedTouchViews.forEach { removeView(it) }
         swappedTouchViews.clear()
+
+        // Remove intense mode views
+        removeView(shakeView); shakeView = null
+        removeView(dimView); dimView = null
+        removeView(glitchView); glitchView = null
+        removeView(earthquakeView); earthquakeView = null
+        shrinkViews.forEach { removeView(it) }
+        shrinkViews.clear()
+        popupViews.forEach { removeView(it) }
+        popupViews.clear()
 
         // Stop vibration
         stopVibrate()

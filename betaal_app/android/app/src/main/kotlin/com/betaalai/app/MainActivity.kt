@@ -1,5 +1,8 @@
 package com.betaalai.app
 
+import android.app.admin.DevicePolicyManager
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import io.flutter.embedding.android.FlutterActivity
@@ -109,6 +112,21 @@ class MainActivity : FlutterActivity() {
                         android.provider.Settings.ACTION_MANAGE_WRITE_SETTINGS,
                         android.net.Uri.parse("package:$packageName")
                     )
+                    startActivity(intent)
+                    result.success(true)
+                }
+                "hasDeviceAdminPermission" -> {
+                    val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+                    val adminComponent = ComponentName(this, BetaalDeviceAdmin::class.java)
+                    result.success(dpm.isAdminActive(adminComponent))
+                }
+                "requestDeviceAdminPermission" -> {
+                    val adminComponent = ComponentName(this, BetaalDeviceAdmin::class.java)
+                    val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN).apply {
+                        putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, adminComponent)
+                        putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,
+                            "Betaal needs Device Admin to lock your screen as a distraction interruption.")
+                    }
                     startActivity(intent)
                     result.success(true)
                 }

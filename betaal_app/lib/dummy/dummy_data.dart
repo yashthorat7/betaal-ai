@@ -79,7 +79,7 @@ class DummyData {
     Interruption(timeOffsetMin: 62, type: 'flicker', intensity: 0.8, durationSec: 10),
     Interruption(timeOffsetMin: 66, type: 'invert_colors', intensity: 1.0, durationSec: 20),
     Interruption(timeOffsetMin: 70, type: 'half_block', intensity: 0.7, durationSec: 20),
-    Interruption(timeOffsetMin: 74, type: 'sticky_touch', intensity: 0.5, durationSec: 25),
+    Interruption(timeOffsetMin: 74, type: 'earthquake', intensity: 0.9, durationSec: 25),
     Interruption(timeOffsetMin: 78, type: 'force_rotate', intensity: 1.0, durationSec: 30),
     Interruption(timeOffsetMin: 82, type: 'volume_zero', intensity: 1.0, durationSec: 60),
     Interruption(timeOffsetMin: 86, type: 'warning', intensity: 1.0, durationSec: 15),

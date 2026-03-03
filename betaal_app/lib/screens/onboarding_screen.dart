@@ -36,6 +36,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   bool _usagePerm = false;
   bool _overlayPerm = false;
   bool _writeSettingsPerm = false;
+  bool _deviceAdminPerm = false;
 
   int get _rehabDays {
     final days = _addictionLevel * 3 * (6 - _strictness);
@@ -69,11 +70,13 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     final usage = await UsageStatsService.hasUsagePermission();
     final overlay = await OverlayService.hasOverlayPermission();
     final writeSettings = await OverlayService.hasWriteSettingsPermission();
+    final deviceAdmin = await OverlayService.hasDeviceAdminPermission();
     if (mounted) {
       setState(() {
         _usagePerm = usage;
         _overlayPerm = overlay;
         _writeSettingsPerm = writeSettings;
+        _deviceAdminPerm = deviceAdmin;
       });
     }
   }
@@ -416,6 +419,20 @@ class _OnboardingScreenState extends State<OnboardingScreen>
             onTap: () async {
               if (!_writeSettingsPerm) {
                 await OverlayService.requestWriteSettingsPermission();
+              }
+            },
+          ),
+          const SizedBox(height: 12),
+
+          // Device Admin
+          _permissionTile(
+            icon: Icons.lock,
+            title: 'Device Admin',
+            subtitle: 'Lock your screen as a distraction interruption',
+            granted: _deviceAdminPerm,
+            onTap: () async {
+              if (!_deviceAdminPerm) {
+                await OverlayService.requestDeviceAdminPermission();
               }
             },
           ),

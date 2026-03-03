@@ -90,7 +90,6 @@ class _InterruptionPreferencesScreenState
       case 'static_noise': return Icons.tv;
       case 'delayed_touch': return Icons.slow_motion_video;
       case 'swapped_touch': return Icons.swap_horiz;
-      case 'sticky_touch': return Icons.drag_indicator;
       case 'vibrate_pulse': return Icons.vibration;
       case 'timer_overlay': return Icons.timer;
       case 'shame_counter': return Icons.countertops;
@@ -98,6 +97,12 @@ class _InterruptionPreferencesScreenState
       case 'force_rotate': return Icons.screen_rotation;
       case 'volume_zero': return Icons.volume_off;
       case 'close_app': return Icons.close;
+      case 'screen_shake': return Icons.vibration;
+      case 'progressive_dim': return Icons.brightness_2;
+      case 'glitch_effect': return Icons.broken_image;
+      case 'screen_shrink': return Icons.crop;
+      case 'random_popup': return Icons.chat_bubble;
+      case 'earthquake': return Icons.landslide;
       default: return Icons.extension;
     }
   }
@@ -123,7 +128,6 @@ class _InterruptionPreferencesScreenState
       case 'mistouch':
       case 'delayed_touch':
       case 'swapped_touch':
-      case 'sticky_touch':
         return const Color(0xFF3A86FF);
       case 'fly':
       case 'pixel_rain':
@@ -139,6 +143,17 @@ class _InterruptionPreferencesScreenState
         return const Color(0xFFEC4899);
       case 'quiz_gate':
         return _teal;
+      case 'screen_shake':
+      case 'earthquake':
+        return const Color(0xFFDC2626);
+      case 'progressive_dim':
+        return const Color(0xFF374151);
+      case 'glitch_effect':
+        return const Color(0xFFEF4444);
+      case 'screen_shrink':
+        return const Color(0xFF1F2937);
+      case 'random_popup':
+        return const Color(0xFFEA580C);
       default:
         return Colors.grey;
     }

@@ -25,6 +25,7 @@ class _DebugScreenState extends State<DebugScreen>
   bool _usagePerm = false;
   bool _overlayPerm = false;
   bool _writeSettingsPerm = false;
+  bool _deviceAdminPerm = false;
 
   // Real-time usage
   String _foregroundApp = '-';
@@ -56,6 +57,7 @@ class _DebugScreenState extends State<DebugScreen>
     final usage = await UsageStatsService.hasUsagePermission();
     final overlay = await OverlayService.hasOverlayPermission();
     final write = await OverlayService.hasWriteSettingsPermission();
+    final admin = await OverlayService.hasDeviceAdminPermission();
 
     String fg = '-';
     int st = 0;
@@ -69,6 +71,7 @@ class _DebugScreenState extends State<DebugScreen>
         _usagePerm = usage;
         _overlayPerm = overlay;
         _writeSettingsPerm = write;
+        _deviceAdminPerm = admin;
         _foregroundApp = fg.isNotEmpty ? fg : '-';
         _todayScreenTime = st;
       });
@@ -175,6 +178,7 @@ class _DebugScreenState extends State<DebugScreen>
                   _permRow('Usage Stats', _usagePerm, () => UsageStatsService.requestUsagePermission()),
                   _permRow('Overlay', _overlayPerm, () => OverlayService.requestOverlayPermission()),
                   _permRow('Write Settings', _writeSettingsPerm, () => OverlayService.requestWriteSettingsPermission()),
+                  _permRow('Device Admin', _deviceAdminPerm, () => OverlayService.requestDeviceAdminPermission()),
                   const SizedBox(height: 20),
 
                   // --- REAL-TIME USAGE ---

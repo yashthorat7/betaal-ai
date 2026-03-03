@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import '../dummy/dummy_data.dart';
 import '../models/badge_model.dart';
+import '../services/preferences_service.dart';
+import 'debug_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -19,9 +21,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
   static const _cardColor = Color(0xFFF9FAFB);
   static const _teal = Color(0xFF2DD4BF);
 
-  bool _dailySummary = true;
-  bool _milestoneAlerts = true;
-  bool _rehabReminders = false;
+  late bool _dailySummary;
+  late bool _milestoneAlerts;
+  late bool _rehabReminders;
+  int _versionTapCount = 0;
+  bool _devUnlocked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _dailySummary = PreferencesService.dailySummary;
+    _milestoneAlerts = PreferencesService.milestoneAlerts;
+    _rehabReminders = PreferencesService.rehabReminders;
+    _devUnlocked = PreferencesService.devUnlocked;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -201,9 +214,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ],
                         ),
                         const SizedBox(height: 12),
-                        _buildToggleRow('Daily Summary', _dailySummary, (v) => setState(() => _dailySummary = v)),
-                        _buildToggleRow('Milestone Alerts', _milestoneAlerts, (v) => setState(() => _milestoneAlerts = v)),
-                        _buildToggleRow('Rehab Reminders', _rehabReminders, (v) => setState(() => _rehabReminders = v)),
+                        _buildToggleRow('Daily Summary', _dailySummary, (v) {
+                          setState(() => _dailySummary = v);
+                          PreferencesService.setDailySummary(v);
+                        }),
+                        _buildToggleRow('Milestone Alerts', _milestoneAlerts, (v) {
+                          setState(() => _milestoneAlerts = v);
+                          PreferencesService.setMilestoneAlerts(v);
+                        }),
+                        _buildToggleRow('Rehab Reminders', _rehabReminders, (v) {
+                          setState(() => _rehabReminders = v);
+                          PreferencesService.setRehabReminders(v);
+                        }),
                       ],
                     ),
                   ),
@@ -248,62 +270,135 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   const SizedBox(height: 16),
 
-                  // --- APP VERSION ---
-                  _buildCard(
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade100,
-                            borderRadius: BorderRadius.circular(10),
+                  // --- APP VERSION (tap 7 times to unlock dev tools) ---
+                  GestureDetector(
+                    onTap: () {
+                      _versionTapCount++;
+                      if (_versionTapCount >= 7 && !_devUnlocked) {
+                        setState(() => _devUnlocked = true);
+                        PreferencesService.setDevUnlocked(true);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: const Text('Developer tools unlocked!'),
+                            backgroundColor: _teal,
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                           ),
-                          child: Icon(Icons.phone_android, color: Colors.grey.shade500, size: 20),
-                        ),
-                        const SizedBox(width: 12),
-                        const Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'App Version',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color: _charcoal,
+                        );
+                      } else if (!_devUnlocked && _versionTapCount >= 4) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('${7 - _versionTapCount} taps to unlock dev tools'),
+                            backgroundColor: Colors.grey.shade600,
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            duration: const Duration(seconds: 1),
+                          ),
+                        );
+                      }
+                    },
+                    child: _buildCard(
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade100,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Icon(Icons.phone_android, color: Colors.grey.shade500, size: 20),
+                          ),
+                          const SizedBox(width: 12),
+                          const Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'App Version',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: _charcoal,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: 2),
-                              Text(
-                                'v1.0.0 (Build 1)',
-                                style: TextStyle(fontSize: 12, color: _textMuted),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: _teal.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Text(
-                            'Latest',
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                              color: _teal,
+                                SizedBox(height: 2),
+                                Text(
+                                  'v1.0.0 (Build 1)',
+                                  style: TextStyle(fontSize: 12, color: _textMuted),
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                      ],
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: _teal.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Text(
+                              'Latest',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: _teal,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
+
+                  // --- DEV TOOLS (hidden, unlocked by tapping version 7 times) ---
+                  if (_devUnlocked)
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const DebugScreen()),
+                        );
+                      },
+                      child: _buildCard(
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFE17070).withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: const Icon(Icons.bug_report, color: Color(0xFFE17070), size: 20),
+                            ),
+                            const SizedBox(width: 12),
+                            const Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Developer Tools',
+                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: _charcoal),
+                                  ),
+                                  SizedBox(height: 2),
+                                  Text(
+                                    'Debug overlays, permissions & services',
+                                    style: TextStyle(fontSize: 12, color: _textMuted),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const Icon(Icons.chevron_right, color: _textMuted, size: 20),
+                          ],
+                        ),
+                      ),
+                    ),
+                  if (_devUnlocked) const SizedBox(height: 16),
 
                   // --- SIGN OUT ---
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async {
+                      await PreferencesService.clearAll();
+                      if (!context.mounted) return;
                       auth.signOut();
                       Navigator.pushReplacementNamed(context, '/signin');
                     },

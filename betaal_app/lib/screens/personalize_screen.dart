@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../core/constants.dart';
 import '../services/stealth_service.dart';
+import '../services/preferences_service.dart';
 import 'interruption_preferences_screen.dart';
 
 class PersonalizeScreen extends StatefulWidget {
@@ -18,9 +19,17 @@ class _PersonalizeScreenState extends State<PersonalizeScreen> {
   static const _borderColor = Color(0xFFE5E7EB);
   static const _cardColor = Color(0xFFF9FAFB);
 
-  String _stealthMode = 'default';
-  int _addictionLevel = 8;
-  int _strictness = 3;
+  late String _stealthMode;
+  late int _addictionLevel;
+  late int _strictness;
+
+  @override
+  void initState() {
+    super.initState();
+    _stealthMode = PreferencesService.stealthMode;
+    _addictionLevel = PreferencesService.addictionLevel;
+    _strictness = PreferencesService.strictness;
+  }
 
   int get _rehabDays {
     final days = _addictionLevel * 3 * (6 - _strictness);
@@ -124,6 +133,7 @@ class _PersonalizeScreenState extends State<PersonalizeScreen> {
                               onChanged: (v) {
                                 if (v != null) {
                                   setState(() => _stealthMode = v);
+                                  PreferencesService.setStealthMode(v);
                                   StealthService.setStealthMode(v);
                                 }
                               },
@@ -170,7 +180,10 @@ class _PersonalizeScreenState extends State<PersonalizeScreen> {
                           value: _addictionLevel,
                           min: 1,
                           max: 10,
-                          onChanged: (v) => setState(() => _addictionLevel = v),
+                          onChanged: (v) {
+                            setState(() => _addictionLevel = v);
+                            PreferencesService.setAddictionLevel(v);
+                          },
                         ),
                         const SizedBox(height: 16),
 
@@ -180,7 +193,10 @@ class _PersonalizeScreenState extends State<PersonalizeScreen> {
                           value: _strictness,
                           min: 1,
                           max: 5,
-                          onChanged: (v) => setState(() => _strictness = v),
+                          onChanged: (v) {
+                            setState(() => _strictness = v);
+                            PreferencesService.setStrictness(v);
+                          },
                         ),
                         const SizedBox(height: 16),
 

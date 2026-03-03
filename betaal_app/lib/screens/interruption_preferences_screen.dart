@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../core/constants.dart';
+import '../services/preferences_service.dart';
+import '../services/overlay_service.dart';
 
 class InterruptionPreferencesScreen extends StatefulWidget {
   const InterruptionPreferencesScreen({super.key});
@@ -18,24 +20,21 @@ class _InterruptionPreferencesScreenState
   static const _borderColor = Color(0xFFE5E7EB);
   static const _cardColor = Color(0xFFF9FAFB);
 
-  // Track enabled state for each interruption type
-  // In production, load from API / local storage
   late final Map<String, bool> _enabled;
+  String? _testingType; // currently previewing type
 
   @override
   void initState() {
     super.initState();
-    // Default: all enabled. In production, load saved preferences.
-    _enabled = {
-      for (final key in AppConstants.interruptionTypes.keys) key: true,
-    };
+    // Load saved preferences (falls back to all-enabled if nothing saved)
+    _enabled = PreferencesService.getInterruptionPrefs();
   }
 
   int get _enabledCount => _enabled.values.where((v) => v).length;
 
-  void _savePreferences() {
-    // TODO: Save to API or local storage when backend is ready
-    // For now, just pop back
+  Future<void> _savePreferences() async {
+    await PreferencesService.saveAllInterruptionPrefs(_enabled);
+    if (!mounted) return;
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -46,6 +45,29 @@ class _InterruptionPreferencesScreenState
         duration: const Duration(seconds: 2),
       ),
     );
+  }
+
+  Future<void> _previewType(String typeKey) async {
+    setState(() => _testingType = typeKey);
+    try {
+      await OverlayService.showOverlay(type: typeKey);
+      // Auto-dismiss after 5 seconds
+      await Future.delayed(const Duration(seconds: 5));
+      await OverlayService.hideOverlay();
+    } catch (_) {
+      // Permission not granted or service error
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Grant overlay permission first'),
+            backgroundColor: Colors.red.shade400,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          ),
+        );
+      }
+    }
+    if (mounted) setState(() => _testingType = null);
   }
 
   IconData _getIconForType(String key) {
@@ -211,6 +233,7 @@ class _InterruptionPreferencesScreenState
                   final enabled = _enabled[key] ?? true;
                   final color = _getColorForType(key);
                   final icon = _getIconForType(key);
+                  final isTesting = _testingType == key;
 
                   return Container(
                     margin: const EdgeInsets.only(bottom: 10),
@@ -219,7 +242,12 @@ class _InterruptionPreferencesScreenState
                       color: enabled ? _cardColor : Colors.white,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: enabled ? color.withOpacity(0.2) : _borderColor,
+                        color: isTesting
+                            ? _teal
+                            : enabled
+                                ? color.withOpacity(0.2)
+                                : _borderColor,
+                        width: isTesting ? 2 : 1,
                       ),
                       boxShadow: [
                         BoxShadow(
@@ -268,7 +296,44 @@ class _InterruptionPreferencesScreenState
                             ],
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        // Preview button
+                        GestureDetector(
+                          onTap: _testingType != null
+                              ? null
+                              : () => _previewType(key),
+                          child: Container(
+                            width: 32,
+                            height: 32,
+                            margin: const EdgeInsets.only(right: 8),
+                            decoration: BoxDecoration(
+                              color: isTesting
+                                  ? _teal.withOpacity(0.15)
+                                  : Colors.grey.shade100,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: isTesting
+                                ? const SizedBox(
+                                    width: 16,
+                                    height: 16,
+                                    child: Center(
+                                      child: SizedBox(
+                                        width: 14,
+                                        height: 14,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          color: _teal,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : Icon(
+                                    Icons.play_arrow,
+                                    size: 16,
+                                    color: Colors.grey.shade500,
+                                  ),
+                          ),
+                        ),
+                        // Toggle switch
                         SizedBox(
                           height: 28,
                           child: Switch(

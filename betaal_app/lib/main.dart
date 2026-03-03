@@ -11,8 +11,12 @@ import 'screens/home_screen.dart';
 import 'screens/report_screen.dart';
 import 'screens/personalize_screen.dart';
 import 'screens/settings_screen.dart';
+import 'services/preferences_service.dart';
+import 'services/usage_stats_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await PreferencesService.init();
   runApp(const BetaalApp());
 }
 
@@ -87,13 +91,16 @@ class _MainShellState extends State<MainShell> {
   @override
   void initState() {
     super.initState();
-    // Load dummy data into providers
+    // Load dummy data into providers (will be replaced with real API calls)
     final usage = context.read<UsageProvider>();
     final rehab = context.read<RehabProvider>();
     final chat = context.read<ChatProvider>();
     usage.loadDummyData();
     rehab.loadDummyData();
     chat.loadInitialMessages();
+
+    // Start background usage tracking service
+    UsageStatsService.startTracking();
   }
 
   @override

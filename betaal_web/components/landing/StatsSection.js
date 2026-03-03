@@ -1,10 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const STATS = [
   { value: 10000, suffix: '+', label: 'Active Users' },
@@ -19,21 +15,62 @@ export default function StatsSection() {
   const [scale, setScale] = useState(1);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      nums.current.forEach((el, i) => {
+    let mounted = true;
+    const frameIds = [];
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateNumbers();
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    if (ref.current) observer.observe(ref.current);
+
+    const animateNumbers = () => {
+      STATS.forEach((s, i) => {
+        const el = nums.current[i];
         if (!el) return;
-        const obj = { val: 0 };
-        gsap.to(obj, {
-          val: STATS[i].value, duration: 2.4, ease: 'power3.out',
-          scrollTrigger: { trigger: ref.current, start: 'top 80%', toggleActions: 'play none none none' },
-          onUpdate: () => { el.textContent = Math.floor(obj.val).toLocaleString() + STATS[i].suffix; },
-        });
+        
+        const end = s.value;
+        const duration = 2000;
+        const startTime = performance.now();
+
+        const updateCount = (currentTime) => {
+          if (!mounted) return;
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const easeProgress = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+          
+          const currentVal = Math.floor(easeProgress * end);
+          el.textContent = currentVal.toLocaleString() + s.suffix;
+
+          if (progress < 1) {
+            frameIds.push(requestAnimationFrame(updateCount));
+          }
+        };
+
+        frameIds.push(requestAnimationFrame(updateCount));
       });
-      gsap.to({}, {
-        scrollTrigger: { trigger: ref.current, start: 'top bottom', end: 'bottom top', scrub: 1.5, onUpdate: (s) => setScale(1 + s.progress * 0.1) },
-      });
-    }, ref);
-    return () => ctx.revert();
+    };
+
+    const handleScroll = () => {
+      if (!ref.current || !mounted) return;
+      const rect = ref.current.getBoundingClientRect();
+      const winH = window.innerHeight;
+      const progress = Math.min(Math.max((winH - rect.top) / (winH + rect.height), 0), 1);
+      setScale(1 + progress * 0.1);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      mounted = false;
+      frameIds.forEach(id => cancelAnimationFrame(id));
+      observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   return (

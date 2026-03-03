@@ -15,7 +15,7 @@
   ```
 - [x] Install dependencies:
   ```bash
-  npm install firebase recharts zustand framer-motion axios lucide-react next-auth
+  npm install firebase recharts zustand axios lucide-react next-auth
   ```
 - [x] Create `.env.local` from template (see `tech_stack.md`)
 - [x] Verify: `npm run dev` works at `localhost:3000`

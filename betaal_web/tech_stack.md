@@ -8,7 +8,7 @@
 | Language | JavaScript + React | Component-based UI, rapid development |
 | Styling | Tailwind CSS | Utility-first, rapid iteration, zero unused CSS |
 | State Management | Zustand | Lightweight, zero-boilerplate |
-| Animations | Framer Motion | Subtle scroll reveals, hover effects |
+| Animations | Vanilla CSS / JS | Native performance, zero dependencies |
 
 ## Data & Auth
 
@@ -43,7 +43,6 @@
     "react-dom": "^18.0.0",
     "tailwindcss": "^3.4.0",
     "zustand": "^4.4.0",
-    "framer-motion": "^10.0.0",
     "recharts": "^2.8.0",
     "firebase": "^10.7.0",
     "next-auth": "^4.24.0",

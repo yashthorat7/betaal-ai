@@ -1,46 +1,79 @@
 'use client';
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
+
+import { 
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer 
 } from 'recharts';
 import { useIsClient } from '@/lib/hooks/useIsClient';
+import DashboardCard from './DashboardCard';
+import { History } from 'lucide-react';
+
+function CustomTooltip({ active, payload, label }) {
+  if (!active || !payload?.length) return null;
+  return (
+    <div className="bg-[#1C1C1C] text-white px-2 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest shadow-2xl">
+      <span className="text-white/40 mr-2">D{label}</span>
+      <span>{payload[0].value}M</span>
+    </div>
+  );
+}
 
 export default function WeeklyChart({ data = [] }) {
   const isC = useIsClient();
 
-  if (!isC)
+  if (!isC) {
     return (
-      <div className="card-pro label-pro flex h-96 animate-pulse items-center justify-center italic">
-        Loading Timeline...
-      </div>
+      <DashboardCard title="Screen Time" subtitle="Trend Analysis" icon={History}>
+        <div className="h-64 flex items-center justify-center animate-pulse">
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#1C1C1C]/10">Loading Data...</span>
+        </div>
+      </DashboardCard>
     );
+  }
 
   return (
-    <div className="card-pro flex h-96 flex-col">
-      <h3 className="heading-md mb-12">Weekly History</h3>
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-          <XAxis dataKey="name" tick={{ fontSize: 10, fontWeight: 900 }} stroke="#e5e5e5" />
-          <YAxis tick={{ fontSize: 10, fontWeight: 900 }} stroke="#e5e5e5" />
-          <Tooltip
-            contentStyle={{ background: '#000', color: '#fff', border: 'none', borderRadius: '0' }}
-          />
-          <Line
-            type="monotone"
-            dataKey="mins"
-            stroke="#000"
-            strokeWidth={4}
-            dot={{ r: 4, fill: '#000' }}
-            activeDot={{ r: 6, strokeWidth: 0 }}
-          />
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
+    <DashboardCard title="Screen Time" subtitle="Weekly Trend Analysis" icon={History}>
+      <div className="h-64 mt-6">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={data}>
+            <defs>
+              <linearGradient id="gradientFill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#1C1C1C" stopOpacity={0.07} />
+                <stop offset="100%" stopColor="#1C1C1C" stopOpacity={0} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="#f5f5f5" />
+            <XAxis
+              dataKey="name"
+              tick={{ fontSize: 9, fontWeight: 900, fill: '#1C1C1C', opacity: 0.1 }}
+              stroke="#f0f0f0"
+              axisLine={false}
+              tickLine={false}
+              dy={10}
+            />
+            <YAxis
+              tick={{ fontSize: 9, fontWeight: 900, fill: '#1C1C1C', opacity: 0.1 }}
+              stroke="#f0f0f0"
+              axisLine={false}
+              tickLine={false}
+              dx={-10}
+            />
+            <Tooltip 
+              content={<CustomTooltip />} 
+              cursor={{ stroke: '#1C1C1C', strokeWidth: 1, strokeDasharray: '4 4' }}
+              isAnimationActive={false}
+            />
+            <Area
+              type="monotone"
+              dataKey="mins"
+              stroke="#1C1C1C"
+              strokeWidth={2}
+              fill="url(#gradientFill)"
+              dot={false}
+              activeDot={{ r: 3, fill: '#1C1C1C', strokeWidth: 0 }}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
+    </DashboardCard>
   );
 }

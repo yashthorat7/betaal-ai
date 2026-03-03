@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSession, signIn, signOut } from 'next-auth/react';
-import { motion } from 'framer-motion';
 
 export default function Navbar() {
   const { data: session } = useSession();
@@ -39,10 +38,11 @@ export default function Navbar() {
   ];
 
   return (
-    <motion.nav
-      initial={{ y: 0 }}
-      animate={{ y: isVisible ? 0 : -100 }}
-      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+    <nav
+      style={{
+        transform: isVisible ? 'translateY(0)' : 'translateY(-100%)',
+        transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)'
+      }}
       className="fixed top-0 left-0 right-0 z-[100] border-b border-[#1C1C1C]/10 bg-[#FAFAFA]/80 backdrop-blur-xl"
     >
       <div className="container-pro h-20 flex items-center justify-between relative">
@@ -84,9 +84,9 @@ export default function Navbar() {
               </div>
               <div className="h-10 w-10 rounded-full border border-[#1C1C1C]/10 overflow-hidden bg-white flex items-center justify-center ring-2 ring-transparent hover:ring-[#1C1C1C]/10 transition-all cursor-pointer">
                  {session.user.image ? (
-                   <img src={session.user.image} alt={session.user.name} className="h-full w-full object-cover" />
+                    <img src={session.user.image} alt={session.user.name} className="h-full w-full object-cover" />
                  ) : (
-                   <span className="text-xs font-black">{session.user.name?.[0] || 'U'}</span>
+                    <span className="text-xs font-black">{session.user.name?.[0] || 'U'}</span>
                  )}
               </div>
             </div>
@@ -100,6 +100,6 @@ export default function Navbar() {
           )}
         </div>
       </div>
-    </motion.nav>
+    </nav>
   );
 }

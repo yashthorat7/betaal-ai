@@ -9,7 +9,7 @@ import 'screens/sign_in_screen.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/report_screen.dart';
-import 'screens/ai_screen.dart';
+import 'screens/personalize_screen.dart';
 import 'screens/settings_screen.dart';
 
 void main() {
@@ -80,7 +80,7 @@ class _MainShellState extends State<MainShell> {
   final _screens = const [
     HomeScreen(),
     ReportScreen(),
-    AiScreen(),
+    PersonalizeScreen(),
     SettingsScreen(),
   ];
 
@@ -109,7 +109,7 @@ class _MainShellState extends State<MainShell> {
         destinations: const [
           NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
           NavigationDestination(icon: Icon(Icons.bar_chart), label: 'Report'),
-          NavigationDestination(icon: Icon(Icons.smart_toy), label: 'AI'),
+          NavigationDestination(icon: Icon(Icons.tune), label: 'Personalize'),
           NavigationDestination(icon: Icon(Icons.settings), label: 'Settings'),
         ],
       ),

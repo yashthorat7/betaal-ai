@@ -66,15 +66,7 @@ class _ReportScreenState extends State<ReportScreen> {
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
               child: Row(
                 children: [
-                  GestureDetector(
-                    onTap: () => Navigator.maybePop(context),
-                    child: Container(
-                      width: 40,
-                      height: 40,
-                      alignment: Alignment.center,
-                      child: const Icon(Icons.arrow_back, color: _textMain, size: 22),
-                    ),
-                  ),
+                  const SizedBox(width: 40),
                   const Expanded(
                     child: Text(
                       'REPORT',
@@ -611,6 +603,54 @@ class _ReportScreenState extends State<ReportScreen> {
 
     return LineChart(
       LineChartData(
+        lineTouchData: LineTouchData(
+          enabled: true,
+          // Single tap to select, stays until tap elsewhere
+          touchTooltipData: LineTouchTooltipData(
+            getTooltipColor: (_) => Colors.white,
+            tooltipBorder: const BorderSide(color: _borderColor, width: 1),
+            tooltipRoundedRadius: 8,
+            tooltipPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            getTooltipItems: (touchedSpots) {
+              return touchedSpots.map((spot) {
+                final mins = spot.y.round();
+                final h = mins ~/ 60;
+                final m = mins % 60;
+                final text = h > 0 ? '${h}h ${m}m' : '${m}m';
+                return LineTooltipItem(
+                  text,
+                  const TextStyle(
+                    color: _textMain,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 13,
+                  ),
+                );
+              }).toList();
+            },
+          ),
+          // Vertical dashed indicator line
+          getTouchedSpotIndicator: (barData, spotIndexes) {
+            return spotIndexes.map((index) {
+              return TouchedSpotIndicatorData(
+                FlLine(
+                  color: Colors.grey.shade400,
+                  strokeWidth: 1,
+                  dashArray: [4, 4],
+                ),
+                FlDotData(
+                  show: true,
+                  getDotPainter: (_, __, ___, ____) => FlDotCirclePainter(
+                    radius: 5,
+                    color: _teal,
+                    strokeWidth: 2,
+                    strokeColor: Colors.white,
+                  ),
+                ),
+              );
+            }).toList();
+          },
+          handleBuiltInTouches: true,
+        ),
         gridData: FlGridData(
           show: true,
           drawVerticalLine: false,

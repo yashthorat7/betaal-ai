@@ -1,0 +1,267 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+/* ── Design Tokens — matches betaal_web landing ─────────── */
+:root {
+    --bg:         #FAFAFA;
+    --surface:    #F2F2F2;
+    --surface-2:  #EAEAEA;
+    --border:     #E0E0E0;
+    --border-dark:#D0D0D0;
+    --text:       #1C1C1C;
+    --text-muted: #6B6B6B;
+    --ease:       cubic-bezier(0.16, 1, 0.3, 1);
+    --radius-sm:  10px;
+    --radius-md:  16px;
+    --radius-lg:  20px;
+    /* accent gradient — pink → cyan → purple → blue */
+    --accent-gradient: linear-gradient(135deg, #ff2d55, #af52de, #5ac8fa, #007aff);
+    --accent-solid:    #af52de;
+    --danger:     #ff2d55;
+}
+
+/* ── Reset & Base ──────────────────────────────────────── */
+* { box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    width: 340px;
+    margin: 0;
+    padding: 20px;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.5;
+    overflow: hidden;
+}
+
+/* ── Layout ────────────────────────────────────────────── */
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* ── Progress Ring ─────────────────────────────────────── */
+.progress-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.ring-container {
+    position: relative;
+    width: 148px;
+    height: 148px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.progress-ring { transform: rotate(-90deg); }
+
+.progress-ring__background { stroke: var(--surface-2); }
+
+.progress-ring__circle {
+    stroke: url(#ring-gradient);
+    transition: stroke-dashoffset 1s var(--ease);
+}
+
+.time-display {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+}
+
+#remaining-time {
+    font-size: 38px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -2px;
+    color: var(--text);
+}
+
+.limit-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.status-text { text-align: center; }
+
+.main-status {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.sub-status {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+/* ── Divider ───────────────────────────────────────────── */
+.divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+}
+
+/* ── Sites Section ─────────────────────────────────────── */
+#domain-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.site-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 12px;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, #f2f2f2, #eaeaea, #f0f0f0);
+    border: 1px solid var(--border);
+    transition: transform 250ms var(--ease), box-shadow 250ms var(--ease);
+}
+
+.site-row:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(28, 28, 28, 0.07);
+}
+
+.site-info {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    overflow: hidden;
+}
+
+.favicon {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+.domain-name {
+    font-weight: 600;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 178px;
+    color: var(--text);
+}
+
+.site-time {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ── Footer ────────────────────────────────────────────── */
+.footer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+/* Base nav button — same as betaal_web CTA */
+.nav-button {
+    flex: 1;
+    background: var(--bg);
+    color: var(--text);
+    border: 1.5px solid var(--text);
+    border-radius: 30px;
+    padding: 10px 8px;
+    font-size: 12px;
+    font-weight: 800;
+    font-family: inherit;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 300ms var(--ease), box-shadow 300ms var(--ease), background 200ms var(--ease);
+}
+
+.nav-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(28, 28, 28, 0.12);
+}
+
+/* Dashboard = gradient filled */
+#dashboard-btn {
+    background: var(--text);
+    color: #fff;
+    border-color: var(--text);
+}
+
+#dashboard-btn:hover {
+    background: #333;
+}
+
+/* ── Extra Time ────────────────────────────────────────── */
+.text-button {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 700;
+    font-family: inherit;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: underline;
+    transition: color 200ms var(--ease);
+}
+
+.text-button:hover { color: var(--text); }
+
+.extra-options {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.extra-options button {
+    background: var(--bg);
+    color: var(--text);
+    border: 1.5px solid var(--text);
+    padding: 7px 18px;
+    border-radius: 30px;
+    font-size: 11px;
+    font-weight: 800;
+    font-family: inherit;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 200ms var(--ease), color 200ms var(--ease), transform 200ms var(--ease);
+}
+
+.extra-options button:hover {
+    background: var(--text);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+/* ── Utility ───────────────────────────────────────────── */
+.hidden { display: none !important; }

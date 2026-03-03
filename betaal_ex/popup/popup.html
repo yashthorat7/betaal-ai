@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Betaal AI</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+
+        <!-- Usage Ring -->
+        <div class="progress-section">
+            <div class="ring-container">
+                <svg class="progress-ring" width="148" height="148" viewBox="0 0 148 148">
+                    <defs>
+                        <linearGradient id="ring-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%"   stop-color="#ff2d55"/>
+                            <stop offset="40%"  stop-color="#af52de"/>
+                            <stop offset="70%"  stop-color="#5ac8fa"/>
+                            <stop offset="100%" stop-color="#007aff"/>
+                        </linearGradient>
+                        <linearGradient id="ring-danger" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%"   stop-color="#ff2d55"/>
+                            <stop offset="100%" stop-color="#ff6b6b"/>
+                        </linearGradient>
+                    </defs>
+                    <circle class="progress-ring__background" stroke-width="7" fill="transparent" r="66" cx="74" cy="74"/>
+                    <circle class="progress-ring__circle"     stroke-width="7" stroke-linecap="round" fill="transparent" r="66" cx="74" cy="74"/>
+                </svg>
+                <div class="time-display">
+                    <span id="remaining-time">--</span>
+                    <span class="limit-label">of <span id="daily-limit">--</span> min</span>
+                </div>
+            </div>
+            <div class="status-text">
+                <div class="main-status">Time Remaining</div>
+                <div id="usage-summary" class="sub-status">Loading…</div>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- Top Sites -->
+        <ul id="domain-list"></ul>
+
+        <hr class="divider">
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="nav-buttons">
+                <button id="dashboard-btn" class="nav-button">Dashboard</button>
+                <button id="settings-btn"  class="nav-button">Settings</button>
+            </div>
+
+            <button id="add-time-btn" class="text-button">+ Extra Time</button>
+
+            <div id="extra-options" class="extra-options hidden">
+                <button data-mins="5">+5 min</button>
+                <button data-mins="10">+10 min</button>
+            </div>
+        </div>
+
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html>

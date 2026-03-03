@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Betaal AI — Settings</title>
+    <link rel="stylesheet" href="options.css">
+</head>
+<body>
+    <div class="options-card">
+
+        <!-- Header -->
+        <header class="card-header">
+            <h1 class="title">Settings</h1>
+            <div id="account-status" class="account-badge">Guest</div>
+        </header>
+
+        <!-- Account -->
+        <section class="setting-group">
+            <label class="group-label">Account</label>
+            <div class="setting-item">
+                <p class="description">Link your Betaal AI account to sync settings and analytics.</p>
+                <div class="input-wrapper">
+                    <input type="text" id="user-id" placeholder="User ID or email">
+                </div>
+            </div>
+        </section>
+
+        <!-- Usage Control -->
+        <section class="setting-group">
+            <label class="group-label">Usage Control</label>
+            <div class="setting-item flex-row">
+                <div class="info">
+                    <label class="label">Daily limit</label>
+                    <p class="description">Minutes allowed before focus mode starts.</p>
+                </div>
+                <div class="input-wrapper">
+                    <input type="number" id="daily-limit" min="2" max="480" step="1">
+                    <span class="unit">min</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interruption Types -->
+        <section class="setting-group">
+            <label class="group-label">Interruption Types</label>
+
+            <div class="setting-item flex-row">
+                <div class="info">
+                    <label class="label">Screen Blur</label>
+                    <p class="description">Softens the page to break your focus.</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="toggle-blur" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-item flex-row">
+                <div class="info">
+                    <label class="label">Black Flash</label>
+                    <p class="description">A quick natural flicker.</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="toggle-flash" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-item flex-row">
+                <div class="info">
+                    <label class="label">Full Blackout</label>
+                    <p class="description">A total focus reset.</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="toggle-black" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-item flex-row">
+                <div class="info">
+                    <label class="label">Scroll Nudge</label>
+                    <p class="description">Moves your view position subtly.</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="toggle-drift" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </section>
+
+        <!-- Whitelist -->
+        <section class="setting-group">
+            <label class="group-label">Whitelist</label>
+            <div class="setting-item">
+                <p class="description">Sites below won't be tracked.</p>
+                <textarea id="whitelist" rows="3" placeholder="docs.google.com, notion.so"></textarea>
+                <p class="hint">Comma-separated hostnames</p>
+            </div>
+        </section>
+
+        <!-- Activity Log -->
+        <section class="setting-group">
+            <label class="group-label">Activity Log</label>
+            <div class="setting-item">
+                <p class="description">Recent interruptions triggered by Betaal AI.</p>
+                <div id="log-container" class="log-container">
+                    <div class="empty-log">No recent activity</div>
+                </div>
+                <button id="clear-logs-btn" class="text-button">Clear Logs</button>
+            </div>
+        </section>
+
+        <!-- Save -->
+        <div class="actions">
+            <button id="save-btn" class="primary-button">Save Settings</button>
+            <div id="save-status" class="status-msg"></div>
+        </div>
+
+    </div>
+    <script src="options.js"></script>
+</body>
+</html>

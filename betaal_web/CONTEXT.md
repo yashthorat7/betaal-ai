@@ -1,4 +1,4 @@
-# Context — Betaal AI Website (`betaal_web`)
+# Context . Betaal AI Website (`betaal_web`)
 
 ## Project Status
 This is a **Phase 3** prototype (B&W layout, dummy data). 

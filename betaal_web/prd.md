@@ -1,11 +1,11 @@
-# Website PRD — Betaal AI
+# Website PRD . Betaal AI
 
 ## 1. Overview
 
 The website is the **public-facing portal** for Betaal AI. It serves two purposes:
 
-1. **Landing Page** — Explain the product, impress judges, provide download links
-2. **Dashboard** — Logged-in users/parents monitor screen time stats and rehab progress
+1. **Landing Page** . Explain the product, impress judges, provide download links
+2. **Dashboard** . Logged-in users/parents monitor screen time stats and rehab progress
 
 Plus two supporting pages: Resources and About.
 
@@ -111,10 +111,10 @@ Each page needs proper `<title>` and `<meta name="description">` tags:
 
 | Page | Title | Description |
 |------|-------|-------------|
-| Landing | Betaal AI — Digital Rehabilitation for Screen Addiction | AI-powered app that helps overcome screen addiction through gradual interventions |
-| Dashboard | Dashboard — Betaal AI | Monitor screen time and track rehabilitation progress |
-| Resources | Resources — Betaal AI | Guides, articles, and tools for managing screen time |
-| About | About Us — Betaal AI | Meet the team and learn about our mission |
+| Landing | Betaal AI . Digital Rehabilitation for Screen Addiction | AI-powered app that helps overcome screen addiction through gradual interventions |
+| Dashboard | Dashboard . Betaal AI | Monitor screen time and track rehabilitation progress |
+| Resources | Resources . Betaal AI | Guides, articles, and tools for managing screen time |
+| About | About Us . Betaal AI | Meet the team and learn about our mission |
 
 Open Graph tags for social sharing previews.
 

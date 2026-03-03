@@ -1,46 +1,41 @@
-import TeamGrid from '@/components/about/TeamGrid';
+'use client';
+
+import { useState, useCallback } from 'react';
+import MissionHero from '@/components/about/MissionHero';
+import TeamSection from '@/components/about/TeamSection';
 import ContactForm from '@/components/about/ContactForm';
 
-export const metadata = {
-  title: 'About Us — Betaal AI',
-  description: 'Meet the team and our mission.',
-};
-
 export default function AboutPage() {
+  const [mouse, setMouse] = useState({ x: -999, y: -999 });
+
+  const handleMouseMove = useCallback((e) => {
+    setMouse({ x: e.clientX, y: e.clientY + window.scrollY });
+  }, []);
+
   return (
-    <div className="container-pro py-24">
-      <header className="mb-24 text-center">
-        <h1 className="heading-xl italic">About</h1>
-        <p className="label-pro mt-8 tracking-[1em] italic">The Founders</p>
-      </header>
+    <div
+      onMouseMove={handleMouseMove}
+      className="relative min-h-screen overflow-x-hidden bg-white text-[#1C1C1C]"
+    >
+      {/* Grid reveal background */}
+      <div
+        className="absolute inset-0 pointer-events-none z-0"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(0,0,0,0.07) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0,0,0,0.07) 1px, transparent 1px)
+          `,
+          backgroundSize: '40px 40px',
+          maskImage: `radial-gradient(circle 350px at ${mouse.x}px ${mouse.y}px, black 0%, transparent 100%)`,
+          WebkitMaskImage: `radial-gradient(circle 350px at ${mouse.x}px ${mouse.y}px, black 0%, transparent 100%)`,
+        }}
+      />
 
-      <section className="section-pad border-border bg-muted/30 border-y text-center italic">
-        <h2 className="heading-xl leading-tight">
-          "A healthier relationship between humanity and technology."
-        </h2>
-      </section>
-
-      <div className="grid items-center gap-24 py-24 md:grid-cols-2">
-        <div className="space-y-12">
-          <h2 className="heading-lg italic">Our Approach</h2>
-          <div className="text-pro space-y-8 italic">
-            <p>
-              We move away from 'block or allow' binary models, creating nuanced psychological
-              interventions for digital health.
-            </p>
-            <p className="border-foreground border-l-4 pl-10 leading-loose">
-              By using real-time behavioral data, we empower users without the anxiety of total
-              disconnect.
-            </p>
-          </div>
-        </div>
-        <div className="border-border label-pro flex h-96 items-center justify-center border border-dashed italic">
-          [VISUAL: HUMAN CONNECTION]
-        </div>
+      <div className="relative z-1">
+        <MissionHero />
+        <TeamSection />
+        <ContactForm />
       </div>
-
-      <TeamGrid />
-      <ContactForm />
     </div>
   );
 }

@@ -1,45 +1,97 @@
 'use client';
-import { useState } from 'react';
+
+import { useState, useEffect, useRef } from 'react';
+import { Send, CheckCircle } from 'lucide-react';
 
 export default function ContactForm() {
-  const [ok, setOk] = useState(false);
-  const send = (e) => {
+  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [submitted, setSubmitted] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) setVisible(true); },
+      { threshold: 0.1 }
+    );
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setOk(true);
-    setTimeout(() => setOk(false), 3000);
+    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) return;
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 4000);
+    setForm({ name: '', email: '', message: '' });
   };
 
+  const inputClass =
+    'w-full bg-[#FAFAFA] border border-[#e0e0e0] rounded-2xl px-6 py-4 text-base font-bold text-[#1C1C1C] tracking-tight placeholder:text-[#1C1C1C]/25 outline-none transition-all duration-300 focus:border-[#1C1C1C] focus:shadow-lg';
+
   return (
-    <div className="section-pad container-pro">
-      <div className="border-border mx-auto max-w-xl border p-12 transition-all duration-500 hover:shadow-[16px_16px_0px_0px_#000]">
-        <h2 className="heading-lg mb-12 text-center italic">Contact</h2>
-        {ok ? (
-          <div className="bg-foreground text-background label-pro p-8 text-center italic">
-            Message Sent!
-          </div>
-        ) : (
-          <form onSubmit={send} className="space-y-8">
-            {['Name', 'Email', 'Message'].map((f) => (
-              <div key={f} className="flex flex-col gap-2">
-                <label className="label-pro">{f}</label>
-                {f === 'Message' ? (
-                  <textarea
-                    required
-                    className="border-border focus:border-foreground h-32 w-full border-b bg-transparent p-2 transition-colors focus:outline-none"
-                  />
-                ) : (
-                  <input
-                    type={f === 'Email' ? 'email' : 'text'}
-                    required
-                    className="border-border focus:border-foreground w-full border-b bg-transparent p-2 transition-colors focus:outline-none"
-                  />
-                )}
-              </div>
-            ))}
-            <button className="btn-pro btn-solid w-full">Send Message</button>
-          </form>
-        )}
+    <section ref={ref} className="py-32 bg-white border-t border-[#f0f0f0]">
+      <div className="container-pro max-w-[600px] text-[#1C1C1C]">
+        {/* Header */}
+        <div
+          className={`text-center mb-24 transition-all duration-700 ease-out ${
+            visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+          }`}
+        >
+          <h2 className="heading-xl">Get In Touch</h2>
+        </div>
+
+        {/* Form */}
+        <form
+          onSubmit={handleSubmit}
+          className={`space-y-5 transition-all duration-700 ease-out ${
+            visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+          }`}
+          style={{ transitionDelay: '0.15s' }}
+        >
+          <input
+            type="text"
+            placeholder="Your Name"
+            value={form.name}
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
+            className={inputClass}
+          />
+          <input
+            type="email"
+            placeholder="Your Email"
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            className={inputClass}
+          />
+          <textarea
+            placeholder="Your Message"
+            rows={5}
+            value={form.message}
+            onChange={(e) => setForm({ ...form, message: e.target.value })}
+            className={`${inputClass} resize-none`}
+          />
+
+          <button
+            type="submit"
+            className="w-full btn-pro btn-solid rounded-2xl gap-3 text-sm py-5 mt-2"
+          >
+            <Send size={16} />
+            Send Message
+          </button>
+        </form>
+
+        {/* Success toast */}
+        <div
+          className={`fixed bottom-8 right-8 flex items-center gap-3 bg-[#1C1C1C] text-white px-6 py-4 rounded-2xl shadow-2xl transition-all duration-500 ease-out z-50 ${
+            submitted
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-4 pointer-events-none'
+          }`}
+        >
+          <CheckCircle size={18} className="text-[#34c759]" />
+          <span className="text-sm font-bold">Message sent successfully!</span>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

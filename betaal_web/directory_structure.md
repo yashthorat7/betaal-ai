@@ -1,4 +1,4 @@
-# Website Directory Structure — Betaal AI
+# Website Directory Structure . Betaal AI
 
 ```
 web-dashboard/
@@ -9,7 +9,7 @@ web-dashboard/
 │   ├── globals.css                   # Global styles + Tailwind imports
 │   │
 │   ├── dashboard/
-│   │   └── page.jsx                  # Dashboard (/dashboard) — auth required
+│   │   └── page.jsx                  # Dashboard (/dashboard) . auth required
 │   │
 │   ├── resources/
 │   │   └── page.jsx                  # Resources page (/resources)

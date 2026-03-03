@@ -1,4 +1,4 @@
-# Progress — Website
+# Progress . Website
 
 > Update this file after every work session.
 
@@ -14,5 +14,5 @@
 | 2026-03-02 | Phase 3 | About sections (Team, Contact, Mission) wired to `/about` | ✅ Step 8 |
 | 2026-03-02 | Phase 3 | Basic SEO titles and metadata added to all pages | ✅ Step 9 |
 
-## Current Phase: Phase 3 (Step 10 — Complete Phase 3)
+## Current Phase: Phase 3 (Step 10 . Complete Phase 3)
 ## Blockers: None

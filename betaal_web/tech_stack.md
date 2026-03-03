@@ -1,4 +1,4 @@
-# Website Tech Stack — Betaal AI
+# Website Tech Stack . Betaal AI
 
 ## Core
 

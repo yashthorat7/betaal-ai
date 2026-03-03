@@ -1,12 +1,12 @@
 export const YOUTUBE_VIDEOS = [
-  { id: 'iONDebHX9qk', title: 'Quit Social Media — Your Brain Will Thank You', channel: 'Dr. Cal Newport', duration: '14:22', category: 'Science' },
+  { id: 'iONDebHX9qk', title: 'Quit Social Media . Your Brain Will Thank You', channel: 'Dr. Cal Newport', duration: '14:22', category: 'Science' },
   { id: '3E7hkPZ-HTk', title: 'How I Broke My Phone Addiction', channel: 'Matt D\'Avella', duration: '10:47', category: 'Motivation' },
   { id: 'VpHyLG-sc4g', title: 'How Smartphones Hijack Our Minds', channel: 'After Skool', duration: '11:03', category: 'Science' },
-  { id: 'AUoVn4sEGnM', title: 'The Deep Focus Method — 4 Hours of Flow', channel: 'Productivity Game', duration: '18:35', category: 'Focus' },
-  { id: '0K5OO2ybueM', title: 'Digital Minimalism — Full Audiobook Summary', channel: 'Escaping Ordinary', duration: '22:10', category: 'Motivation' },
+  { id: 'AUoVn4sEGnM', title: 'The Deep Focus Method . 4 Hours of Flow', channel: 'Productivity Game', duration: '18:35', category: 'Focus' },
+  { id: '0K5OO2ybueM', title: 'Digital Minimalism . Full Audiobook Summary', channel: 'Escaping Ordinary', duration: '22:10', category: 'Motivation' },
   { id: 'hER0Qp6QJNU', title: 'What Happens After 30 Days Without Social Media', channel: 'Yes Theory', duration: '16:41', category: 'Motivation' },
-  { id: 'kc_Jq42Og7Q', title: 'Pomodoro Technique — Science of Focus', channel: 'Thomas Frank', duration: '8:54', category: 'Focus' },
-  { id: 'jkp0un2ER2c', title: 'Your Brain on Dopamine — Why You Can\'t Stop Scrolling', channel: 'Veritasium', duration: '12:38', category: 'Science' },
+  { id: 'kc_Jq42Og7Q', title: 'Pomodoro Technique . Science of Focus', channel: 'Thomas Frank', duration: '8:54', category: 'Focus' },
+  { id: 'jkp0un2ER2c', title: 'Your Brain on Dopamine . Why You Can\'t Stop Scrolling', channel: 'Veritasium', duration: '12:38', category: 'Science' },
 ];
 
 export const BLOGS = [

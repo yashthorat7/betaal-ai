@@ -19,24 +19,29 @@ export default function HeatMap({ weeks = [] }) {
 
   return (
     <DashboardCard title="Usage Grid" subtitle="Density Map" icon={LayoutGrid}>
-      <div className="flex gap-4 mt-8">
+      <div className="mt-8 flex gap-4">
         {/* Day labels */}
-        <div className="flex flex-col justify-between py-1 h-28 shrink-0">
+        <div className="flex h-28 shrink-0 flex-col justify-between py-1">
           {DAYS.map((d) => (
-            <span key={d} className="text-[8px] font-black text-[#1C1C1C]/15 uppercase tracking-widest">{d}</span>
+            <span
+              key={d}
+              className="text-[8px] font-black tracking-widest text-[#1C1C1C]/15 uppercase"
+            >
+              {d}
+            </span>
           ))}
         </div>
 
         {/* Grid rows */}
-        <div className="flex-1 flex gap-1.5 h-28">
+        <div className="flex h-28 flex-1 gap-1.5">
           {weeks.map((w, wi) => (
-            <div key={wi} className="flex-1 flex flex-col gap-1.5 h-full">
+            <div key={wi} className="flex h-full flex-1 flex-col gap-1.5">
               {w.map((v, di) => (
                 <div
                   key={di}
-                  className={`group relative flex-1 w-full rounded-sm ${getColor(v, max)} transition-all duration-300 hover:scale-[1.15] hover:ring-2 hover:ring-[#1C1C1C]/10 cursor-default`}
+                  className={`group relative w-full flex-1 rounded-sm ${getColor(v, max)} cursor-default transition-all duration-300 hover:scale-[1.15] hover:ring-2 hover:ring-[#1C1C1C]/10`}
                 >
-                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:flex bg-[#1C1C1C] text-white px-2 py-1 rounded-md text-[8px] font-black whitespace-nowrap z-50 shadow-2xl uppercase tracking-widest">
+                  <div className="absolute bottom-full left-1/2 z-50 mb-2 hidden -translate-x-1/2 rounded-md bg-[#1C1C1C] px-2 py-1 text-[8px] font-black tracking-widest whitespace-nowrap text-white uppercase shadow-2xl group-hover:flex">
                     {v}M
                   </div>
                 </div>
@@ -47,11 +52,18 @@ export default function HeatMap({ weeks = [] }) {
       </div>
 
       {/* Legend */}
-      <div className="flex items-center justify-end gap-1.5 mt-8 border-t border-[#f5f5f5] pt-8">
-        <span className="text-[9px] font-black text-[#1C1C1C]/15 uppercase tracking-[0.2em] mr-2">Intensity</span>
-        {['bg-[#f5f5f5]', 'bg-[#d0d0d0]', 'bg-[#a0a0a0]', 'bg-[#606060]', 'bg-[#1C1C1C]'].map((c, i) => (
-          <div key={i} className={`w-2.5 h-2.5 rounded-sm ${c} border border-[#1C1C1C]/[0.02] shadow-[0_1px_4px_rgba(0,0,0,0.01)]`} />
-        ))}
+      <div className="mt-8 flex items-center justify-end gap-1.5 border-t border-[#f5f5f5] pt-8">
+        <span className="mr-2 text-[9px] font-black tracking-[0.2em] text-[#1C1C1C]/15 uppercase">
+          Intensity
+        </span>
+        {['bg-[#f5f5f5]', 'bg-[#d0d0d0]', 'bg-[#a0a0a0]', 'bg-[#606060]', 'bg-[#1C1C1C]'].map(
+          (c, i) => (
+            <div
+              key={i}
+              className={`h-2.5 w-2.5 rounded-sm ${c} border border-[#1C1C1C]/[0.02] shadow-[0_1px_4px_rgba(0,0,0,0.01)]`}
+            />
+          ),
+        )}
       </div>
     </DashboardCard>
   );

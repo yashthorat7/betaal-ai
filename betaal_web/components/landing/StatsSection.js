@@ -1,6 +1,6 @@
 'use client';
-
 import { useEffect, useRef, useState } from 'react';
+import { useInView } from '@/lib/hooks/useInView';
 
 const STATS = [
   { value: 10000, suffix: '+', label: 'Active Users' },
@@ -10,88 +10,67 @@ const STATS = [
 ];
 
 export default function StatsSection() {
-  const ref = useRef(null);
+  const [sectionRef, visible] = useInView({ threshold: 0.2, once: true });
   const nums = useRef([]);
   const [scale, setScale] = useState(1);
 
   useEffect(() => {
+    if (!visible) return;
     let mounted = true;
-    const frameIds = [];
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          animateNumbers();
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.2 });
-
-    if (ref.current) observer.observe(ref.current);
-
-    const animateNumbers = () => {
-      STATS.forEach((s, i) => {
-        const el = nums.current[i];
-        if (!el) return;
-        
-        const end = s.value;
-        const duration = 2000;
-        const startTime = performance.now();
-
-        const updateCount = (currentTime) => {
-          if (!mounted) return;
-          const elapsed = currentTime - startTime;
-          const progress = Math.min(elapsed / duration, 1);
-          const easeProgress = 1 - Math.pow(1 - progress, 3); // easeOutCubic
-          
-          const currentVal = Math.floor(easeProgress * end);
-          el.textContent = currentVal.toLocaleString() + s.suffix;
-
-          if (progress < 1) {
-            frameIds.push(requestAnimationFrame(updateCount));
-          }
-        };
-
-        frameIds.push(requestAnimationFrame(updateCount));
-      });
-    };
-
-    const handleScroll = () => {
-      if (!ref.current || !mounted) return;
-      const rect = ref.current.getBoundingClientRect();
-      const winH = window.innerHeight;
-      const progress = Math.min(Math.max((winH - rect.top) / (winH + rect.height), 0), 1);
-      setScale(1 + progress * 0.1);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    const ids = [];
+    STATS.forEach((s, i) => {
+      const el = nums.current[i];
+      if (!el) return;
+      const start = performance.now();
+      const tick = (now) => {
+        if (!mounted) return;
+        const p = Math.min((now - start) / 2000, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.floor(ease * s.value).toLocaleString() + s.suffix;
+        if (p < 1) ids.push(requestAnimationFrame(tick));
+      };
+      ids.push(requestAnimationFrame(tick));
+    });
     return () => {
       mounted = false;
-      frameIds.forEach(id => cancelAnimationFrame(id));
-      observer.disconnect();
-      window.removeEventListener('scroll', handleScroll);
+      ids.forEach(cancelAnimationFrame);
     };
-  }, []);
+  }, [visible]);
+
+  useEffect(() => {
+    const fn = () => {
+      const el = sectionRef.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const p = Math.min(Math.max((innerHeight - r.top) / (innerHeight + r.height), 0), 1);
+      setScale(1 + p * 0.1);
+    };
+    window.addEventListener('scroll', fn, { passive: true });
+    return () => window.removeEventListener('scroll', fn);
+  }, [sectionRef]);
 
   return (
-    <section ref={ref} style={{ padding: '100px 0', position: 'relative', overflow: 'hidden' }}>
-      <div style={{ position: 'absolute', inset: -20, background: 'radial-gradient(ellipse at center, #252525 0%, #1C1C1C 70%)', transform: `scale(${scale})`, willChange: 'transform', zIndex: 0 }} />
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 60px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24, position: 'relative', zIndex: 1 }}>
+    <section ref={sectionRef} className="relative overflow-hidden py-[100px]">
+      <div
+        className="absolute -inset-5 z-0 bg-[radial-gradient(ellipse_at_center,#252525_0%,#1C1C1C_70%)] will-change-transform"
+        style={{ transform: `scale(${scale})` }}
+      />
+      <div className="relative z-[1] mx-auto grid max-w-[1200px] grid-cols-4 gap-6 px-[60px]">
         {STATS.map((s, i) => (
           <div
             key={i}
-            className="animate-fade-in"
-            style={{
-              border: '1px solid rgba(255,255,255,0.1)', borderRadius: 20, padding: '48px 32px', textAlign: 'center',
-              background: 'rgba(255,255,255,0.04)', backdropFilter: 'blur(4px)',
-              transition: 'border-color 0.4s, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s',
-              animationDelay: `${i * 0.1}s`,
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(0,212,255,0.4)'; e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 16px 40px rgba(0,212,255,0.08)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+            className="animate-fade-in rounded-[20px] border border-white/10 bg-white/[0.04] p-12 text-center backdrop-blur-sm transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:border-[rgba(0,212,255,0.4)] hover:shadow-[0_16px_40px_rgba(0,212,255,0.08)]"
+            style={{ animationDelay: `${i * 0.1}s` }}
           >
-            <div ref={(el) => (nums.current[i] = el)} style={{ fontSize: 'clamp(36px, 4vw, 56px)', fontWeight: 900, letterSpacing: '-0.03em', color: '#FAFAFA', lineHeight: 1 }}>0</div>
-            <div style={{ marginTop: 16, fontSize: 12, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(250,250,250,0.45)' }}>{s.label}</div>
+            <div
+              ref={(el) => (nums.current[i] = el)}
+              className="text-[clamp(36px,4vw,56px)] leading-none font-[900] tracking-[-0.03em] text-[#FAFAFA]"
+            >
+              0
+            </div>
+            <div className="mt-4 text-xs font-bold tracking-[0.18em] text-[rgba(250,250,250,0.45)] uppercase">
+              {s.label}
+            </div>
           </div>
         ))}
       </div>

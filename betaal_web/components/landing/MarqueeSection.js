@@ -4,16 +4,17 @@ const TEXT = 'Are you ready to leave smartphone addiction?';
 
 export default function MarqueeSection() {
   return (
-    <section style={{ padding: '44px 0', background: 'transparent', overflow: 'hidden', borderTop: '1px solid #e0e0e0', borderBottom: '1px solid #e0e0e0' }}>
-      <div style={{ display: 'flex', whiteSpace: 'nowrap', willChange: 'transform', animation: 'marqueeScroll 12s linear infinite' }}>
+    <section className="overflow-hidden border-t border-b border-[#e0e0e0] bg-transparent py-11">
+      <div className="animate-marquee flex whitespace-nowrap will-change-transform">
         {[...Array(8)].map((_, i) => (
-          <span key={i} style={{ flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: 36, paddingRight: 36 }}>
-            <span style={{ fontSize: 'clamp(40px, 5vw, 72px)', fontWeight: 900, letterSpacing: '-0.03em', textTransform: 'uppercase', color: '#1C1C1C' }}>{TEXT}</span>
-            <span style={{ display: 'inline-block', width: 60, height: 60, borderRadius: 14, border: '1.5px solid #d0d0d0', background: 'linear-gradient(135deg, #f0f0f0, #e4e4e4)', flexShrink: 0 }} />
+          <span key={i} className="inline-flex shrink-0 items-center gap-9 pr-9">
+            <span className="text-[clamp(40px,5vw,72px)] font-[900] tracking-[-0.03em] text-[#1C1C1C] uppercase">
+              {TEXT}
+            </span>
+            <span className="inline-block h-[60px] w-[60px] shrink-0 rounded-[14px] border-[1.5px] border-[#d0d0d0] bg-gradient-to-br from-[#f0f0f0] to-[#e4e4e4]" />
           </span>
         ))}
       </div>
-      <style jsx>{`@keyframes marqueeScroll { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(-25%,0,0); } }`}</style>
     </section>
   );
 }

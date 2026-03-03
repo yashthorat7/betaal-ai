@@ -1,41 +1,20 @@
 'use client';
-
-import { useState, useCallback } from 'react';
-import MissionHero from '@/components/about/MissionHero';
+import GridReveal from '@/components/common/GridReveal';
+import TypewriterHero from '@/components/common/TypewriterHero';
+import OurApproach from '@/components/about/OurApproach';
 import TeamSection from '@/components/about/TeamSection';
 import ContactForm from '@/components/about/ContactForm';
 
+const MISSION_TEXT =
+  'We believe technology should empower, not enslave. Betaal AI exists to help people build a healthier relationship with their screens — through science-backed, gradual intervention that actually works.';
+
 export default function AboutPage() {
-  const [mouse, setMouse] = useState({ x: -999, y: -999 });
-
-  const handleMouseMove = useCallback((e) => {
-    setMouse({ x: e.clientX, y: e.clientY + window.scrollY });
-  }, []);
-
   return (
-    <div
-      onMouseMove={handleMouseMove}
-      className="relative min-h-screen overflow-x-hidden bg-white text-[#1C1C1C]"
-    >
-      {/* Grid reveal background */}
-      <div
-        className="absolute inset-0 pointer-events-none z-0"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(0,0,0,0.07) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0,0,0,0.07) 1px, transparent 1px)
-          `,
-          backgroundSize: '40px 40px',
-          maskImage: `radial-gradient(circle 350px at ${mouse.x}px ${mouse.y}px, black 0%, transparent 100%)`,
-          WebkitMaskImage: `radial-gradient(circle 350px at ${mouse.x}px ${mouse.y}px, black 0%, transparent 100%)`,
-        }}
-      />
-
-      <div className="relative z-1">
-        <MissionHero />
-        <TeamSection />
-        <ContactForm />
-      </div>
-    </div>
+    <GridReveal>
+      <TypewriterHero text={MISSION_TEXT} label="Our Mission" />
+      <OurApproach />
+      <TeamSection />
+      <ContactForm />
+    </GridReveal>
   );
 }

@@ -1,7 +1,13 @@
 'use client';
 
-import { 
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer 
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
 } from 'recharts';
 import { useIsClient } from '@/lib/hooks/useIsClient';
 import DashboardCard from './DashboardCard';
@@ -10,8 +16,8 @@ import { History } from 'lucide-react';
 function CustomTooltip({ active, payload, label }) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="bg-[#1C1C1C] text-white px-2 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest shadow-2xl">
-      <span className="text-white/40 mr-2">D{label}</span>
+    <div className="rounded-lg bg-[#1C1C1C] px-2 py-1.5 text-[9px] font-black tracking-widest text-white uppercase shadow-2xl">
+      <span className="mr-2 text-white/40">D{label}</span>
       <span>{payload[0].value}M</span>
     </div>
   );
@@ -23,8 +29,10 @@ export default function WeeklyChart({ data = [] }) {
   if (!isC) {
     return (
       <DashboardCard title="Screen Time" subtitle="Trend Analysis" icon={History}>
-        <div className="h-64 flex items-center justify-center animate-pulse">
-          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#1C1C1C]/10">Loading Data...</span>
+        <div className="flex h-64 animate-pulse items-center justify-center">
+          <span className="text-[10px] font-black tracking-[0.2em] text-[#1C1C1C]/10 uppercase">
+            Loading Data...
+          </span>
         </div>
       </DashboardCard>
     );
@@ -32,7 +40,7 @@ export default function WeeklyChart({ data = [] }) {
 
   return (
     <DashboardCard title="Screen Time" subtitle="Weekly Trend Analysis" icon={History}>
-      <div className="h-64 mt-6">
+      <div className="mt-6 h-64">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data}>
             <defs>
@@ -57,8 +65,8 @@ export default function WeeklyChart({ data = [] }) {
               tickLine={false}
               dx={-10}
             />
-            <Tooltip 
-              content={<CustomTooltip />} 
+            <Tooltip
+              content={<CustomTooltip />}
               cursor={{ stroke: '#1C1C1C', strokeWidth: 1, strokeDasharray: '4 4' }}
               isAnimationActive={false}
             />

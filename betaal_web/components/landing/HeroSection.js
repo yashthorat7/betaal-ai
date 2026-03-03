@@ -1,39 +1,11 @@
 'use client';
-
 import { useRef, useState } from 'react';
 import { Download, Puzzle } from 'lucide-react';
 
-const CTA_STYLE = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: 12,
-  padding: '18px 36px',
-  fontSize: 13,
-  fontWeight: 800,
-  letterSpacing: '0.12em',
-  textTransform: 'uppercase',
-  background: '#FAFAFA',
-  border: '1.5px solid #1C1C1C',
-  borderRadius: 50,
-  color: '#1C1C1C',
-  cursor: 'pointer',
-  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-};
-
 function CtaButton({ icon: Icon, label, delay }) {
   return (
-    <div className="animate-fade-in" style={{ zIndex: 2, marginTop: 400, animationDelay: delay }}>
-      <button
-        style={CTA_STYLE}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.transform = 'translateY(-4px)';
-          e.currentTarget.style.boxShadow = '0 14px 32px rgba(28,28,28,0.13)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = 'translateY(0)';
-          e.currentTarget.style.boxShadow = 'none';
-        }}
-      >
+    <div className="animate-fade-in z-[2] mt-[400px]" style={{ animationDelay: delay }}>
+      <button className="inline-flex cursor-pointer items-center gap-3 rounded-full border-[1.5px] border-[#1C1C1C] bg-[#FAFAFA] px-9 py-[18px] text-[13px] font-[800] tracking-[0.12em] text-[#1C1C1C] uppercase transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:shadow-[0_14px_32px_rgba(28,28,28,0.13)]">
         <Icon size={18} />
         {label}
       </button>
@@ -46,8 +18,8 @@ export default function HeroSection() {
   const [mask, setMask] = useState({ x: -999, y: -999 });
 
   return (
-    <section style={{ position: 'relative', paddingTop: 100, background: 'transparent' }}>
-      <div style={{ textAlign: 'center', position: 'relative', zIndex: 1, padding: '0 60px' }}>
+    <section className="relative bg-transparent pt-[100px]">
+      <div className="relative z-[1] px-[60px] text-center">
         <div
           ref={headingRef}
           onMouseMove={(e) => {
@@ -55,51 +27,37 @@ export default function HeroSection() {
             setMask({ x: e.clientX - r.left, y: e.clientY - r.top });
           }}
           onMouseLeave={() => setMask({ x: -999, y: -999 })}
-          style={{ 
-            position: 'relative', 
-            display: 'inline-block', 
-            cursor: 'default',
-            padding: '80px 120px',
-            margin: '-80px -120px'
-          }}
+          className="relative -m-20 inline-block cursor-default p-20"
         >
-          <h1 style={{ fontSize: 'clamp(48px, 5.5vw, 88px)', fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 0.95, textTransform: 'uppercase', color: '#1C1C1C', margin: 0 }}>
-            Reclaim Your Life From<br />Digital Addiction
+          <h1 className="m-0 text-[clamp(48px,5.5vw,88px)] leading-[0.95] font-[900] tracking-[-0.04em] text-[#1C1C1C] uppercase">
+            Reclaim Your Life From
+            <br />
+            Digital Addiction
           </h1>
           <h1
             aria-hidden="true"
+            className="pointer-events-none absolute inset-0 m-0 bg-gradient-to-r from-[#ff2d55] via-[#5ac8fa] via-[#af52de] to-[#007aff] bg-clip-text p-20 text-[clamp(48px,5.5vw,88px)] leading-[0.95] font-[900] tracking-[-0.04em] text-transparent uppercase"
             style={{
-              position: 'absolute', 
-              top: 80, left: 120, right: 120, bottom: 80,
-              fontSize: 'clamp(48px, 5.5vw, 88px)', fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 0.95, textTransform: 'uppercase', margin: 0,
-              background: 'linear-gradient(90deg, #ff2d55, #af52de, #5ac8fa, #007aff)',
-              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
               maskImage: `radial-gradient(circle 480px at ${mask.x}px ${mask.y}px, black 0%, transparent 100%)`,
               WebkitMaskImage: `radial-gradient(circle 480px at ${mask.x}px ${mask.y}px, black 0%, transparent 100%)`,
-              pointerEvents: 'none',
             }}
           >
-            Reclaim Your Life From<br />Digital Addiction
+            Reclaim Your Life From
+            <br />
+            Digital Addiction
           </h1>
         </div>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'center', gap: 40, marginTop: 40, position: 'relative', zIndex: 2 }}>
+      <div className="relative z-[2] mt-10 flex items-start justify-center gap-10">
         <CtaButton icon={Download} label="Download the App" delay="0.3s" />
-        <div
-          className="animate-slide-up"
-          style={{
-            width: 570, height: 1020,
-            border: '1px solid #d0d0d0', borderRadius: 60,
-            background: 'linear-gradient(180deg, #F0F0F0 0%, #E8E8E8 100%)',
-            boxShadow: '0 -40px 80px 20px rgba(250,250,250,0.9), 0 12px 40px rgba(0,0,0,0.04)',
-            position: 'relative', overflow: 'hidden', flexShrink: 0, zIndex: 3,
-          }}
-        >
-          <div style={{ width: 160, height: 36, background: '#d0d0d0', borderRadius: '0 0 20px 20px', margin: '0 auto' }} />
-          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center' }}>
-            <div style={{ fontSize: 56, fontWeight: 900, color: '#c0c0c0', letterSpacing: '-0.03em' }}>BETAAL</div>
-            <div style={{ fontSize: 14, fontWeight: 700, color: '#b0b0b0', letterSpacing: '0.2em', textTransform: 'uppercase', marginTop: 6 }}>App Preview</div>
+        <div className="animate-slide-up relative z-[3] h-[1020px] w-[570px] shrink-0 overflow-hidden rounded-[60px] border border-[#d0d0d0] bg-gradient-to-b from-[#F0F0F0] to-[#E8E8E8] shadow-[0_-40px_80px_20px_rgba(250,250,250,0.9),0_12px_40px_rgba(0,0,0,0.04)]">
+          <div className="mx-auto h-9 w-[160px] rounded-b-[20px] bg-[#d0d0d0]" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+            <div className="text-[56px] font-[900] tracking-[-0.03em] text-[#c0c0c0]">BETAAL</div>
+            <div className="mt-1.5 text-sm font-bold tracking-[0.2em] text-[#b0b0b0] uppercase">
+              App Preview
+            </div>
           </div>
         </div>
         <CtaButton icon={Puzzle} label="Get Extension" delay="0.3s" />

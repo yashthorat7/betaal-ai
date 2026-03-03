@@ -1,89 +1,51 @@
 'use client';
-
-import { useEffect, useRef, useState } from 'react';
+import { useInView } from '@/lib/hooks/useInView';
 import { MessageCircle, Play, BookOpen, Users } from 'lucide-react';
 import { RESOURCE_FEATURES } from '@/lib/resources-data';
 
-const ICON_MAP = { MessageCircle, Play, BookOpen, Users };
+const ICONS = { MessageCircle, Play, BookOpen, Users };
+const GRADIENTS = [
+  'radial-gradient(ellipse at 30% 30%, rgba(175,82,222,0.08), transparent 70%)',
+  'radial-gradient(ellipse at 70% 20%, rgba(0,212,255,0.08), transparent 70%)',
+  'radial-gradient(ellipse at 50% 80%, rgba(255,45,85,0.07), transparent 70%)',
+  'radial-gradient(ellipse at 20% 60%, rgba(90,200,250,0.08), transparent 70%)',
+];
+const ACCENTS = ['#af52de', '#00d4ff', '#ff2d55', '#5ac8fa'];
 
 export default function FeatureShowcase() {
-  const [visibleCards, setVisibleCards] = useState(new Set());
-  const cardsRef = useRef([]);
-
-  useEffect(() => {
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) setVisibleCards(prev => new Set([...prev, e.target.dataset.idx]));
-      });
-    }, { threshold: 0.15 });
-    cardsRef.current.forEach(el => { if (el) obs.observe(el); });
-    return () => obs.disconnect();
-  }, []);
-
-  const GRADIENTS = [
-    'radial-gradient(ellipse at 30% 30%, rgba(175,82,222,0.08), transparent 70%)',
-    'radial-gradient(ellipse at 70% 20%, rgba(0,212,255,0.08), transparent 70%)',
-    'radial-gradient(ellipse at 50% 80%, rgba(255,45,85,0.07), transparent 70%)',
-    'radial-gradient(ellipse at 20% 60%, rgba(90,200,250,0.08), transparent 70%)',
-  ];
-
-  const ACCENT_COLORS = ['#af52de', '#00d4ff', '#ff2d55', '#5ac8fa'];
+  const [ref, visible] = useInView({ threshold: 0.15, once: true });
 
   return (
-    <section className="py-20">
+    <section ref={ref} className="py-20">
       <div className="container-pro">
-        {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: 60 }}>
-          <h2 className="text-5xl md:text-7xl font-black tracking-tighter uppercase leading-[0.9] text-[#1C1C1C]">
-            Resources Built for Recovery
-          </h2>
+        <div className="mb-[60px] text-center">
+          <h2 className="heading-xl">Resources Built for Recovery</h2>
         </div>
-
-        {/* 2×2 Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 20 }}>
+        <div className="grid grid-cols-2 gap-5">
           {RESOURCE_FEATURES.map((f, i) => {
-            const Icon = ICON_MAP[f.icon];
+            const Icon = ICONS[f.icon];
             return (
               <div
                 key={i}
-                ref={el => (cardsRef.current[i] = el)}
-                data-idx={i}
-                style={{
-                  borderRadius: 20, position: 'relative', overflow: 'hidden',
-                  padding: '48px 40px', cursor: 'default', minHeight: 220,
-                  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                  opacity: visibleCards.has(String(i)) ? 1 : 0,
-                  transform: visibleCards.has(String(i)) ? 'translateY(0)' : 'translateY(30px)',
-                  transitionDelay: `${i * 0.08}s`,
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = '0 10px 36px rgba(0,0,0,0.08)';
-                  e.currentTarget.style.transform = 'translateY(-3px)';
-                  e.currentTarget.querySelector('[data-mesh]').style.opacity = '1';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = 'none';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.querySelector('[data-mesh]').style.opacity = '0';
-                }}
+                className={`group relative min-h-[220px] cursor-default overflow-hidden rounded-[20px] p-12 transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-[3px] hover:shadow-[0_10px_36px_rgba(0,0,0,0.08)] ${visible ? 'translate-y-0 opacity-100' : 'translate-y-[30px] opacity-0'}`}
+                style={{ transitionDelay: `${i * 0.08}s` }}
               >
-                {/* Base bg */}
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #f2f2f2 0%, #eaeaea 50%, #f0f0f0 100%)', border: '1px solid #e0e0e0', borderRadius: 20 }} />
-                {/* Mesh gradient */}
-                <div data-mesh="" style={{ position: 'absolute', inset: 0, background: GRADIENTS[i], opacity: 0, transition: 'opacity 0.5s', pointerEvents: 'none', borderRadius: 20 }} />
-
-                <div style={{ position: 'relative', zIndex: 1 }}>
-                  {/* Icon */}
-                  <div style={{
-                    width: 52, height: 52, borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    background: `${ACCENT_COLORS[i]}12`, border: `1px solid ${ACCENT_COLORS[i]}25`, marginBottom: 24,
-                  }}>
-                    {Icon && <Icon size={22} style={{ color: ACCENT_COLORS[i] }} />}
+                <div className="absolute inset-0 rounded-[20px] border border-[#e0e0e0] bg-gradient-to-br from-[#f2f2f2] via-[#eaeaea] to-[#f0f0f0]" />
+                <div
+                  className="pointer-events-none absolute inset-0 rounded-[20px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                  style={{ background: GRADIENTS[i] }}
+                />
+                <div className="relative z-[1]">
+                  <div
+                    className="mb-6 flex h-[52px] w-[52px] items-center justify-center rounded-[14px]"
+                    style={{ background: `${ACCENTS[i]}12`, border: `1px solid ${ACCENTS[i]}25` }}
+                  >
+                    {Icon && <Icon size={22} style={{ color: ACCENTS[i] }} />}
                   </div>
-                  <h3 style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.02em', textTransform: 'uppercase', color: '#1C1C1C', marginBottom: 12 }}>
+                  <h3 className="mb-3 text-[22px] font-[800] tracking-[-0.02em] text-[#1C1C1C] uppercase">
                     {f.title}
                   </h3>
-                  <p style={{ fontSize: 15, fontWeight: 500, lineHeight: 1.6, color: '#6B6B6B', margin: 0, maxWidth: 420 }}>
+                  <p className="m-0 max-w-[420px] text-[15px] leading-[1.6] font-medium text-[#6B6B6B]">
                     {f.desc}
                   </p>
                 </div>

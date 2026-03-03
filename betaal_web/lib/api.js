@@ -19,7 +19,7 @@ export const getUsageStats = async () => {
     return {
       ...usage,
       apps: dummy.appBreakdown.apps,
-      devices: dummy.getConnectedDevices()
+      devices: dummy.getConnectedDevices(),
     };
   }
 };

@@ -1,5 +1,4 @@
 'use client';
-
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSession, signIn, signOut } from 'next-auth/react';
@@ -11,27 +10,17 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      // Show if scrolling up OR at the very top
-      if (currentScrollY < 10) {
-        setIsVisible(true);
-      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        // Scrolling down and passed threshold
-        setIsVisible(false);
-      } else if (currentScrollY < lastScrollY) {
-        // Scrolling up
-        setIsVisible(true);
-      }
-      
-      setLastScrollY(currentScrollY);
+      const y = window.scrollY;
+      if (y < 10) setIsVisible(true);
+      else if (y > lastScrollY && y > 100) setIsVisible(false);
+      else if (y < lastScrollY) setIsVisible(true);
+      setLastScrollY(y);
     };
-
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
-  const navLinks = [
+  const links = [
     { name: 'Dashboard', href: '/dashboard' },
     { name: 'Resources', href: '/resources' },
     { name: 'About', href: '/about' },
@@ -39,61 +28,58 @@ export default function Navbar() {
 
   return (
     <nav
-      style={{
-        transform: isVisible ? 'translateY(0)' : 'translateY(-100%)',
-        transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)'
-      }}
-      className="fixed top-0 left-0 right-0 z-[100] border-b border-[#1C1C1C]/10 bg-[#FAFAFA]/80 backdrop-blur-xl"
+      className={`fixed top-0 right-0 left-0 z-[100] border-b border-[#1C1C1C]/10 bg-[#FAFAFA]/80 backdrop-blur-xl transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}
     >
-      <div className="container-pro h-20 flex items-center justify-between relative">
-        {/* Left: Branding */}
-        <Link 
-          href="/" 
-          className="text-xl font-[900] tracking-tighter text-[#1C1C1C] hover:opacity-70 transition-opacity"
+      <div className="container-pro relative flex h-20 items-center justify-between">
+        <Link
+          href="/"
+          className="text-xl font-[900] tracking-tighter text-[#1C1C1C] transition-opacity hover:opacity-70"
         >
           BETAAL AI
         </Link>
 
-        {/* Middle: Links - Centered absolutely */}
-        <div className="hidden md:flex items-center gap-10 absolute left-1/2 -translate-x-1/2">
-          {navLinks.map((link) => (
+        <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-10 md:flex">
+          {links.map((l) => (
             <Link
-              key={link.name}
-              href={link.href}
-              className="text-[13px] font-[900] uppercase tracking-[0.12em] text-[#1C1C1C]/50 hover:text-[#1C1C1C] transition-all"
+              key={l.name}
+              href={l.href}
+              className="text-[13px] font-[900] tracking-[0.12em] text-[#1C1C1C]/50 uppercase transition-all hover:text-[#1C1C1C]"
             >
-              {link.name}
+              {l.name}
             </Link>
           ))}
         </div>
 
-        {/* Right: Profile/Auth */}
         <div className="flex items-center gap-6">
           {session ? (
             <div className="flex items-center gap-4">
-              <div className="hidden lg:flex flex-col items-end">
-                <span className="text-[11px] font-black uppercase tracking-wider text-[#1C1C1C] leading-none">
+              <div className="hidden flex-col items-end lg:flex">
+                <span className="text-[11px] leading-none font-black tracking-wider text-[#1C1C1C] uppercase">
                   {session.user.name}
                 </span>
                 <button
                   onClick={() => signOut()}
-                  className="text-[9px] font-bold uppercase tracking-widest text-[#1C1C1C]/40 hover:text-red-500 transition-colors mt-1"
+                  className="mt-1 text-[9px] font-bold tracking-widest text-[#1C1C1C]/40 uppercase transition-colors hover:text-red-500"
                 >
                   Sign Out
                 </button>
               </div>
-              <div className="h-10 w-10 rounded-full border border-[#1C1C1C]/10 overflow-hidden bg-white flex items-center justify-center ring-2 ring-transparent hover:ring-[#1C1C1C]/10 transition-all cursor-pointer">
-                 {session.user.image ? (
-                    <img src={session.user.image} alt={session.user.name} className="h-full w-full object-cover" />
-                 ) : (
-                    <span className="text-xs font-black">{session.user.name?.[0] || 'U'}</span>
-                 )}
+              <div className="flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-[#1C1C1C]/10 bg-white ring-2 ring-transparent transition-all hover:ring-[#1C1C1C]/10">
+                {session.user.image ? (
+                  <img
+                    src={session.user.image}
+                    alt={session.user.name}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <span className="text-xs font-black">{session.user.name?.[0] || 'U'}</span>
+                )}
               </div>
             </div>
           ) : (
             <button
               onClick={() => signIn('google')}
-              className="bg-[#1C1C1C] text-[#FAFAFA] px-7 py-2.5 rounded-full text-[12px] font-black uppercase tracking-widest hover:bg-[#1C1C1C]/90 hover:scale-105 active:scale-95 transition-all shadow-md shadow-[#1C1C1C]/10"
+              className="rounded-full bg-[#1C1C1C] px-7 py-2.5 text-xs font-black tracking-widest text-[#FAFAFA] uppercase shadow-md shadow-[#1C1C1C]/10 transition-all hover:scale-105 hover:bg-[#1C1C1C]/90 active:scale-95"
             >
               Sign In
             </button>

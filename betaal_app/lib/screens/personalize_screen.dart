@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../core/constants.dart';
 import '../services/stealth_service.dart';
 import '../services/preferences_service.dart';
+import '../providers/rehab_provider.dart';
 import 'interruption_preferences_screen.dart';
 
 class PersonalizeScreen extends StatefulWidget {
@@ -34,6 +36,16 @@ class _PersonalizeScreenState extends State<PersonalizeScreen> {
   int get _rehabDays {
     final days = _addictionLevel * 3 * (6 - _strictness);
     return days.clamp(7, 90);
+  }
+
+  void _recomputeQuota() {
+    // Regenerate plan + sync quota to prefs
+    final rehab = context.read<RehabProvider>();
+    rehab.loadLocalPlan();
+    final plan = rehab.plan;
+    if (plan != null) {
+      PreferencesService.setDailyQuotaMin(plan.activePhase.dailyQuotaMin);
+    }
   }
 
   @override
@@ -183,6 +195,7 @@ class _PersonalizeScreenState extends State<PersonalizeScreen> {
                           onChanged: (v) {
                             setState(() => _addictionLevel = v);
                             PreferencesService.setAddictionLevel(v);
+                            _recomputeQuota();
                           },
                         ),
                         const SizedBox(height: 16),
@@ -196,6 +209,7 @@ class _PersonalizeScreenState extends State<PersonalizeScreen> {
                           onChanged: (v) {
                             setState(() => _strictness = v);
                             PreferencesService.setStrictness(v);
+                            _recomputeQuota();
                           },
                         ),
                         const SizedBox(height: 16),

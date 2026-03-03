@@ -91,6 +91,14 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       // Save preferences
       PreferencesService.setAddictionLevel(_addictionLevel);
       PreferencesService.setStrictness(_strictness);
+
+      // Write engine config for Kotlin service
+      final startDate = DateTime.now().toIso8601String().split('T').first;
+      PreferencesService.setPlanStartDate(startDate);
+      PreferencesService.setTargetApps(PreferencesService.targetApps); // write defaults
+      // Phase 1 quota (90% of 420 min baseline)
+      PreferencesService.setDailyQuotaMin(PreferencesService.computeQuotaForPhase(0));
+
       PreferencesService.setOnboardingDone(true);
 
       context.read<AuthProvider>().completeOnboarding(

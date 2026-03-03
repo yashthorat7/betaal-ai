@@ -34,6 +34,7 @@ class _DebugScreenState extends State<DebugScreen>
   // Test state
   String? _activeOverlay;
   bool _cycleRunning = false;
+  int _savedQuota = 0; // to restore after test
 
   @override
   void initState() {
@@ -246,6 +247,46 @@ class _DebugScreenState extends State<DebugScreen>
                         ),
                       ),
                     ],
+                  ),
+                  const SizedBox(height: 12),
+
+                  // --- AUTO TRIGGER TEST ---
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _actionButton(
+                          'Set Quota 1m',
+                          Icons.flash_on,
+                          Colors.orange,
+                          () async {
+                            _savedQuota = PreferencesService.dailyQuotaMin;
+                            await PreferencesService.setDailyQuotaMin(1);
+                            _showSnack(
+                              'Quota set to 1 min. Open a target app (Instagram etc). Overlays will fire in ~5s.',
+                              Colors.orange,
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: _actionButton(
+                          'Reset Quota',
+                          Icons.restore,
+                          const Color(0xFF3A86FF),
+                          () async {
+                            final q = _savedQuota > 0 ? _savedQuota : 378;
+                            await PreferencesService.setDailyQuotaMin(q);
+                            _showSnack('Quota restored to ${q}m', const Color(0xFF3A86FF));
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Current quota: ${PreferencesService.dailyQuotaMin}m | Cooldown: 10m between triggers',
+                    style: TextStyle(fontSize: 10, color: Colors.grey.shade400),
                   ),
                   const SizedBox(height: 20),
 

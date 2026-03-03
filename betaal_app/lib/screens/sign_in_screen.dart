@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
+import '../services/preferences_service.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
@@ -34,7 +35,10 @@ class SignInScreen extends StatelessWidget {
                     final auth = context.read<AuthProvider>();
                     await auth.signIn();
                     if (context.mounted) {
-                      Navigator.pushReplacementNamed(context, '/onboarding');
+                      final route = PreferencesService.onboardingDone
+                          ? '/main'
+                          : '/onboarding';
+                      Navigator.pushReplacementNamed(context, route);
                     }
                   },
                   icon: const Icon(Icons.login),

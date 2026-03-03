@@ -45,6 +45,10 @@ class MainActivity : FlutterActivity() {
                     val tracker = UsageTrackingHelper(this)
                     result.success(tracker.getTodayAppUsage())
                 }
+                "getTodayUnlocks" -> {
+                    val tracker = UsageTrackingHelper(this)
+                    result.success(tracker.getTodayUnlocks())
+                }
                 "hasUsagePermission" -> {
                     val tracker = UsageTrackingHelper(this)
                     result.success(tracker.hasUsagePermission())

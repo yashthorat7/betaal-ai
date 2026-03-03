@@ -17,6 +17,9 @@ class PreferencesService {
   static const _keyRehabReminders = 'notif_rehab_reminders';
   static const _keyInterruptionPrefix = 'interruption_';
   static const _keyDevUnlocked = 'dev_unlocked';
+  static const _keyDailyQuotaMin = 'daily_quota_min';
+  static const _keyTargetApps = 'target_apps';
+  static const _keyPlanStartDate = 'plan_start_date';
 
   /// Must be called once at app startup (before runApp or in main).
   static Future<void> init() async {
@@ -84,6 +87,38 @@ class PreferencesService {
         .where((e) => e.value)
         .map((e) => e.key)
         .toList();
+  }
+
+  // --- Engine Config (read by Kotlin service) ---
+  static int get dailyQuotaMin => _prefs?.getInt(_keyDailyQuotaMin) ?? 378;
+  static Future<void> setDailyQuotaMin(int v) async =>
+      await _prefs?.setInt(_keyDailyQuotaMin, v);
+
+  static List<String> get targetApps =>
+      _prefs?.getStringList(_keyTargetApps) ??
+      [
+        'com.instagram.android',
+        'com.google.android.youtube',
+        'com.zhiliaoapp.musically',
+        'com.snapchat.android',
+        'com.twitter.android',
+        'com.facebook.katana',
+        'com.reddit.frontpage',
+      ];
+  static Future<void> setTargetApps(List<String> v) async =>
+      await _prefs?.setStringList(_keyTargetApps, v);
+
+  static String get planStartDate => _prefs?.getString(_keyPlanStartDate) ?? '';
+  static Future<void> setPlanStartDate(String v) async =>
+      await _prefs?.setString(_keyPlanStartDate, v);
+
+  /// Compute quota from addiction/strictness for a given phase.
+  /// Baseline 420 min, phase quotas: 90% / 65% / 40% / 20%.
+  static int computeQuotaForPhase(int phaseIndex) {
+    const baseline = 420;
+    const ratios = [0.90, 0.65, 0.40, 0.20];
+    final ratio = phaseIndex < ratios.length ? ratios[phaseIndex] : ratios.last;
+    return (baseline * ratio).round();
   }
 
   // --- Developer Mode ---

@@ -91,12 +91,19 @@ class _MainShellState extends State<MainShell> {
   @override
   void initState() {
     super.initState();
-    // Load dummy data into providers (will be replaced with real API calls)
     final usage = context.read<UsageProvider>();
     final rehab = context.read<RehabProvider>();
     final chat = context.read<ChatProvider>();
-    usage.loadDummyData();
-    rehab.loadDummyData();
+
+    // Load real rehab plan and sync quota to prefs
+    rehab.loadLocalPlan();
+    final plan = rehab.plan;
+    if (plan != null) {
+      PreferencesService.setDailyQuotaMin(plan.activePhase.dailyQuotaMin);
+    }
+
+    // Load real usage data (falls back to dummy if no permission)
+    usage.loadRealData();
     chat.loadInitialMessages();
 
     // Start background usage tracking service

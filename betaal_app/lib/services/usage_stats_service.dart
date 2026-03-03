@@ -27,6 +27,12 @@ class UsageStatsService {
     return result ?? 0;
   }
 
+  /// Get today's unlock count
+  static Future<int> getTodayUnlocks() async {
+    final result = await _channel.invokeMethod<int>('getTodayUnlocks');
+    return result ?? 0;
+  }
+
   /// Get today's per-app usage in minutes: {packageName: minutes}
   static Future<Map<String, int>> getTodayAppUsage() async {
     final result = await _channel.invokeMethod<Map>('getTodayAppUsage');

@@ -6,7 +6,7 @@ import AboutSection from '@/components/landing/AboutSection';
 import StatsSection from '@/components/landing/StatsSection';
 import BentoGrid from '@/components/landing/BentoGrid';
 import MarqueeSection from '@/components/landing/MarqueeSection';
-import HomepageFooter from '@/components/landing/HomepageFooter';
+
 
 export default function Home() {
   const [mouse, setMouse] = useState({ x: -999, y: -999 });
@@ -49,7 +49,7 @@ export default function Home() {
         <StatsSection />
         <BentoGrid />
         <MarqueeSection />
-        <HomepageFooter />
+
       </div>
     </div>
   );

@@ -1,52 +1,75 @@
-import GuidedSteps from '@/components/resources/GuidedSteps';
-import ArticleGrid from '@/components/resources/ArticleGrid';
-import FAQ from '@/components/resources/FAQ';
+'use client';
 
-export const metadata = {
-  title: 'Resources — Betaal AI',
-  description: 'Guides, articles, and tools for behavior management.',
-};
+import { useState, useCallback } from 'react';
+import ResourcesHero from '@/components/resources/ResourcesHero';
+import VideoGrid from '@/components/resources/VideoGrid';
+import BlogSection from '@/components/resources/BlogSection';
 
-const dl = [
-  { n: 'Screen Time Tracker', f: 'PDF', s: '2.4MB' },
-  { n: 'Weekly Rehab Journal', f: 'PDF', s: '1.8MB' },
-  { n: 'Digital Agreement', f: 'DOCX', s: '48KB' },
-];
+import ResourcesFAQ from '@/components/resources/ResourcesFAQ';
 
 export default function ResourcesPage() {
+  const [mouse, setMouse] = useState({ x: -999, y: -999 });
+
+  const handleMouseMove = useCallback((e) => {
+    setMouse({ x: e.clientX, y: e.clientY + window.scrollY });
+  }, []);
+
   return (
-    <div className="container-pro mb-24 py-24">
-      <header className="mb-24 text-center">
-        <h1 className="heading-xl italic">Resources</h1>
-        <p className="label-pro mt-8 tracking-[1em] italic">The Toolkit</p>
-      </header>
+    <div
+      onMouseMove={handleMouseMove}
+      style={{
+        background: '#FFFFFF',
+        color: '#1C1C1C',
+        position: 'relative',
+        minHeight: '100vh',
+        overflowX: 'hidden',
+      }}
+    >
+      {/* Grid reveal background */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `
+            linear-gradient(to right, rgba(0,0,0,0.07) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0,0,0,0.07) 1px, transparent 1px)
+          `,
+          backgroundSize: '40px 40px',
+          maskImage: `radial-gradient(circle 350px at ${mouse.x}px ${mouse.y}px, black 0%, transparent 100%)`,
+          WebkitMaskImage: `radial-gradient(circle 350px at ${mouse.x}px ${mouse.y}px, black 0%, transparent 100%)`,
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
 
-      <div className="space-y-32">
-        <GuidedSteps />
-        <ArticleGrid />
+      <div style={{ position: 'relative', zIndex: 1 }}>
+        <ResourcesHero />
 
-        <div className="section-pad border-border border-t">
-          <h2 className="heading-lg mb-16 italic underline decoration-4 underline-offset-8">
-            Downloads
-          </h2>
-          <div className="max-w-4xl space-y-6">
-            {dl.map((d, i) => (
-              <div
-                key={i}
-                className="border-border hover:border-foreground group flex items-center justify-between border-b py-6 transition-colors"
-              >
-                <div className="flex flex-col gap-2">
-                  <span className="label-pro italic">{d.f}</span>
-                  <h4 className="heading-md italic">{d.n}</h4>
-                </div>
-                <button className="btn-pro btn-outline py-2">Get ({d.s})</button>
-              </div>
+        <VideoGrid />
+        <BlogSection />
+
+
+        {/* Second marquee before FAQ */}
+        <div className="overflow-hidden border-t border-b border-[#f0f0f0] py-16">
+          <div style={{ display: 'flex', whiteSpace: 'nowrap', animation: 'marqueeScrollReverse 28s linear infinite' }}>
+            {[...Array(10)].map((_, i) => (
+              <span key={i} style={{ flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: 32, paddingRight: 32 }}>
+                <span style={{ fontSize: 13, fontWeight: 900, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(28,28,28,0.2)' }}>
+                  Recover • Rebuild • Reclaim • Rewire • Reflect • Restart
+                </span>
+                <span style={{ display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: 'rgba(28,28,28,0.15)', flexShrink: 0 }} />
+              </span>
             ))}
           </div>
         </div>
 
-        <FAQ />
+        <ResourcesFAQ />
       </div>
+
+      <style jsx>{`
+        @keyframes marqueeScroll { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(-50%,0,0); } }
+        @keyframes marqueeScrollReverse { 0% { transform: translate3d(-50%,0,0); } 100% { transform: translate3d(0,0,0); } }
+      `}</style>
     </div>
   );
 }

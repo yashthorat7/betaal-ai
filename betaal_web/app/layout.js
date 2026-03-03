@@ -11,7 +11,7 @@ const mulish = Mulish({
 });
 
 export const metadata = {
-  title: 'BETAAL AI — Digital Rehabilitation',
+  title: 'BETAAL.AI',
   description:
     'AI-powered digital rehabilitation ecosystem combats addiction through adaptive alerts.',
 };
@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
       <body className="bg-background text-foreground flex min-h-screen flex-col scroll-smooth font-sans">
         <Providers>
           <Navbar />
-          <main className="flex-grow">{children}</main>
+          <main className="flex-grow pt-20">{children}</main>
           <Footer />
         </Providers>
       </body>

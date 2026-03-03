@@ -1,0 +1,18 @@
+'use client';
+
+import { useEffect } from 'react';
+
+export default function HomepageFooter() {
+  useEffect(() => {
+    const el = document.querySelector('footer');
+    if (el) el.style.display = 'none';
+    return () => { if (el) el.style.display = ''; };
+  }, []);
+
+  return (
+    <div style={{ background: '#1C1C1C', padding: '28px 60px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <p style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.08em', color: '#FAFAFA', margin: 0 }}>Betaal AI &copy; Copyrighted by Team Celestial.</p>
+      <p style={{ fontSize: 13, fontWeight: 600, letterSpacing: '0.08em', color: 'rgba(250,250,250,0.5)', margin: 0 }}>codecraze 3.0</p>
+    </div>
+  );
+}

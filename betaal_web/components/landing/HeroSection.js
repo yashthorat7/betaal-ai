@@ -51,7 +51,7 @@ export default function HeroSection() {
 
       <div className="relative z-[2] mt-10 flex items-start justify-center gap-10">
         <CtaButton icon={Download} label="Download the App" delay="0.3s" />
-        <div className="animate-slide-up relative z-[3] h-[1020px] w-[570px] shrink-0 overflow-hidden rounded-[60px] border border-[#d0d0d0] bg-gradient-to-b from-[#F0F0F0] to-[#E8E8E8] shadow-[0_-40px_80px_20px_rgba(250,250,250,0.9),0_12px_40px_rgba(0,0,0,0.04)]">
+        <div className="animate-slide-up relative z-[3] h-[1020px] w-[570px] shrink-0 overflow-hidden rounded-[60px] border border-[#d0d0d0] bg-gradient-to-b from-[#F0F0F0] to-[#E8E8E8] shadow-[0_-30px_70px_10px_rgba(250,250,250,0.6),0_12px_40px_rgba(0,0,0,0.04)]">
           <div className="mx-auto h-9 w-[160px] rounded-b-[20px] bg-[#d0d0d0]" />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
             <div className="text-[56px] font-[900] tracking-[-0.03em] text-[#c0c0c0]">BETAAL</div>

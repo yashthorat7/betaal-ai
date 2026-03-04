@@ -71,7 +71,7 @@ export default function ProgressRing({ usage = 0, quota = 100 }) {
         <span className="text-[11px] font-black tracking-[0.15em] text-[#1C1C1C]/40 uppercase">
           {usage}m used of {quota}m
         </span>
-        <p className="mt-1 text-[10px] font-bold tracking-widest text-[#1C1C1C]/20 uppercase">
+        <p className="mt-1 text-[10px] font-bold text-[#1C1C1C]/20 uppercase">
           {isOver ? 'Critical Alert: Exceeded Daily Quota' : 'Pacing Well Toward Goal'}
         </p>
       </div>

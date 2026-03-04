@@ -52,7 +52,7 @@ export default function ChartCell({ data }) {
                 cursor={{ stroke: '#1C1C1C', strokeWidth: 1, strokeDasharray: '3 3' }}
                 content={({ active, payload, label }) =>
                   active && payload?.length ? (
-                    <div className="rounded-xl bg-[#1C1C1C] px-3 py-2 text-[9px] font-black tracking-widest text-white uppercase shadow-2xl">
+                    <div className="rounded-xl bg-[#1C1C1C] px-3 py-2 text-[9px] font-black text-white uppercase shadow-2xl">
                       {label} &mdash; {payload[0].value}M
                     </div>
                   ) : null

@@ -25,14 +25,14 @@ export default function DeviceList({ devices = [] }) {
                   <Icon size={14} />
                 </div>
                 <div className="flex flex-col">
-                  <span className="max-w-[120px] truncate text-[11px] font-[900] tracking-widest text-[#1C1C1C] uppercase">
+                  <span className="max-w-[120px] truncate text-[11px] font-[900] text-[#1C1C1C] uppercase">
                     {d.name}
                   </span>
                   <div className="mt-1 flex items-center gap-1.5">
                     <span
                       className={`h-1 w-1 rounded-full ${d.status === 'active' ? 'bg-[#34c759]' : 'bg-[#f0f0f0]'}`}
                     />
-                    <span className="text-[9px] leading-none font-bold tracking-widest text-[#1C1C1C]/20 uppercase">
+                    <span className="text-[9px] leading-none font-bold text-[#1C1C1C]/20 uppercase">
                       {d.status}
                     </span>
                   </div>
@@ -42,7 +42,7 @@ export default function DeviceList({ devices = [] }) {
                 <span className="text-lg font-black tracking-tighter text-[#1C1C1C]/80">
                   {d.today_min}M
                 </span>
-                <span className="mt-1 block text-[8px] font-bold tracking-widest text-[#1C1C1C]/10 uppercase">
+                <span className="mt-1 block text-[8px] font-bold text-[#1C1C1C]/10 uppercase">
                   Today
                 </span>
               </div>

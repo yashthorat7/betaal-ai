@@ -38,7 +38,7 @@ export default function TypewriterHero({
   }, []);
 
   return (
-    <section ref={ref} className="relative min-h-[420px] overflow-hidden bg-white pt-36 pb-32">
+    <section ref={ref} className="relative overflow-hidden bg-white py-20">
       {squares.map((s, i) => (
         <div
           key={i}
@@ -56,7 +56,7 @@ export default function TypewriterHero({
       ))}
       <div className="container-pro relative z-10 text-center">
         <span className="animate-fade-in label-pro mb-8 block">{label}</span>
-        <p className="text-foreground relative mx-auto max-w-5xl text-[clamp(32px,3vw,52px)] leading-[1.15] font-bold tracking-tight">
+        <p className="text-foreground relative mx-auto max-w-none text-[clamp(24px,3.5vw,42px)] leading-[1.2] font-bold tracking-tight px-4">
           <span className="pointer-events-none invisible">{text}</span>
           <span className="pointer-events-none absolute inset-0">
             <span>{text.slice(0, charCount)}</span>

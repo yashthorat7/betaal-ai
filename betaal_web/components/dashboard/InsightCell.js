@@ -26,7 +26,7 @@ export default function InsightCell({ topApp, usage, quota }) {
       </p>
       <div className="relative z-10 mt-8 border-t border-[#f5f5f5] pt-6">
         <div className="flex items-center justify-between">
-          <span className="text-[9px] font-black tracking-widest text-[#1C1C1C]/20 uppercase">
+          <span className="text-[9px] font-black text-[#1C1C1C]/20 uppercase">
             Betaal AI
           </span>
           <span className="text-[9px] font-bold text-[#1C1C1C]/15">

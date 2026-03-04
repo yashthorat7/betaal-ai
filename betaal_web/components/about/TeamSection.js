@@ -35,7 +35,7 @@ export default function TeamSection() {
                 }}
               >
                 <div className="flex flex-col">
-                  <span className="text-xs font-black tracking-wider text-[#1C1C1C] uppercase">
+                  <span className="text-xs font-black text-[#1C1C1C] uppercase">
                     {m.name}
                   </span>
                   <div className="mt-1 h-px w-0 bg-[#0077B5]/40 transition-all duration-300 group-hover:w-full" />

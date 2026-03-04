@@ -1,9 +1,9 @@
 [
   {
     "uid": "demo_user_001",
-    "name": "Arjun",
+    "name": "Yash",
     "age": 19,
-    "email": "arjun.demo@gmail.com",
+    "email": "Yash.demo@gmail.com",
     "addiction_level": 8,
     "strictness": 3,
     "created_at": "2025-01-01T00:00:00Z",

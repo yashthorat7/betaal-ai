@@ -28,12 +28,12 @@ logger = logging.getLogger(__name__)
 ENDPOINTS = [
     # Auth
     {"method": "POST", "path": "/auth/verify", "payload": {"id_token": "demo_token_123"}},
-    {"method": "POST", "path": "/auth/login", "payload": {"email": "arjun.demo@gmail.com", "password": "password123"}},
+    {"method": "POST", "path": "/auth/login", "payload": {"email": "Yash.demo@gmail.com", "password": "password123"}},
     {"method": "POST", "path": "/auth/logout", "payload": {"uid": "demo_user_001", "session_token": "sess_abc123"}},
     
     # User
     {"method": "GET", "path": "/user/profile", "params": {"uid": "demo_user_001"}},
-    {"method": "PUT", "path": "/user/profile", "payload": {"uid": "demo_user_001", "name": "Arjun Updated", "age": 20, "addiction_level": 8, "strictness": 3}},
+    {"method": "PUT", "path": "/user/profile", "payload": {"uid": "demo_user_001", "name": "Yash Updated", "age": 20, "addiction_level": 8, "strictness": 3}},
     {"method": "GET", "path": "/user/list", "params": {"uid": "demo_user_001"}},
     {"method": "GET", "path": "/user/demo_user_001/stats"},
     {"method": "POST", "path": "/user/link", "payload": {"parent_uid": "demo_parent_001", "child_uid": "demo_user_001", "relation": "child", "link_code": "LINK123"}},

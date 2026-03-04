@@ -15,7 +15,7 @@ export default function AppBreakdown({ apps = [] }) {
           return (
             <div key={i} className="group">
               <div className="mb-2 flex items-center justify-between">
-                <span className="text-[11px] font-black tracking-widest text-[#1C1C1C] uppercase">
+                <span className="text-[11px] font-black text-[#1C1C1C] uppercase">
                   {a.app_name}
                 </span>
                 <span className="ml-2 text-[10px] font-black text-[#1C1C1C]/20">{a.minutes}M</span>

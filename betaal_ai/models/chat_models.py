@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import List, Optional
+from models.extension_models import VideoResult
 
 class ChatMessage(BaseModel):
     uid: str
@@ -9,6 +10,7 @@ class ChatMessage(BaseModel):
 class ChatResponse(BaseModel):
     response: str
     session_id: str
+    videos: List[VideoResult] = []
 
 class EvaluateRequest(BaseModel):
     uid: str

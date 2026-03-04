@@ -51,7 +51,7 @@
   .dash-card { @apply relative p-8 overflow-hidden rounded-[28px] border border-[#e8e8e8] bg-white transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.05)]; }
   .dash-card-glow { @apply absolute inset-0 rounded-[28px] opacity-0 transition-opacity duration-500 pointer-events-none; }
 
-  .btn-pro { @apply inline-flex items-center justify-center px-8 py-4 text-xs font-black uppercase tracking-widest transition-all active:scale-95; }
+  .btn-pro { @apply inline-flex items-center justify-center px-8 py-4 text-xs font-black uppercase transition-all active:scale-95; }
   .btn-solid { @apply bg-foreground text-background hover:opacity-90; }
   .btn-outline { @apply border border-foreground hover:bg-foreground hover:text-background; }
 }

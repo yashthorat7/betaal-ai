@@ -62,9 +62,9 @@
       "passed": true,
       "response": {
         "uid": "demo_user_001",
-        "name": "Arjun",
+        "name": "Yash",
         "age": 19,
-        "email": "arjun.demo@gmail.com",
+        "email": "Yash.demo@gmail.com",
         "addiction_level": 8,
         "strictness": 3,
         "stealth_icon": "default",
@@ -87,9 +87,9 @@
             "msg": "Field required",
             "input": {
               "uid": "demo_user_001",
-              "name": "Arjun Updated",
+              "name": "Yash Updated",
               "age": 20,
-              "email": "arjun.demo@gmail.com"
+              "email": "Yash.demo@gmail.com"
             },
             "url": "https://errors.pydantic.dev/2.12/v/missing"
           },
@@ -102,9 +102,9 @@
             "msg": "Field required",
             "input": {
               "uid": "demo_user_001",
-              "name": "Arjun Updated",
+              "name": "Yash Updated",
               "age": 20,
-              "email": "arjun.demo@gmail.com"
+              "email": "Yash.demo@gmail.com"
             },
             "url": "https://errors.pydantic.dev/2.12/v/missing"
           }
@@ -120,7 +120,7 @@
         "monitoring": [
           {
             "uid": "demo_user_001",
-            "name": "Arjun",
+            "name": "Yash",
             "relation": "child",
             "status": "active"
           }
@@ -363,7 +363,7 @@
       "status_code": 200,
       "passed": true,
       "response": {
-        "response": "Great progress, Arjun! You're under your limit today. Keep focusing on reducing Instagram. Try replacing 15 minutes of scrolling with a short walk today.",
+        "response": "Great progress, Yash! You're under your limit today. Keep focusing on reducing Instagram. Try replacing 15 minutes of scrolling with a short walk today.",
         "session_id": "sess_123"
       }
     },
@@ -410,7 +410,7 @@
       "status_code": 200,
       "passed": true,
       "response": {
-        "child_name": "Arjun",
+        "child_name": "Yash",
         "today_min": 185,
         "quota_min": 273,
         "under_quota": true,

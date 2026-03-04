@@ -7,8 +7,20 @@ export default function Navbar() {
   const { data: session } = useSession();
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [customUser, setCustomUser] = useState(null);
+
+  const checkAuth = () => {
+    if (typeof window !== 'undefined') {
+      const uid = localStorage.getItem('betaal_uid');
+      const name = localStorage.getItem('betaal_user_name');
+      if (uid) setCustomUser({ name: name || 'Yash', image: null });
+      else setCustomUser(null);
+    }
+  };
 
   useEffect(() => {
+    checkAuth();
+    window.addEventListener('betaal-session-update', checkAuth);
     const handleScroll = () => {
       const y = window.scrollY;
       if (y < 10) setIsVisible(true);
@@ -17,14 +29,32 @@ export default function Navbar() {
       setLastScrollY(y);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('betaal-session-update', checkAuth);
+    };
   }, [lastScrollY]);
+
+  const handleSignOut = async () => {
+    if (session) {
+      await signOut({ redirect: false });
+    }
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('betaal_uid');
+      localStorage.removeItem('betaal_session');
+      localStorage.removeItem('betaal_user_name');
+      checkAuth();
+      window.location.href = '/';
+    }
+  };
 
   const links = [
     { name: 'Dashboard', href: '/dashboard' },
     { name: 'Resources', href: '/resources' },
     { name: 'About', href: '/about' },
   ];
+
+  const user = session?.user || customUser;
 
   return (
     <nav
@@ -51,38 +81,38 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-6">
-          {session ? (
+          {user ? (
             <div className="flex items-center gap-4">
               <div className="hidden flex-col items-end lg:flex">
-                <span className="text-[11px] leading-none font-black tracking-wider text-[#1C1C1C] uppercase">
-                  {session.user.name}
+                <span className="text-[11px] leading-none font-black text-[#1C1C1C] uppercase">
+                  {user.name}
                 </span>
                 <button
-                  onClick={() => signOut()}
-                  className="mt-1 text-[9px] font-bold tracking-widest text-[#1C1C1C]/40 uppercase transition-colors hover:text-red-500"
+                  onClick={handleSignOut}
+                  className="mt-1 text-[9px] font-bold text-[#1C1C1C]/40 uppercase transition-colors hover:text-red-500"
                 >
                   Sign Out
                 </button>
               </div>
               <div className="flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-[#1C1C1C]/10 bg-white ring-2 ring-transparent transition-all hover:ring-[#1C1C1C]/10">
-                {session.user.image ? (
+                {user.image ? (
                   <img
-                    src={session.user.image}
-                    alt={session.user.name}
+                    src={user.image}
+                    alt={user.name}
                     className="h-full w-full object-cover"
                   />
                 ) : (
-                  <span className="text-xs font-black">{session.user.name?.[0] || 'U'}</span>
+                  <span className="text-xs font-black">{user.name?.[0] || 'U'}</span>
                 )}
               </div>
             </div>
           ) : (
-            <button
-              onClick={() => signIn('google')}
-              className="rounded-full bg-[#1C1C1C] px-7 py-2.5 text-xs font-black tracking-widest text-[#FAFAFA] uppercase shadow-md shadow-[#1C1C1C]/10 transition-all hover:scale-105 hover:bg-[#1C1C1C]/90 active:scale-95"
+            <Link
+              href="/auth/signin"
+              className="rounded-full bg-[#1C1C1C] px-7 py-2.5 text-xs font-black text-[#FAFAFA] uppercase shadow-md shadow-[#1C1C1C]/10 transition-all hover:scale-105 hover:bg-[#1C1C1C]/90 active:scale-95"
             >
               Sign In
-            </button>
+            </Link>
           )}
         </div>
       </div>

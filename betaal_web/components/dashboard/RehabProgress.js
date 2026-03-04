@@ -71,7 +71,7 @@ export default function RehabProgress({ plan = null }) {
             />
           </div>
 
-          <p className="text-right text-[10px] font-bold tracking-widest text-[#1C1C1C]/20 uppercase">
+          <p className="text-right text-[10px] font-bold text-[#1C1C1C]/20 uppercase">
             {pct}% Path Complete
           </p>
         </div>
@@ -90,7 +90,7 @@ export default function RehabProgress({ plan = null }) {
               notifications during deep-work hours."
             </p>
 
-            <button className="mt-8 rounded-full border border-[#f0f0f0] bg-white px-6 py-2.5 text-[10px] font-[900] tracking-widest text-[#1C1C1C]/50 uppercase transition-all hover:bg-[#FAFAFA] hover:text-[#1C1C1C] hover:shadow-sm">
+            <button className="mt-8 rounded-full border border-[#f0f0f0] bg-white px-6 py-2.5 text-[10px] font-[900] text-[#1C1C1C]/50 uppercase transition-all hover:bg-[#FAFAFA] hover:text-[#1C1C1C] hover:shadow-sm">
               Full Insight
             </button>
           </div>

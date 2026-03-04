@@ -26,7 +26,7 @@ export default function BlogSection() {
             >
               <div>
                 <div className="mb-4 flex items-center gap-2.5">
-                  <span className="rounded-md bg-black/5 px-3 py-1 text-[10px] font-black tracking-widest text-[#1C1C1C] uppercase">
+                  <span className="rounded-md bg-black/5 px-3 py-1 text-[10px] font-black text-[#1C1C1C] uppercase">
                     {b.tag}
                   </span>
                   <span className="flex items-center gap-1 text-[11px] font-extrabold text-[#1C1C1C]/40 uppercase">

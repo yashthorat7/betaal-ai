@@ -14,7 +14,7 @@ export default function AppCell({ apps }) {
       />
       <div className="relative z-10 mb-8 flex items-center justify-between">
         <h3 className="stat-label">App Breakdown</h3>
-        <span className="text-[9px] font-black tracking-widest text-[#1C1C1C]/15 uppercase">
+        <span className="text-[9px] font-black text-[#1C1C1C]/15 uppercase">
           Today
         </span>
       </div>

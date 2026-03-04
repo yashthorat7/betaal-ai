@@ -25,7 +25,7 @@ export default function HeatMap({ weeks = [] }) {
           {DAYS.map((d) => (
             <span
               key={d}
-              className="text-[8px] font-black tracking-widest text-[#1C1C1C]/15 uppercase"
+              className="text-[8px] font-black text-[#1C1C1C]/15 uppercase"
             >
               {d}
             </span>
@@ -41,7 +41,7 @@ export default function HeatMap({ weeks = [] }) {
                   key={di}
                   className={`group relative w-full flex-1 rounded-sm ${getColor(v, max)} cursor-default transition-all duration-300 hover:scale-[1.15] hover:ring-2 hover:ring-[#1C1C1C]/10`}
                 >
-                  <div className="absolute bottom-full left-1/2 z-50 mb-2 hidden -translate-x-1/2 rounded-md bg-[#1C1C1C] px-2 py-1 text-[8px] font-black tracking-widest whitespace-nowrap text-white uppercase shadow-2xl group-hover:flex">
+                  <div className="absolute bottom-full left-1/2 z-50 mb-2 hidden -translate-x-1/2 rounded-md bg-[#1C1C1C] px-2 py-1 text-[8px] font-black whitespace-nowrap text-white uppercase shadow-2xl group-hover:flex">
                     {v}M
                   </div>
                 </div>

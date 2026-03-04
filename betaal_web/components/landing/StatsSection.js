@@ -50,25 +50,25 @@ export default function StatsSection() {
   }, [sectionRef]);
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden py-[100px]">
+    <section ref={sectionRef} className="relative overflow-hidden py-16">
       <div
         className="absolute -inset-5 z-0 bg-[radial-gradient(ellipse_at_center,#252525_0%,#1C1C1C_70%)] will-change-transform"
         style={{ transform: `scale(${scale})` }}
       />
-      <div className="relative z-[1] mx-auto grid max-w-[1200px] grid-cols-4 gap-6 px-[60px]">
+      <div className="container-pro relative z-[1] mx-auto grid grid-cols-2 gap-6 md:grid-cols-4">
         {STATS.map((s, i) => (
           <div
             key={i}
-            className="animate-fade-in rounded-[20px] border border-white/10 bg-white/[0.04] p-12 text-center backdrop-blur-sm transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:border-[rgba(0,212,255,0.4)] hover:shadow-[0_16px_40px_rgba(0,212,255,0.08)]"
+            className="animate-fade-in rounded-[24px] border border-white/10 bg-white/[0.04] p-8 text-center backdrop-blur-sm transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:border-[rgba(0,212,255,0.4)] hover:shadow-[0_16px_40px_rgba(0,212,255,0.08)]"
             style={{ animationDelay: `${i * 0.1}s` }}
           >
             <div
               ref={(el) => (nums.current[i] = el)}
-              className="text-[clamp(36px,4vw,56px)] leading-none font-[900] tracking-[-0.03em] text-[#FAFAFA]"
+              className="text-[clamp(32px,3.5vw,48px)] leading-none font-[900] tracking-[-0.03em] text-[#FAFAFA]"
             >
               0
             </div>
-            <div className="mt-4 text-xs font-bold tracking-[0.18em] text-[rgba(250,250,250,0.45)] uppercase">
+            <div className="mt-3 text-[10px] font-black tracking-[0.2em] text-[rgba(250,250,250,0.3)] uppercase">
               {s.label}
             </div>
           </div>

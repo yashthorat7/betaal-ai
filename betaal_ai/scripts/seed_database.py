@@ -28,7 +28,7 @@ def seed_database():
     else:
         # Fallback dummy data if JSON falls through
         db.collection("users").document("demo_user_001").set({
-             "uid": "demo_user_001", "name": "Arjun", "age": 19, "addiction_level": 8, "strictness": 3
+             "uid": "demo_user_001", "name": "Yash", "age": 19, "addiction_level": 8, "strictness": 3
         })
         print(f"✅ Seeded fallback user profile: demo_user_001")
 

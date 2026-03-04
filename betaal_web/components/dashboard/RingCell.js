@@ -42,17 +42,17 @@ export default function RingCell({ usage, quota }) {
           <span className="text-5xl font-black tracking-tighter" style={{ color }}>
             {Math.round(p)}%
           </span>
-          <span className="mt-1 text-[9px] font-[900] tracking-widest text-[#1C1C1C]/20 uppercase">
+          <span className="mt-1 text-[9px] font-[900] text-[#1C1C1C]/20 uppercase">
             Used
           </span>
         </div>
       </div>
       <div className="z-10 mt-8 text-center">
-        <span className="text-[11px] font-black tracking-widest text-[#1C1C1C]/30 uppercase">
+        <span className="text-[11px] font-black text-[#1C1C1C]/30 uppercase">
           {usage}m <span className="mx-1 text-[#1C1C1C]/10">/</span> {quota}m
         </span>
         <div
-          className={`mt-3 inline-block rounded-full px-4 py-1.5 text-[9px] font-black tracking-widest uppercase ${isOver ? 'bg-[#ff3b30]/5 text-[#ff3b30]' : 'bg-[#34c759]/5 text-[#34c759]'}`}
+          className={`mt-3 inline-block rounded-full px-4 py-1.5 text-[9px] font-black uppercase ${isOver ? 'bg-[#ff3b30]/5 text-[#ff3b30]' : 'bg-[#34c759]/5 text-[#34c759]'}`}
         >
           {isOver ? 'Over Quota' : 'In Range'}
         </div>

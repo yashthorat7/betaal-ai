@@ -35,13 +35,13 @@ export default function DashboardCard({
       <div className="mb-8 flex items-start justify-between">
         <div>
           {badge && (
-            <span className="mb-3 inline-block rounded-full bg-[#1C1C1C]/5 px-3 py-1 text-[9px] font-black tracking-widest text-[#1C1C1C]/40 uppercase">
+            <span className="mb-3 inline-block rounded-full bg-[#1C1C1C]/5 px-3 py-1 text-[9px] font-black text-[#1C1C1C]/40 uppercase">
               {badge}
             </span>
           )}
           <h3 className="text-sm font-black tracking-[0.2em] text-[#1C1C1C] uppercase">{title}</h3>
           {subtitle && (
-            <p className="mt-1 text-[11px] font-bold tracking-wider text-[#1C1C1C]/30 uppercase">
+            <p className="mt-1 text-[11px] font-bold text-[#1C1C1C]/30 uppercase">
               {subtitle}
             </p>
           )}

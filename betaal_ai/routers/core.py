@@ -16,7 +16,7 @@ router = APIRouter(tags=["Core (Auth, User, Usage)"])
 # ====== AUTH ROUTES ====== #
 @router.post("/auth/verify", response_model=AuthResponse)
 async def verify_token(request: VerifyRequest):
-    return AuthResponse(uid="demo_user_001", email="arjun.demo@gmail.com", session_token="sess_abc123")
+    return AuthResponse(uid="demo_user_001", email="Yash.demo@gmail.com", session_token="sess_abc123")
 
 @router.post("/auth/login", response_model=LoginResponse)
 async def login(request: LoginRequest):
@@ -39,7 +39,7 @@ async def get_profile(uid: str):
             pass # Fallback to Plan B
     
     return UserProfile(
-        uid=uid, name="Arjun", age=19, email="arjun.demo@gmail.com",
+        uid=uid, name="Yash", age=19, email="Yash.demo@gmail.com",
         addiction_level=8, strictness=3, linked_parent_id="demo_parent_001"
     )
 
@@ -56,7 +56,7 @@ async def update_profile(request: UserUpdate):
 
 @router.get("/user/list", response_model=MonitorListResponse)
 async def list_linked_users(uid: str):
-    return MonitorListResponse(monitoring=[{"uid": "demo_user_001", "name": "Arjun", "relation": "child", "status": "active"}])
+    return MonitorListResponse(monitoring=[{"uid": "demo_user_001", "name": "Yash", "relation": "child", "status": "active"}])
 
 @router.get("/user/{user_id}/stats", response_model=UserStatsResponse)
 async def get_user_stats(user_id: str):

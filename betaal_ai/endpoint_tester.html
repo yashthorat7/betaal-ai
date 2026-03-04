@@ -329,12 +329,12 @@
         const endpoints = [
             // Auth
             { group: 'auth', method: 'POST', path: '/auth/verify', desc: 'Verify user session token', body: { id_token: 'demo_token_123' }, google: true },
-            { group: 'auth', method: 'POST', path: '/auth/login', desc: 'User authentication login', body: { email: 'arjun.demo@gmail.com', password: 'password123' }, google: true },
+            { group: 'auth', method: 'POST', path: '/auth/login', desc: 'User authentication login', body: { email: 'Yash.demo@gmail.com', password: 'password123' }, google: true },
             { group: 'auth', method: 'POST', path: '/auth/logout', desc: 'Terminate user session', body: { uid: 'demo_user_001', session_token: 'sess_abc123' } },
             
             // User
             { group: 'user', method: 'GET', path: '/user/profile', desc: 'Retrieve full user profile', query: ['uid=demo_user_001'] },
-            { group: 'user', method: 'PUT', path: '/user/profile', desc: 'Update user profile attributes', body: { uid: 'demo_user_001', name: 'Arjun Updated', age: 20, addiction_level: 8, strictness: 3 } },
+            { group: 'user', method: 'PUT', path: '/user/profile', desc: 'Update user profile attributes', body: { uid: 'demo_user_001', name: 'Yash Updated', age: 20, addiction_level: 8, strictness: 3 } },
             { group: 'user', method: 'GET', path: '/user/list', desc: 'Fetch accounts linked for monitoring', query: ['uid=demo_user_001'] },
             { group: 'user', method: 'GET', path: '/user/{user_id}/stats', desc: 'Generic user usage statistics', params: { '{user_id}': 'demo_user_001' } },
             { group: 'user', method: 'POST', path: '/user/link', desc: 'Establish parent-child link', body: { parent_uid: 'demo_parent_001', child_uid: 'demo_user_001', relation: 'child', link_code: 'LINK123' } },

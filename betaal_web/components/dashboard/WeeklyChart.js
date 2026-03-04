@@ -16,7 +16,7 @@ import { History } from 'lucide-react';
 function CustomTooltip({ active, payload, label }) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-lg bg-[#1C1C1C] px-2 py-1.5 text-[9px] font-black tracking-widest text-white uppercase shadow-2xl">
+    <div className="rounded-lg bg-[#1C1C1C] px-2 py-1.5 text-[9px] font-black text-white uppercase shadow-2xl">
       <span className="mr-2 text-white/40">D{label}</span>
       <span>{payload[0].value}M</span>
     </div>

@@ -79,7 +79,7 @@ export default function QuickStats({ screenTime = 0, dailyQuota = 0, unlocks = 0
             {/* Subtle trend indicator (mock) */}
             <div className="mt-3 flex items-center gap-1.5">
               <div className="h-1.5 w-1.5 rounded-full bg-[#34c759]" />
-              <span className="text-[9px] leading-none font-[900] tracking-widest text-[#1C1C1C]/20 uppercase">
+              <span className="text-[9px] leading-none font-[900] text-[#1C1C1C]/20 uppercase">
                 Optimal
               </span>
             </div>

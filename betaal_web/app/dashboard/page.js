@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { Clock, Target, Unlock, Smartphone, RefreshCw } from 'lucide-react';
 import * as api from '@/lib/api';
@@ -20,31 +20,44 @@ export default function DashboardPage() {
     weeklyReport: [],
     rehabPlan: null,
     heatMap: { weeks: [] },
+    userProfile: null,
   });
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const fetchData = useCallback(async () => {
+    try {
+      const [usage, weekly, plan, heat, profile] = await Promise.all([
+        api.getUsageStats(),
+        api.getWeeklyReport(),
+        api.getRehabPlan(),
+        api.getHeatMap(),
+        api.getUserProfile(),
+      ]);
+      setData({
+        usageStats: usage,
+        weeklyReport: weekly.map((i) => ({ name: i.date.split('-')[2], mins: i.total_min })),
+        rehabPlan: plan,
+        heatMap: heat,
+        userProfile: profile,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
 
   useEffect(() => {
     (async () => {
-      try {
-        const [usage, weekly, plan, heat] = await Promise.all([
-          api.getUsageStats(),
-          api.getWeeklyReport(),
-          api.getRehabPlan(),
-          api.getHeatMap(),
-        ]);
-        setData({
-          usageStats: usage,
-          weeklyReport: weekly.map((i) => ({ name: i.date.split('-')[2], mins: i.total_min })),
-          rehabPlan: plan,
-          heatMap: heat,
-        });
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setLoading(false);
-      }
+      await fetchData();
+      setLoading(false);
     })();
-  }, []);
+  }, [fetchData]);
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await fetchData();
+    setRefreshing(false);
+  };
 
   if (loading) {
     return (
@@ -65,7 +78,7 @@ export default function DashboardPage() {
   const devices = data.usageStats?.devices || [];
   const greeting = (() => {
     const h = new Date().getHours();
-    const name = session?.user?.name?.split(' ')[0] || 'There';
+    const name = data.userProfile?.name || session?.user?.name?.split(' ')[0] || 'There';
     return h < 12
       ? `Good Morning, ${name}`
       : h < 17
@@ -91,8 +104,12 @@ export default function DashboardPage() {
               })}
             </p>
           </div>
-          <button className="flex items-center gap-2.5 rounded-full border border-[#e8e8e8] bg-white px-7 py-3.5 text-[10px] font-black tracking-widest uppercase transition-all hover:border-[#1C1C1C]/20 hover:shadow-lg">
-            <RefreshCw size={13} /> Refresh
+          <button
+            onClick={handleRefresh}
+            disabled={refreshing}
+            className="flex items-center gap-2.5 rounded-full border border-[#e8e8e8] bg-white px-7 py-3.5 text-[10px] font-black uppercase transition-all hover:border-[#1C1C1C]/20 hover:shadow-lg disabled:opacity-50"
+          >
+            <RefreshCw size={13} className={refreshing ? 'animate-spin' : ''} /> {refreshing ? 'Refreshing...' : 'Refresh'}
           </button>
         </div>
       </div>
@@ -190,7 +207,7 @@ export default function DashboardPage() {
                   />
                 ))}
               </div>
-              <p className="mt-2 text-[9px] font-black tracking-widest text-[#1C1C1C]/15 uppercase">
+              <p className="mt-2 text-[9px] font-black text-[#1C1C1C]/15 uppercase">
                 This week
               </p>
             </div>
@@ -226,16 +243,16 @@ export default function DashboardPage() {
               />
             </div>
             <div className="relative z-10 mt-3 flex items-center justify-between">
-              <span className="text-[9px] font-black tracking-widest text-white/20 uppercase">
+              <span className="text-[9px] font-black text-white/20 uppercase">
                 Start
               </span>
-              <span className="text-[9px] font-black tracking-widest text-white/40 uppercase">
+              <span className="text-[9px] font-black text-white/40 uppercase">
                 {data.rehabPlan
                   ? Math.round((data.rehabPlan.current_day / data.rehabPlan.duration_days) * 100)
                   : 0}
                 %
               </span>
-              <span className="text-[9px] font-black tracking-widest text-white/20 uppercase">
+              <span className="text-[9px] font-black text-white/20 uppercase">
                 Goal
               </span>
             </div>

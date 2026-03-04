@@ -1,8 +1,29 @@
 'use client';
+import { useState } from 'react';
+import { Shield, Check } from 'lucide-react';
+import { updateStrictness } from '@/lib/api';
 
 export default function RehabCell({ plan }) {
+  const [currentStrictness, setCurrentStrictness] = useState('Normal');
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+
   if (!plan) return null;
   const pct = Math.round((plan.current_day / plan.duration_days) * 100);
+
+  const handleStrictnessChange = async (level) => {
+    setIsUpdating(true);
+    try {
+      await updateStrictness('child_123', 'parent_456', level);
+      setCurrentStrictness(level);
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 2000);
+    } catch (err) {
+      console.error('Failed to update strictness', err);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
 
   return (
     <div className="dash-card group h-full">
@@ -12,7 +33,7 @@ export default function RehabCell({ plan }) {
           background: 'radial-gradient(ellipse at 60% 30%, rgba(175,82,222,0.05), transparent 70%)',
         }}
       />
-      <div className="relative z-10 mb-10 flex items-start justify-between">
+      <div className="relative z-10 mb-8 flex items-start justify-between">
         <div>
           <h3 className="stat-label mb-2">Recovery Path</h3>
           <p className="text-2xl font-black tracking-tighter text-[#1C1C1C]">
@@ -20,10 +41,25 @@ export default function RehabCell({ plan }) {
             {plan.phases.find((p) => p.phase === plan.current_phase)?.name}
           </p>
         </div>
-        <span className="text-[10px] font-black tracking-widest text-[#1C1C1C]/15 uppercase">
-          Day {plan.current_day} / {plan.duration_days}
-        </span>
+        <div className="flex flex-col items-end gap-2">
+          <span className="text-[10px] font-black text-[#1C1C1C]/15 uppercase">
+            Day {plan.current_day} / {plan.duration_days}
+          </span>
+          <div className="flex gap-1.5">
+            {['Normal', 'Strict', 'Extreme'].map((lv) => (
+              <button
+                key={lv}
+                onClick={() => handleStrictnessChange(lv)}
+                disabled={isUpdating}
+                className={`cursor-pointer rounded-full border px-3 py-1 text-[8px] font-black uppercase transition-all ${currentStrictness === lv ? 'border-[#1C1C1C] bg-[#1C1C1C] text-white' : 'border-[#e8e8e8] bg-transparent text-[#1C1C1C]/40 hover:border-[#1C1C1C]/20'}`}
+              >
+                {lv}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
+
       <div className="relative z-10 mb-10 flex items-center">
         {plan.phases.map((ph, i) => {
           const isActive = ph.phase === plan.current_phase;
@@ -41,7 +77,7 @@ export default function RehabCell({ plan }) {
                 {ph.phase}
               </div>
               <span
-                className={`mt-3 text-center text-[9px] font-black tracking-widest uppercase ${isActive ? 'text-[#1C1C1C]' : 'text-[#1C1C1C]/15'}`}
+                className={`mt-3 text-center text-[9px] font-black uppercase ${isActive ? 'text-[#1C1C1C]' : 'text-[#1C1C1C]/15'}`}
               >
                 {ph.name}
               </span>
@@ -49,15 +85,23 @@ export default function RehabCell({ plan }) {
           );
         })}
       </div>
+
       <div className="relative z-10 mb-4 h-2 overflow-hidden rounded-full bg-[#f5f5f5]">
         <div
           className="h-full rounded-full bg-[#1C1C1C] transition-all duration-[2s] ease-out"
           style={{ width: `${pct}%` }}
         />
       </div>
-      <span className="relative z-10 text-[9px] font-black tracking-widest text-[#1C1C1C]/15 uppercase">
-        {pct}% Complete
-      </span>
+      <div className="relative z-10 flex items-center justify-between">
+        <span className="text-[9px] font-black text-[#1C1C1C]/15 uppercase">
+          {pct}% Complete
+        </span>
+        {showSuccess && (
+          <span className="flex items-center gap-1 text-[9px] font-black text-[#34c759] uppercase">
+            <Check size={10} /> Strictness Updated
+          </span>
+        )}
+      </div>
     </div>
   );
 }

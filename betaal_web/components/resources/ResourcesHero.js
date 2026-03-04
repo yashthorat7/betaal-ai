@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Search, Sparkles, ArrowRight } from 'lucide-react';
 import { PROMPT_SUGGESTIONS } from '@/lib/resources-data';
+import { sendChatMessage } from '@/lib/api';
 
 const SQUARES = [
   { size: 70, top: '8%', left: '4%', rotate: -20, depth: 0.04 },
@@ -10,16 +11,18 @@ const SQUARES = [
   { size: 50, bottom: '20%', right: '5%', rotate: -50, depth: 0.05 },
 ];
 
-const AI_RESPONSE =
-  "Based on current research, the most effective approach is gradual reduction rather than cold turkey. Start by identifying your top 3 trigger apps, set daily time limits, and replace scrolling habits with intentional activities. I'd recommend watching the videos below for deeper strategies.";
-
 export default function ResourcesHero() {
   const [query, setQuery] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState('');
+  const [displayedResponse, setDisplayedResponse] = useState('');
   const [chars, setChars] = useState(0);
   const [parallax, setParallax] = useState({ x: 0, y: 0 });
   const [activePill, setActivePill] = useState(-1);
+  const [sessionId, setSessionId] = useState(null);
+
+  const [recommendedVideos, setRecommendedVideos] = useState([]);
 
   useEffect(() => {
     const fn = (e) =>
@@ -29,25 +32,38 @@ export default function ResourcesHero() {
   }, []);
 
   useEffect(() => {
-    if (!isTyping) return;
+    if (!isTyping || !displayedResponse) return;
     let i = 0;
     const iv = setInterval(() => {
       i++;
       setChars(i);
-      if (i >= AI_RESPONSE.length) {
+      if (i >= displayedResponse.length) {
         clearInterval(iv);
         setIsTyping(false);
       }
     }, 18);
     return () => clearInterval(iv);
-  }, [isTyping]);
+  }, [isTyping, displayedResponse]);
 
-  const submit = (text) => {
-    if (isTyping) return;
+  const submit = async (text) => {
+    if (isTyping || isLoading) return;
     setQuery(text);
-    setResponse(AI_RESPONSE);
+    setResponse('');
+    setDisplayedResponse('');
+    setRecommendedVideos([]);
     setChars(0);
-    setIsTyping(true);
+    setIsLoading(true);
+
+    try {
+      const data = await sendChatMessage(text, sessionId);
+      if (data.session_id) setSessionId(data.session_id);
+      setRecommendedVideos(data.videos || []);
+    } catch (err) {
+      console.warn('API /chat failed', err);
+      setRecommendedVideos([]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -98,10 +114,14 @@ export default function ResourcesHero() {
             />
             <button
               type="submit"
-              disabled={!query.trim() || isTyping}
+              disabled={!query.trim() || isTyping || isLoading}
               className={`flex h-14 w-14 items-center justify-center rounded-full bg-[#1C1C1C] text-[#FAFAFA] transition-all duration-300 hover:scale-105 active:scale-95 disabled:cursor-not-allowed ${query.trim() ? 'opacity-100' : 'opacity-40'}`}
             >
-              <ArrowRight size={24} />
+              {isLoading ? (
+                <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+              ) : (
+                <ArrowRight size={24} />
+              )}
             </button>
           </div>
         </form>
@@ -123,23 +143,50 @@ export default function ResourcesHero() {
           ))}
         </div>
 
-        {response && (
+        {(recommendedVideos.length > 0 || isLoading) && (
           <div className="animate-fade-in mx-auto mt-12 max-w-[1000px] rounded-[32px] border border-[#e0e0e0] bg-white p-10 text-left shadow-[0_32px_64px_-12px_rgba(0,0,0,0.08)]">
             <div className="mb-6 flex items-center gap-2 text-[#af52de]">
               <Sparkles size={18} />
               <span className="text-[10px] font-black tracking-[0.2em] uppercase">
-                AI ASSISTANT
+                AI ASSISTANT {isLoading ? '· FINDING RESOURCES...' : '· RECOMMENDED FOR YOU'}
               </span>
             </div>
-            <p className="m-0 text-xl leading-relaxed font-semibold text-[#1C1C1C]">
-              {response.slice(0, chars)}
-              {isTyping && (
-                <span className="ml-1 inline-block h-6 w-0.5 animate-pulse bg-[#af52de] align-text-bottom" />
+            
+            <div className="space-y-8">
+              {isLoading ? (
+                <div className="flex flex-col items-center justify-center py-10 gap-4">
+                  <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#f0f0f0] border-t-[#af52de]" />
+                </div>
+              ) : (
+                <div className="animate-slide-up">
+                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                    {recommendedVideos.map((v, i) => (
+                      <a
+                        key={v.id || i}
+                        href={v.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group flex flex-col gap-4 rounded-3xl transition-all duration-300 hover:opacity-80"
+                      >
+                        <div className="relative aspect-video overflow-hidden rounded-2xl bg-[#f5f5f5] shadow-sm">
+                          <img src={v.thumbnail} alt={v.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                          <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/10 flex items-center justify-center">
+                            <Sparkles className="text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100" size={32} />
+                          </div>
+                        </div>
+                        <h4 className="line-clamp-2 px-1 text-base font-black tracking-tight text-[#1C1C1C]">
+                          {v.title}
+                        </h4>
+                      </a>
+                    ))}
+                  </div>
+                </div>
               )}
-            </p>
+            </div>
           </div>
         )}
       </div>
     </section>
   );
 }
+

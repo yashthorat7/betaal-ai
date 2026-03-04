@@ -1,10 +1,30 @@
 'use client';
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Mail } from 'lucide-react';
+import { loginUser } from '@/lib/api';
 
 export default function SignInPage() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSignIn = async () => {
+    setIsLoading(true);
+    try {
+      const data = await loginUser('Yash.demo@gmail.com', 'password123');
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('betaal_uid', data.uid || 'demo_user_001');
+        localStorage.setItem('betaal_user_name', 'Yash');
+        window.dispatchEvent(new Event('betaal-session-update'));
+      }
+    } catch (err) {
+      console.warn('Login failed, using demo credentials', err);
+    } finally {
+      setIsLoading(false);
+      router.push('/dashboard');
+    }
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-white p-6">
@@ -21,14 +41,22 @@ export default function SignInPage() {
         </p>
 
         <button
-          onClick={() => router.push('/dashboard')}
-          className="flex w-full items-center justify-center gap-3 rounded-2xl bg-[#1C1C1C] py-5 text-xs font-[900] tracking-[0.15em] text-white uppercase transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-95"
+          onClick={handleSignIn}
+          disabled={isLoading}
+          className="flex w-full items-center justify-center gap-3 rounded-2xl bg-[#1C1C1C] py-5 text-xs font-[900] tracking-[0.15em] text-white uppercase transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-95 disabled:opacity-60"
         >
-          Continue with Google
+          {isLoading ? (
+            <>
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+              Signing in...
+            </>
+          ) : (
+            'Continue with Google'
+          )}
         </button>
 
         <div className="mt-8">
-          <p className="text-[9px] font-bold tracking-widest text-[#1C1C1C]/25 uppercase">
+          <p className="text-[9px] font-bold text-[#1C1C1C]/25 uppercase">
             Secure, Science-Backed, Focused
           </p>
         </div>
@@ -36,3 +64,4 @@ export default function SignInPage() {
     </div>
   );
 }
+

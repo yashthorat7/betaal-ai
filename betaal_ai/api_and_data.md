@@ -17,14 +17,14 @@ This file contains two things:
 { "id_token": "eyJhbGciOi..." }
 
 // Response 200
-{ "uid": "demo_user_001", "email": "arjun.demo@gmail.com", "session_token": "sess_abc123" }
+{ "uid": "demo_user_001", "email": "Yash.demo@gmail.com", "session_token": "sess_abc123" }
 ```
 
 ### POST /auth/login
 
 ```json
 // Request
-{ "email": "arjun.demo@gmail.com", "password": "password123" }
+{ "email": "Yash.demo@gmail.com", "password": "password123" }
 
 // Response 200
 { "uid": "demo_user_001", "session_token": "sess_abc123", "message": "Login successful" }
@@ -50,9 +50,9 @@ This file contains two things:
 // Response 200
 {
   "uid": "demo_user_001",
-  "name": "Arjun",
+  "name": "Yash",
   "age": 19,
-  "email": "arjun.demo@gmail.com",
+  "email": "Yash.demo@gmail.com",
   "addiction_level": 8,
   "strictness": 3,
   "stealth_icon": "default",
@@ -64,7 +64,7 @@ This file contains two things:
 
 ```json
 // Request
-{ "uid": "demo_user_001", "name": "Arjun", "age": 19, "addiction_level": 7, "strictness": 4 }
+{ "uid": "demo_user_001", "name": "Yash", "age": 19, "addiction_level": 7, "strictness": 4 }
 
 // Response 200
 { "status": "updated", "uid": "demo_user_001" }
@@ -76,7 +76,7 @@ This file contains two things:
 // Response 200
 {
   "monitoring": [
-    { "uid": "demo_user_001", "name": "Arjun", "relation": "child", "status": "active" }
+    { "uid": "demo_user_001", "name": "Yash", "relation": "child", "status": "active" }
   ]
 }
 ```
@@ -103,7 +103,7 @@ This file contains two things:
 { "parent_uid": "demo_parent_001", "child_uid": "demo_user_001", "relation": "child", "link_code": "AB12-CD34" }
 
 // Response 200
-{ "status": "success", "message": "Successfully linked Arjun's account." }
+{ "status": "success", "message": "Successfully linked Yash's account." }
 ```
 
 ---
@@ -280,7 +280,7 @@ This file contains two things:
 
 // Response 200
 {
-  "response": "Great progress, Arjun! You're on Day 8 of your 24-day plan and your screen time dropped from 7 hours to about 3 hours. That's a 56% reduction! Keep focusing on reducing Instagram — it's still your #1 app. Try replacing 15 minutes of scrolling with a short walk today.",
+  "response": "Great progress, Yash! You're on Day 8 of your 24-day plan and your screen time dropped from 7 hours to about 3 hours. That's a 56% reduction! Keep focusing on reducing Instagram — it's still your #1 app. Try replacing 15 minutes of scrolling with a short walk today.",
   "session_id": "chat_session_001"
 }
 ```
@@ -390,7 +390,7 @@ This file contains two things:
 ```json
 // Response 200
 {
-  "child_name": "Arjun",
+  "child_name": "Yash",
   "today_min": 185,
   "quota_min": 273,
   "under_quota": true,
@@ -453,9 +453,9 @@ Pre-seeded default data for the hackathon demo. We prioritize live core logic, b
 ```json
 {
   "uid": "demo_user_001",
-  "name": "Arjun",
+  "name": "Yash",
   "age": 19,
-  "email": "arjun.demo@gmail.com",
+  "email": "Yash.demo@gmail.com",
   "avatar_url": null,
   "addiction_level": 8,
   "strictness": 3,
@@ -539,8 +539,8 @@ Pre-seeded default data for the hackathon demo. We prioritize live core logic, b
 
 ```json
 [
-  { "device_id": "phone_001",  "name": "Arjun's Phone",  "type": "phone",  "status": "active", "today_min": 185 },
-  { "device_id": "laptop_001", "name": "Arjun's Laptop", "type": "laptop", "status": "active", "today_min": 63  },
+  { "device_id": "phone_001",  "name": "Yash's Phone",  "type": "phone",  "status": "active", "today_min": 185 },
+  { "device_id": "laptop_001", "name": "Yash's Laptop", "type": "laptop", "status": "active", "today_min": 63  },
   { "device_id": "phone_002",  "name": "Child's Phone",  "type": "phone",  "status": "active", "today_min": 225 }
 ]
 ```

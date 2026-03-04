@@ -2,9 +2,9 @@
 
 export const userProfile = {
   uid: 'demo_user_001',
-  name: 'Arjun',
+  name: 'Yash',
   age: 19,
-  email: 'arjun.demo@gmail.com',
+  email: 'Yash.demo@gmail.com',
   avatar_url: null,
   addiction_level: 8,
   strictness: 3,
@@ -82,14 +82,14 @@ export const appBreakdown = {
 export const connectedDevices = [
   {
     device_id: 'phone_001',
-    name: "Arjun's Phone",
+    name: "Yash's Phone",
     type: 'phone',
     status: 'active',
     today_min: 185,
   },
   {
     device_id: 'laptop_001',
-    name: "Arjun's Laptop",
+    name: "Yash's Laptop",
     type: 'laptop',
     status: 'active',
     today_min: 63,
@@ -110,6 +110,51 @@ export const heatMapData = {
     [175, 160, 150, 165, 140, 130, 120],
     [115, 105, 100, 110, 95, 90, 85],
   ],
+};
+
+// ====== Chat Fallback ====== //
+export const chatResponse = "Great progress! You're under your limit today. Keep focusing on reducing Instagram. Try replacing 15 minutes of scrolling with a short walk today. Remember, small consistent changes lead to lasting habits.";
+
+// ====== AI Risk Evaluation Fallback ====== //
+export const riskEvaluation = {
+  classification: 'Moderate Risk',
+  score: 65,
+  details: 'Screen time is dropping generally, but late-night usage remains consistently high across Instagram and YouTube.',
+  suggested_actions: [
+    'Enable Wind Down mode by 10 PM',
+    'Increase interruption strictness in the evening',
+  ],
+};
+
+// ====== YouTube Recommendations Fallback ====== //
+export const youtubeRecommendations = [
+  { title: 'How to Build Laser Focus', url: 'https://www.youtube.com/watch?v=AUoVn4sEGnM', thumbnail: 'https://img.youtube.com/vi/AUoVn4sEGnM/mqdefault.jpg', channel: 'Productivity Game' },
+  { title: 'Quit Social Media – Your Brain Will Thank You', url: 'https://www.youtube.com/watch?v=iONDebHX9qk', thumbnail: 'https://img.youtube.com/vi/iONDebHX9qk/mqdefault.jpg', channel: 'Dr. Cal Newport' },
+  { title: 'Digital Minimalism – Full Audiobook Summary', url: 'https://www.youtube.com/watch?v=0K5OO2ybueM', thumbnail: 'https://img.youtube.com/vi/0K5OO2ybueM/mqdefault.jpg', channel: 'Escaping Ordinary' },
+  { title: 'How I Broke My Phone Addiction', url: 'https://www.youtube.com/watch?v=3E7hkPZ-HTk', thumbnail: 'https://img.youtube.com/vi/3E7hkPZ-HTk/mqdefault.jpg', channel: "Matt D'Avella" },
+];
+
+// ====== Dashboard Fallback ====== //
+export const dashboardData = {
+  user_stats: { today_min: 185, limit_min: 273, top_app: 'Instagram' },
+  extension_stats: { browser_min: 63, limit_min: 120 },
+  linked_profiles: [{ name: 'Child Profile', today_min: 225, limit_min: 300 }],
+};
+
+// ====== Features List Fallback ====== //
+export const featuresList = [
+  { name: 'AI Chat', status: 'enabled', version: '1.0' },
+  { name: 'YouTube Recommendations', status: 'enabled', version: '1.0' },
+  { name: 'Parental Monitoring', status: 'enabled', version: '1.1' },
+];
+
+// ====== Daily Report Fallback ====== //
+export const dailyReport = {
+  date: '2025-01-14',
+  total_min: 185,
+  unlocks: 25,
+  top_app: 'WhatsApp',
+  under_quota: true,
 };
 
 // Export functions to simulate API calls

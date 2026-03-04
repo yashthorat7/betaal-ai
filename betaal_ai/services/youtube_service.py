@@ -1,88 +1,116 @@
 import httpx
-import google.generativeai as genai
+from google import genai
 from config import settings
 from models.extension_models import VideoResult
 from typing import List
 
+# Video Blacklist (Plan B)
+VIDEO_BLACKLIST = {"3O-9k5Iquxw", "voZN-qFXpQk"}
+
 # Fallback fake videos (Plan B)
 PLAN_B_VIDEOS = [
     VideoResult(
-        id="jfKfPfyJRdk", 
-        title="lofi hip hop radio - beats to relax/study to", 
-        thumbnail="https://img.youtube.com/vi/jfKfPfyJRdk/hqdefault.jpg", 
-        url="https://www.youtube.com/watch?v=jfKfPfyJRdk"
+        id="iONDebHX9qk", 
+        title="Quit Social Media - Your Brain Will Thank You", 
+        thumbnail="https://img.youtube.com/vi/iONDebHX9qk/hqdefault.jpg", 
+        url="https://www.youtube.com/watch?v=iONDebHX9qk"
     ),
     VideoResult(
-        id="5qap5aO4i9A", 
-        title="lofi hip hop radio - beats to sleep/chill to", 
-        thumbnail="https://img.youtube.com/vi/5qap5aO4i9A/hqdefault.jpg", 
-        url="https://www.youtube.com/watch?v=5qap5aO4i9A"
-    )
+        id="3E7hkPZ-HTk", 
+        title="How I Broke My Phone Addiction", 
+        thumbnail="https://img.youtube.com/vi/3E7hkPZ-HTk/hqdefault.jpg", 
+        url="https://www.youtube.com/watch?v=3E7hkPZ-HTk"
+    ),
+    VideoResult(
+        id="AUoVn4sEGnM", 
+        title="The Deep Focus Method - 4 Hours of Flow", 
+        thumbnail="https://img.youtube.com/vi/AUoVn4sEGnM/hqdefault.jpg", 
+        url="https://www.youtube.com/watch?v=AUoVn4sEGnM"
+    ),
+    VideoResult(
+        id="kc_Jq42Og7Q", 
+        title="Pomodoro Technique - Science of Focus", 
+        thumbnail="https://img.youtube.com/vi/kc_Jq42Og7Q/hqdefault.jpg", 
+        url="https://www.youtube.com/watch?v=kc_Jq42Og7Q"
+    ),
 ]
 
 def _extract_query_with_gemini(prompt: str, topics: List[str], keywords: List[str]) -> str:
     """Uses Gemini to distill a user prompt/context into a 3-5 word YouTube search query."""
     if not settings.GEMINI_API_KEY:
-        print("⚠️ Gemini API Key missing, falling back to simple query concatenation.")
-        return " ".join(topics + keywords)[:50]
+        print("⚠️ Gemini API Key missing.")
+        return "digital wellness " + " ".join(topics[:2])
         
     try:
-        genai.configure(api_key=settings.GEMINI_API_KEY)
-        model = genai.GenerativeModel('gemini-pro')
+        client = genai.Client(api_key=settings.GEMINI_API_KEY)
         
         system_prompt = (
-            "You are an assistant for a digital rehab app. Convert the user's situation into a "
-            "concise 3-5 word YouTube search query to find helpful, positive, or focus-oriented videos. "
-            "Respond ONLY with the search query. No quotes. No other text."
+            "You are a mental health expert for Betaal AI, specializing in mental health therapy. "
+            "Convert the user's concern into a 5-12 word YouTube search query targeting "
+            "remedies, addiction cures, and mental health recovery strategies. "
+            "Concern: {user_prompt}\n"
+            "Query (KEYWORDS ONLY):"
         )
         
-        user_context = f"Prompt: {prompt}\nTopics: {topics}\nKeywords: {keywords}"
-        response = model.generate_content(f"{system_prompt}\n\n{user_context}")
+        full_prompt = system_prompt.format(user_prompt=prompt)
+        response = client.models.generate_content(
+            model="gemini-3-flash-preview",
+            contents=full_prompt
+        )
         
-        query = response.text.strip().replace('"', '')
+        query = response.text.strip().replace('"', '').replace("'", "")
         if query:
+            print(f"✨ Gemini Search Query: '{query}'")
             return query
             
     except Exception as e:
-        print(f"⚠️ Gemini processing failed for youtube query: {e}")
+        print(f"⚠️ Gemini processing failed: {e}")
         
-    return " ".join(topics + keywords)[:50]
+    return f"{prompt[:20]} recovery" if prompt else "digital wellness tools"
 
 async def get_youtube_recommendations(prompt: str = None, topics: List[str] = [], keywords: List[str] = []) -> List[VideoResult]:
-    """Fetches real YouTube videos using the YouTube Data API v3 based on a Gemini-generated query."""
+    """Fetches real YouTube videos using the YouTube Data API v3."""
     if not settings.YOUTUBE_API_KEY:
-        print("⚠️ YOUTUBE_API_KEY is missing. Using Plan B Fallbacks.")
+        print("⚠️ YOUTUBE_API_KEY is missing. Using Fallbacks.")
         return PLAN_B_VIDEOS
 
     query = _extract_query_with_gemini(prompt or "", topics, keywords)
-    print(f"🔍 YouTube Search Query: '{query}'")
     
-    # Use a default fallback if query is completely empty
-    if not query.strip():
-        query = "focus music lofi"
-        
     api_url = "https://www.googleapis.com/youtube/v3/search"
     params = {
         "part": "snippet",
         "q": query,
         "type": "video",
-        "maxResults": 3,
+        "videoEmbeddable": "true",
+        "maxResults": 4, 
         "key": settings.YOUTUBE_API_KEY
     }
 
     try:
         async with httpx.AsyncClient() as client:
+            print(f"📡 YouTube Search API -> Query: '{query}'")
             response = await client.get(api_url, params=params)
-            response.raise_for_status()
-            data = response.json()
             
+            if response.status_code != 200:
+                print(f"❌ YouTube API Error: {response.status_code} - {response.text}")
+                return PLAN_B_VIDEOS
+                
+            data = response.json()
+            items = data.get("items", [])
+            
+            if not items:
+                print(f"⚠️ 0 results for: '{query}'. Using Fallbacks.")
+                return PLAN_B_VIDEOS
+
             videos = []
-            for item in data.get("items", []):
+            for item in items:
                 vid_id = item["id"]["videoId"]
+                if vid_id in VIDEO_BLACKLIST:
+                    print(f"🚫 Skipping blacklisted video: {vid_id}")
+                    continue
+                    
                 snippet = item["snippet"]
-                # Use high thumbnail if available, otherwise default
-                thumbnails = snippet["thumbnails"]
-                thumb_url = thumbnails.get("high", thumbnails.get("default", {})).get("url", "")
+                thumb_url = snippet["thumbnails"].get("high", snippet["thumbnails"].get("default", {})).get("url", "")
                 
                 videos.append(VideoResult(
                     id=vid_id,
@@ -90,13 +118,17 @@ async def get_youtube_recommendations(prompt: str = None, topics: List[str] = []
                     thumbnail=thumb_url,
                     url=f"https://www.youtube.com/watch?v={vid_id}"
                 ))
+                
+                # We only need 2 videos max.
+                if len(videos) >= 2:
+                    break
             
-            if videos:
-                return videos
-            else:
-                print("⚠️ YouTube search returned 0 results. Using Plan B Fallbacks.")
-                return PLAN_B_VIDEOS
+            if not videos:
+                 return PLAN_B_VIDEOS
+
+            print(f"✅ Found {len(videos)} videos.")
+            return videos
                 
     except Exception as e:
-        print(f"⚠️ YouTube Data API Request Failed: {e}. Using Plan B Fallbacks.")
+        print(f"⚠️ YouTube Request Failed: {e}. Using Fallbacks.")
         return PLAN_B_VIDEOS

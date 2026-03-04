@@ -64,8 +64,10 @@ This script will populate the database with default users, rehab plans, and usag
 
 Start the FastAPI application using Uvicorn:
 ```bash
-uvicorn main:app --reload
+.\venv\Scripts\activate; uvicorn main:app --reload
+
 ```
 
 - The API will be running at `http://localhost:8000`
 - Interactive API docs (Swagger UI) are available at `http://localhost:8000/docs`
+

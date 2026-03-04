@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../models/usage_record.dart';
 import '../services/usage_stats_service.dart';
@@ -8,6 +9,7 @@ class UsageProvider extends ChangeNotifier {
   List<UsageRecord> _logs = [];
   List<AppUsage> _todayApps = [];
   UsageRecord? _today;
+  Timer? _refreshTimer;
 
   List<UsageRecord> get logs => _logs;
   List<AppUsage> get todayApps => _todayApps;
@@ -43,6 +45,27 @@ class UsageProvider extends ChangeNotifier {
     'Spotify': 'entertainment',
     'Netflix': 'entertainment',
   };
+
+  /// Start polling every 30 seconds for live updates.
+  void startAutoRefresh() {
+    _refreshTimer?.cancel();
+    _refreshTimer = Timer.periodic(
+      const Duration(seconds: 30),
+      (_) => loadRealData(),
+    );
+  }
+
+  /// Stop the auto-refresh timer.
+  void stopAutoRefresh() {
+    _refreshTimer?.cancel();
+    _refreshTimer = null;
+  }
+
+  @override
+  void dispose() {
+    _refreshTimer?.cancel();
+    super.dispose();
+  }
 
   /// Load real data via MethodChannel. Falls back to dummy if no permission.
   Future<void> loadRealData() async {

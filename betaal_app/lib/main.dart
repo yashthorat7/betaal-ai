@@ -63,7 +63,7 @@ class MainShell extends StatefulWidget {
   State<MainShell> createState() => _MainShellState();
 }
 
-class _MainShellState extends State<MainShell> {
+class _MainShellState extends State<MainShell> with WidgetsBindingObserver {
   int _currentIndex = 0;
 
   final _screens = const [
@@ -76,6 +76,8 @@ class _MainShellState extends State<MainShell> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+
     final usage = context.read<UsageProvider>();
     final rehab = context.read<RehabProvider>();
     final chat = context.read<ChatProvider>();
@@ -89,11 +91,34 @@ class _MainShellState extends State<MainShell> {
 
     // Load real usage data (falls back to dummy if no permission)
     usage.loadRealData();
+    // Start auto-refresh every 30 seconds
+    usage.startAutoRefresh();
+
     final userName = context.read<AuthProvider>().user?.name ?? 'User';
     chat.loadInitialMessages(userName: userName);
 
     // Start background usage tracking service
     UsageStatsService.startTracking();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    context.read<UsageProvider>().stopAutoRefresh();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    final usage = context.read<UsageProvider>();
+    if (state == AppLifecycleState.resumed) {
+      // App came to foreground — refresh immediately + restart timer
+      usage.loadRealData();
+      usage.startAutoRefresh();
+    } else if (state == AppLifecycleState.paused) {
+      // App went to background — stop polling to save battery
+      usage.stopAutoRefresh();
+    }
   }
 
   static const _navIcons = [

@@ -1,19 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-/* ── Design Tokens — matches betaal_web landing ─────────── */
+/* ── Design Tokens — Google-like Clean Aesthetic ─────────── */
 :root {
-    --bg:         #FAFAFA;
-    --surface:    #F2F2F2;
-    --surface-2:  #EAEAEA;
-    --border:     #E0E0E0;
-    --border-dark:#D0D0D0;
-    --text:       #1C1C1C;
-    --text-muted: #6B6B6B;
-    --ease:       cubic-bezier(0.16, 1, 0.3, 1);
-    --radius-sm:  8px;
-    --radius-md:  12px;
-    --radius-lg:  20px;
-    --danger:     #ff2d55;
+    --bg:         #FFFFFF;
+    --surface:    #F8F9FA;
+    --border:     #DADCE0;
+    --text:       #202124;
+    --text-muted: #5F6368;
+    --google-blue:#1A73E8;
+    --google-red: #D93025;
+    --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+    --radius-sm:  4px;
+    --radius-md:  8px;
+    --radius-lg:  8px;
+    --shadow:     0 1px 2px 0 rgba(60,64,67,.30), 0 1px 3px 1px rgba(60,64,67,.15);
 }
 
 /* ── Reset & Base ──────────────────────────────────────── */
@@ -21,10 +21,10 @@
 
 body {
     font-family: 'Inter', system-ui, sans-serif;
-    background: var(--bg);
+    background: var(--surface);
     color: var(--text);
     margin: 0;
-    padding: 32px 0;
+    padding: 48px 0;
     display: flex;
     justify-content: center;
     min-height: 100vh;
@@ -32,12 +32,12 @@ body {
 
 /* ── Card ──────────────────────────────────────────────── */
 .options-card {
-    max-width: 540px;
+    max-width: 600px;
     width: 100%;
-    margin: 0 28px;
+    margin: 0 24px;
     display: flex;
     flex-direction: column;
-    gap: 28px;
+    gap: 32px;
     height: fit-content;
 }
 
@@ -46,25 +46,24 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 16px;
 }
 
 .title {
-    font-size: 26px;
-    font-weight: 900;
-    letter-spacing: -0.04em;
-    text-transform: uppercase;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text);
     margin: 0;
 }
 
 .account-badge {
-    font-size: 10px;
-    font-weight: 800;
-    padding: 5px 14px;
-    background: var(--bg);
-    border: 1.5px solid var(--border-dark);
-    border-radius: 30px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 12px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
     color: var(--text-muted);
 }
 
@@ -72,24 +71,20 @@ body {
 .setting-group {
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    background: linear-gradient(135deg, #f2f2f2, #eaeaea, #f0f0f0);
+    gap: 20px;
+    background: #fff;
     border: 1px solid var(--border);
-    padding: 20px;
-    border-radius: var(--radius-lg);
-    transition: box-shadow 300ms var(--ease);
-}
-
-.setting-group:hover {
-    box-shadow: 0 8px 28px rgba(28, 28, 28, 0.06);
+    padding: 24px;
+    border-radius: var(--radius-md);
+    box-shadow: 0 1px 2px 0 rgba(60,64,67,.30);
 }
 
 .group-label {
-    font-size: 10px;
-    font-weight: 800;
-    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--google-blue);
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.8px;
 }
 
 .setting-item {
@@ -104,72 +99,66 @@ body {
     align-items: center;
 }
 
-.info { display: flex; flex-direction: column; gap: 2px; }
+.info { display: flex; flex-direction: column; gap: 4px; }
 
 .label {
-    font-size: 14px;
-    font-weight: 700;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
 }
 
 .description {
-    font-size: 12px;
+    font-size: 13px;
     color: var(--text-muted);
     margin: 0;
-    line-height: 1.45;
+    line-height: 1.5;
 }
 
 /* ── Inputs ────────────────────────────────────────────── */
 .input-wrapper {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 input[type="number"],
 input[type="text"],
 textarea {
-    background: var(--bg);
-    border: 1.5px solid var(--border-dark);
+    background: #fff;
+    border: 1px solid var(--border);
     border-radius: var(--radius-sm);
     padding: 10px 12px;
-    font-size: 13px;
-    font-family: inherit;
+    font-size: 14px;
     color: var(--text);
     outline: none;
-    transition: border-color 200ms var(--ease), box-shadow 200ms var(--ease);
+    transition: border-color 0.2s;
 }
-
-input[type="number"] { width: 80px; }
-
-textarea {
-    width: 100%;
-    resize: none;
-}
-
-input::placeholder,
-textarea::placeholder { color: var(--text-muted); }
 
 input:focus,
 textarea:focus {
-    border-color: var(--text);
-    box-shadow: 0 2px 12px rgba(28, 28, 28, 0.08);
+    border-color: var(--google-blue);
+    box-shadow: inset 0 0 0 1px var(--google-blue);
 }
 
-.unit,
-.hint {
-    font-size: 12px;
+input[type="number"] { width: 90px; }
+
+textarea {
+    width: 100%;
+    resize: vertical;
+    min-height: 80px;
+}
+
+.unit, .hint {
+    font-size: 13px;
     color: var(--text-muted);
 }
-
-.hint { margin: 0; }
 
 /* ── Toggle Switch ─────────────────────────────────────── */
 .switch {
     position: relative;
     display: inline-block;
-    width: 42px;
-    height: 24px;
-    flex-shrink: 0;
+    width: 40px;
+    height: 20px;
 }
 
 .switch input { opacity: 0; width: 0; height: 0; }
@@ -178,97 +167,63 @@ textarea:focus {
     position: absolute;
     cursor: pointer;
     inset: 0;
-    background: var(--border-dark);
-    border-radius: 24px;
-    transition: background 250ms var(--ease);
+    background: #BDC1C6;
+    border-radius: 20px;
+    transition: 0.2s;
 }
 
 .slider::before {
     content: "";
     position: absolute;
-    width: 17px;
-    height: 17px;
-    left: 3.5px;
-    top: 50%;
-    transform: translateY(-50%);
+    width: 14px;
+    height: 14px;
+    left: 3px;
+    bottom: 3px;
     background: #fff;
     border-radius: 50%;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
-    transition: transform 250ms var(--ease), background 250ms var(--ease);
+    transition: 0.2s;
 }
 
-input:checked + .slider {
-    background: var(--text);
-}
-
+input:checked + .slider { background: #8AB4F8; }
 input:checked + .slider::before {
-    transform: translateY(-50%) translateX(18px);
+    transform: translateX(20px);
+    background: var(--google-blue);
 }
 
 /* ── Activity Log ──────────────────────────────────────── */
 .log-container {
-    max-height: 220px;
+    max-height: 240px;
     overflow-y: auto;
-    background: var(--bg);
+    background: #fff;
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
-    padding: 6px;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
+    padding: 8px;
 }
-
-.log-container::-webkit-scrollbar { width: 4px; }
-.log-container::-webkit-scrollbar-track { background: transparent; }
-.log-container::-webkit-scrollbar-thumb { background: var(--border-dark); border-radius: 4px; }
 
 .log-entry {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 9px 12px;
-    border-radius: 6px;
-    transition: background 150ms var(--ease);
+    padding: 10px 12px;
+    border-bottom: 1px solid #F1F3F4;
 }
 
-.log-entry:hover { background: var(--surface-2); }
+.log-entry:last-child { border-bottom: none; }
 
-.log-info { display: flex; align-items: center; gap: 8px; }
+.log-entry:hover { background: var(--surface); }
 
 .log-type-label {
-    font-size: 9px;
-    font-weight: 800;
-    color: var(--text);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    background: var(--border);
-    padding: 2px 8px;
-    border-radius: 20px;
-    border: 1px solid var(--border-dark);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--google-blue);
+    background: #E8F0FE;
+    padding: 2px 10px;
+    border-radius: 12px;
 }
 
 .log-time-label {
-    font-size: 11px;
-    color: var(--text-muted);
-    font-weight: 500;
-}
-
-.log-site {
     font-size: 12px;
-    font-weight: 600;
     color: var(--text-muted);
-    max-width: 150px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.empty-log {
-    font-size: 13px;
-    color: var(--text-muted);
-    text-align: center;
-    padding: 24px;
-    font-weight: 500;
 }
 
 /* ── Actions ───────────────────────────────────────────── */
@@ -276,56 +231,45 @@ input:checked + .slider::before {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
-    padding-bottom: 40px;
+    gap: 16px;
+    margin-top: 16px;
 }
 
-/* Primary — betaal_web CTA style */
 .primary-button {
-    background: var(--text);
-    color: #FAFAFA;
-    border: 1.5px solid var(--text);
-    border-radius: 30px;
-    padding: 14px 64px;
-    font-size: 12px;
-    font-weight: 800;
-    font-family: inherit;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    background: var(--google-blue);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 32px;
+    font-size: 14px;
+    font-weight: 500;
     cursor: pointer;
-    transition: transform 300ms var(--ease), box-shadow 300ms var(--ease);
+    box-shadow: 0 1px 2px 0 rgba(60,64,67,.30);
+    transition: background 0.2s, box-shadow 0.2s;
 }
 
 .primary-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 14px 32px rgba(28, 28, 28, 0.13);
+    background: #185ABC;
+    box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
 }
 
 .text-button {
-    background: var(--surface);
-    color: var(--text-muted);
+    background: transparent;
+    color: var(--google-blue);
     border: 1px solid var(--border);
-    border-radius: 30px;
-    padding: 7px 18px;
-    font-size: 11px;
-    font-weight: 700;
-    font-family: inherit;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    border-radius: 4px;
+    padding: 8px 20px;
+    font-size: 13px;
+    font-weight: 500;
     cursor: pointer;
-    transition: background 200ms var(--ease), color 200ms var(--ease);
 }
 
 .text-button:hover {
-    background: var(--surface-2);
-    color: var(--text);
+    background: rgba(26, 115, 232, 0.04);
 }
 
 .status-msg {
-    font-size: 12px;
-    font-weight: 700;
+    font-size: 13px;
+    color: var(--google-blue);
     height: 20px;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    transition: opacity 300ms var(--ease);
 }

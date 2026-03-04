@@ -3,14 +3,17 @@
   "name": "Betaal AI",
   "version": "1.0.0",
   "description": "Minimalist focus tracking with subtle reminders.",
-  "permissions": ["alarms", "idle", "storage", "activeTab", "tabs"],
+  "permissions": ["alarms", "idle", "storage", "activeTab", "tabs", "scripting", "webNavigation"],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background/service_worker.js",
+    "type": "module"
   },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "js": ["content_scripts/effects.js", "content_scripts/main.js"],
+      "all_frames": true,
+      "run_at": "document_idle"
     }
   ],
   "action": {

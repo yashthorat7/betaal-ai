@@ -1,22 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-/* ── Design Tokens — matches betaal_web landing ─────────── */
+/* ── Design Tokens — Google-like Clean Aesthetic ─────────── */
 :root {
-    --bg:         #FAFAFA;
-    --surface:    #F2F2F2;
-    --surface-2:  #EAEAEA;
-    --border:     #E0E0E0;
-    --border-dark:#D0D0D0;
-    --text:       #1C1C1C;
-    --text-muted: #6B6B6B;
-    --ease:       cubic-bezier(0.16, 1, 0.3, 1);
-    --radius-sm:  10px;
-    --radius-md:  16px;
-    --radius-lg:  20px;
-    /* accent gradient — pink → cyan → purple → blue */
-    --accent-gradient: linear-gradient(135deg, #ff2d55, #af52de, #5ac8fa, #007aff);
-    --accent-solid:    #af52de;
-    --danger:     #ff2d55;
+    --bg:         #FFFFFF;
+    --surface:    #F8F9FA;
+    --border:     #DADCE0;
+    --text:       #202124;
+    --text-muted: #5F6368;
+    --google-blue:#1A73E8;
+    --google-red: #D93025;
+    --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+    --radius-sm:  4px;
+    --radius-md:  8px;
+    --radius-lg:  24px;
+    --ring-gradient: linear-gradient(135deg, #1A73E8, #4285F4);
+    --shadow:     0 1px 2px 0 rgba(60,64,67,.30), 0 1px 3px 1px rgba(60,64,67,.15);
 }
 
 /* ── Reset & Base ──────────────────────────────────────── */
@@ -24,9 +22,9 @@
 
 body {
     font-family: 'Inter', system-ui, sans-serif;
-    width: 340px;
+    width: 320px;
     margin: 0;
-    padding: 20px;
+    padding: 16px;
     background: var(--bg);
     color: var(--text);
     font-size: 14px;
@@ -38,7 +36,7 @@ body {
 .container {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 16px;
 }
 
 /* ── Progress Ring ─────────────────────────────────────── */
@@ -46,13 +44,13 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .ring-container {
     position: relative;
-    width: 148px;
-    height: 148px;
+    width: 130px;
+    height: 130px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -60,11 +58,11 @@ body {
 
 .progress-ring { transform: rotate(-90deg); }
 
-.progress-ring__background { stroke: var(--surface-2); }
+.progress-ring__background { stroke: #F1F3F4; }
 
 .progress-ring__circle {
-    stroke: url(#ring-gradient);
-    transition: stroke-dashoffset 1s var(--ease);
+    stroke: var(--google-blue);
+    transition: stroke-dashoffset 0.8s var(--ease);
 }
 
 .time-display {
@@ -72,46 +70,35 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1px;
+    gap: 0;
 }
 
 #remaining-time {
-    font-size: 38px;
-    font-weight: 800;
+    font-size: 32px;
+    font-weight: 700;
     line-height: 1;
-    letter-spacing: -2px;
     color: var(--text);
 }
 
 .limit-label {
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
 }
 
 .status-text { text-align: center; }
 
 .main-status {
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
 }
 
 .sub-status {
-    font-size: 12px;
-    font-weight: 500;
+    font-size: 11px;
+    font-weight: 400;
     color: var(--text-muted);
-}
-
-/* ── Divider ───────────────────────────────────────────── */
-.divider {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 0;
 }
 
 /* ── Sites Section ─────────────────────────────────────── */
@@ -121,63 +108,59 @@ body {
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 2px;
 }
 
 .site-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 9px 12px;
+    padding: 8px 10px;
     border-radius: var(--radius-sm);
-    background: linear-gradient(135deg, #f2f2f2, #eaeaea, #f0f0f0);
-    border: 1px solid var(--border);
-    transition: transform 250ms var(--ease), box-shadow 250ms var(--ease);
+    border: 1px solid transparent;
+    transition: background 0.2s var(--ease);
 }
 
 .site-row:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(28, 28, 28, 0.07);
+    background: var(--surface);
+    border-color: var(--border);
 }
 
 .site-info {
     display: flex;
     align-items: center;
-    gap: 9px;
+    gap: 12px;
     overflow: hidden;
 }
 
 .favicon {
     width: 16px;
     height: 16px;
-    border-radius: 3px;
-    flex-shrink: 0;
+    border-radius: 2px;
 }
 
 .domain-name {
-    font-weight: 600;
-    font-size: 12px;
+    font-weight: 500;
+    font-size: 13px;
+    color: var(--text);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 178px;
-    color: var(--text);
+    max-width: 160px;
 }
 
 .site-time {
-    font-size: 11px;
-    font-weight: 700;
+    font-size: 12px;
     color: var(--text-muted);
-    flex-shrink: 0;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    font-weight: 400;
 }
 
-/* ── Footer ────────────────────────────────────────────── */
+/* ── Footer & Navigation ────────────────────────────────── */
 .footer {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
+    margin-top: 4px;
 }
 
 .nav-buttons {
@@ -185,83 +168,75 @@ body {
     gap: 8px;
 }
 
-/* Base nav button — same as betaal_web CTA */
 .nav-button {
     flex: 1;
-    background: var(--bg);
-    color: var(--text);
-    border: 1.5px solid var(--text);
-    border-radius: 30px;
-    padding: 10px 8px;
+    background: #fff;
+    color: var(--google-blue);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
     font-size: 12px;
-    font-weight: 800;
-    font-family: inherit;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-weight: 600;
     cursor: pointer;
-    transition: transform 300ms var(--ease), box-shadow 300ms var(--ease), background 200ms var(--ease);
+    transition: background 0.2s, box-shadow 0.2s;
 }
 
 .nav-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 28px rgba(28, 28, 28, 0.12);
+    background: #F8F9FA;
+    box-shadow: 0 1px 2px rgba(60,64,67,0.1);
 }
 
-/* Dashboard = gradient filled */
 #dashboard-btn {
-    background: var(--text);
+    background: var(--google-blue);
     color: #fff;
-    border-color: var(--text);
+    border-color: var(--google-blue);
 }
 
 #dashboard-btn:hover {
-    background: #333;
+    background: #185ABC;
+    box-shadow: 0 1px 3px rgba(60,64,67,0.3);
 }
 
 /* ── Extra Time ────────────────────────────────────────── */
 .text-button {
     background: none;
     border: none;
-    color: var(--text-muted);
-    font-size: 11px;
-    font-weight: 700;
-    font-family: inherit;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    color: var(--google-blue);
+    font-size: 12px;
+    font-weight: 600;
     cursor: pointer;
     text-align: center;
-    text-decoration: underline;
-    transition: color 200ms var(--ease);
+    padding: 4px;
 }
 
-.text-button:hover { color: var(--text); }
+.text-button:hover { text-decoration: underline; }
 
 .extra-options {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     justify-content: center;
 }
 
 .extra-options button {
-    background: var(--bg);
+    background: #fff;
     color: var(--text);
-    border: 1.5px solid var(--text);
-    padding: 7px 18px;
-    border-radius: 30px;
+    border: 1px solid var(--border);
+    padding: 4px 12px;
+    border-radius: 12px;
     font-size: 11px;
-    font-weight: 800;
-    font-family: inherit;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    font-weight: 500;
     cursor: pointer;
-    transition: background 200ms var(--ease), color 200ms var(--ease), transform 200ms var(--ease);
 }
 
 .extra-options button:hover {
-    background: var(--text);
-    color: #fff;
-    transform: translateY(-1px);
+    background: var(--surface);
 }
 
 /* ── Utility ───────────────────────────────────────────── */
 .hidden { display: none !important; }
+.divider {
+    height: 1px;
+    background: var(--border);
+    border: none;
+    margin: 8px 0;
+}

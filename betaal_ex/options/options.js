@@ -46,8 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
     chrome.storage.local.get(
         ['dailyLimit', 'whitelist', 'userId', 'interruptLogs', 'enabledInterruptions'],
         (data) => {
+            const dailyLimitSec = data.dailyLimit || 7200; // default 120m
             userIdInput.value   = data.userId     || '';
-            limitInput.value    = data.dailyLimit || 120;
+            limitInput.value    = Math.round(dailyLimitSec / 60);
             whitelistText.value = data.whitelist  || '';
             updateAccountUI(data.userId);
             renderLogs(data.interruptLogs);
@@ -68,17 +69,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // ── Save Settings ─────────────────────────────────────────────────────
     saveBtn.addEventListener('click', () => {
         const userId      = userIdInput.value.trim();
-        const dailyLimit  = parseInt(limitInput.value, 10);
+        const limitMin    = parseInt(limitInput.value, 10);
         const whitelist   = whitelistText.value;
 
-        if (isNaN(dailyLimit) || dailyLimit < 2) {
-            showStatus('Limit must be at least 2 min', '#ff2d55');
+        if (isNaN(limitMin) || limitMin < 1) {
+            showStatus('Limit must be at least 1 min', '#D93025');
             return;
         }
 
+        const dailyLimitSec = limitMin * 60;
+
         chrome.storage.local.set({
             userId,
-            dailyLimit,
+            dailyLimit: dailyLimitSec,
             whitelist,
             enabledInterruptions: {
                 blur:  toggleBlur.checked,
@@ -88,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
             },
         }, () => {
             updateAccountUI(userId);
-            showStatus('Saved ✓', '#1C1C1C');
+            showStatus('Saved ✓', '#1A73E8');
         });
     });
 

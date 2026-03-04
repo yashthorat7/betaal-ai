@@ -3,18 +3,26 @@ from typing import List, Optional
 
 class DomainUsage(BaseModel):
     domain: str
-    minutes: int
+    seconds: int
 
 class HeartbeatRequest(BaseModel):
     uid: str
-    today_browser_min: int
+    today_browser_sec: int
     domains: List[DomainUsage]
 
 class HeartbeatResponse(BaseModel):
     should_blur: bool
-    time_left_min: int
+    time_left_sec: int
     message: str
-    daily_limit_min: int
+    daily_limit_sec: int
+
+class CooldownRequest(BaseModel):
+    uid: str
+    daily_limit_sec: int
+    num_effects: int
+
+class CooldownResponse(BaseModel):
+    interruptions: List[List[int]]
 
 class MonitorStatsResponse(BaseModel):
     child_name: str

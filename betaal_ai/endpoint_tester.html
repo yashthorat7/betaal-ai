@@ -91,20 +91,43 @@
             background: transparent;
         }
 
+        .tab-bar {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .tab {
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            color: var(--text-dim);
+            padding: 0.5rem 0;
+            transition: all 0.2s;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab:hover {
+            color: #000;
+        }
+
+        .tab.active {
+            color: #000;
+            border-bottom: 2px solid #000;
+        }
+
         .section-group {
-            margin-bottom: 6rem;
+            margin-bottom: 3rem;
         }
 
         .section-header {
-            font-size: 0.75rem;
-            font-weight: 800;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 2rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid #000;
-            display: inline-block;
-            color: #000;
+            display: none; /* Hidden because tabs show the group now */
         }
 
         .api-list {
@@ -320,6 +343,10 @@
             </div>
         </header>
 
+        <div id="tabTarget" class="tab-bar">
+            <!-- Tabs injected here -->
+        </div>
+
         <div id="renderTarget">
             <!-- Content injected here -->
         </div>
@@ -362,37 +389,49 @@
             { group: 'rehab', method: 'GET', path: '/report/weekly', desc: 'Seven-day trend analysis', query: ['uid=demo_user_001'] },
             
             // Extension & System
-            { group: 'extension', method: 'POST', path: '/extension/heartbeat', desc: 'Extension sync & rule check', body: { uid: 'demo_user_001', today_browser_min: 45, domains: [{domain: 'youtube.com', minutes: 20}] } },
+            { group: 'extension', method: 'POST', path: '/extension/heartbeat', desc: 'Extension sync & rule check', body: { uid: 'demo_user_001', today_browser_sec: 2700, domains: [{domain: 'youtube.com', seconds: 1200}] } },
+            { group: 'extension', method: 'POST', path: '/extension/cooldown', desc: 'Fetch randomized 2D interruption array', body: { uid: 'demo_user_001', daily_limit_sec: 1800, num_effects: 4 } },
             { group: 'system', method: 'GET', path: '/dashboard', desc: 'Aggregated ecosystem view', query: ['uid=demo_user_001'] },
             { group: 'system', method: 'GET', path: '/features', desc: 'Active feature directory' },
             { group: 'system', method: 'GET', path: '/health', desc: 'Backend health heartbeat' }
         ];
 
-        function render() {
-            const target = document.getElementById('renderTarget');
-            let currentGroup = '';
-            let currentSection = null;
-            let currentList = null;
-            
-            endpoints.forEach((ep, i) => {
-                if (ep.group !== currentGroup) {
-                    currentGroup = ep.group;
-                    
-                    currentSection = document.createElement('div');
-                    currentSection.className = 'section-group';
-                    
-                    const header = document.createElement('div');
-                    header.className = 'section-header';
-                    header.innerText = currentGroup;
-                    currentSection.appendChild(header);
-                    
-                    currentList = document.createElement('div');
-                    currentList.className = 'api-list';
-                    currentSection.appendChild(currentList);
-                    
-                    target.appendChild(currentSection);
-                }
+        let activeTab = 'auth';
 
+        function renderTabs() {
+            const tabTarget = document.getElementById('tabTarget');
+            tabTarget.innerHTML = '';
+            const groups = [...new Set(endpoints.map(ep => ep.group))];
+            
+            groups.forEach(group => {
+                const tab = document.createElement('div');
+                tab.className = `tab ${group === activeTab ? 'active' : ''}`;
+                tab.innerText = group;
+                tab.onclick = () => {
+                    activeTab = group;
+                    renderTabs();
+                    renderEndpoints();
+                };
+                tabTarget.appendChild(tab);
+            });
+        }
+
+        function renderEndpoints() {
+            const target = document.getElementById('renderTarget');
+            target.innerHTML = '';
+            
+            const filtered = endpoints.filter(ep => ep.group === activeTab);
+            
+            const currentSection = document.createElement('div');
+            currentSection.className = 'section-group';
+            
+            const currentList = document.createElement('div');
+            currentList.className = 'api-list';
+            currentSection.appendChild(currentList);
+            target.appendChild(currentSection);
+
+            filtered.forEach((ep) => {
+                const i = endpoints.indexOf(ep);
                 const card = document.createElement('div');
                 card.className = 'endpoint-card';
                 card.id = `ep-${i}`;
@@ -480,7 +519,8 @@
             }
         }
 
-        render();
+        renderTabs();
+        renderEndpoints();
     </script>
 </body>
 </html>

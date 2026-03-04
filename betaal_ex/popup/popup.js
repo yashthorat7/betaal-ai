@@ -29,39 +29,39 @@ function updateUI() {
         const domainUsage = data.domainUsage || {};
         const extraGrants = data.extraGrants || 0;
 
-        const usedMin      = Math.round(todayUsage);
-        const remaining    = Math.max(0, Math.round(dailyLimit - todayUsage));
+        const usedMin      = Math.floor(todayUsage / 60);
+        const remainingMin = Math.max(0, Math.floor((dailyLimit - todayUsage) / 60));
         const percentage   = Math.min(100, (todayUsage / dailyLimit) * 100);
         const offset       = CIRCUMFERENCE - (percentage / 100) * CIRCUMFERENCE;
 
-        remainingText.textContent  = remaining;
-        dailyLimitText.textContent = dailyLimit;
+        remainingText.textContent  = remainingMin;
+        dailyLimitText.textContent = Math.round(dailyLimit / 60);
         ring.style.strokeDashoffset = offset;
 
         // Switch gradient: danger (red) when over limit, brand gradient otherwise
         ring.setAttribute('stroke', percentage >= 100 ? 'url(#ring-danger)' : 'url(#ring-gradient)');
 
-        usageSummary.textContent = `${usedMin} min used today`;
+        usageSummary.textContent = `${usedMin}m used today`;
 
-        // Top 3 domains
+        // Top 3 domains (convert seconds to minutes for display)
         const sorted = Object.entries(domainUsage)
             .sort((a, b) => b[1] - a[1])
             .slice(0, 3);
 
         domainList.innerHTML = sorted.length
-            ? sorted.map(([domain, minutes]) => `
+            ? sorted.map(([domain, seconds]) => `
                 <li class="site-row">
                     <div class="site-info">
                         <img class="favicon" src="https://www.google.com/s2/favicons?domain=${domain}&sz=16" alt="">
                         <span class="domain-name" title="${domain}">${domain}</span>
                     </div>
-                    <span class="site-time">${Math.round(minutes)} min</span>
+                    <span class="site-time">${Math.round(seconds / 60)}m</span>
                 </li>`).join('')
             : '<li class="site-row"><span class="domain-name">No data yet</span></li>';
 
         // Disable extra time if grants exhausted
         if (extraGrants >= 2) {
-            addTimeBtn.textContent = 'Extra time added';
+            addTimeBtn.textContent = 'Limit Reached';
             addTimeBtn.disabled = true;
         }
     });

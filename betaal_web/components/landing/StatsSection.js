@@ -50,7 +50,7 @@ export default function StatsSection() {
   }, [sectionRef]);
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden py-16">
+    <section ref={sectionRef} className="relative overflow-hidden py-[80px] md:py-16 my-[60px] md:my-0">
       <div
         className="absolute -inset-5 z-0 bg-[radial-gradient(ellipse_at_center,#252525_0%,#1C1C1C_70%)] will-change-transform"
         style={{ transform: `scale(${scale})` }}
@@ -64,11 +64,11 @@ export default function StatsSection() {
           >
             <div
               ref={(el) => (nums.current[i] = el)}
-              className="text-[clamp(32px,3.5vw,48px)] leading-none font-[900] tracking-[-0.03em] text-[#FAFAFA]"
+              className="text-[clamp(32px,3.5vw,48px)] leading-none font-[900] tracking-tight text-[#FAFAFA]"
             >
               0
             </div>
-            <div className="mt-3 text-[10px] font-black tracking-[0.2em] text-[rgba(250,250,250,0.3)] uppercase">
+            <div className="mt-3 text-[10px] font-black tracking-widest text-[rgba(250,250,250,0.3)] uppercase">
               {s.label}
             </div>
           </div>

@@ -1,7 +1,6 @@
 'use client';
 import GridReveal from '@/components/common/GridReveal';
 import TypewriterHero from '@/components/common/TypewriterHero';
-import OurApproach from '@/components/about/OurApproach';
 import TeamSection from '@/components/about/TeamSection';
 import ContactForm from '@/components/about/ContactForm';
 
@@ -12,7 +11,6 @@ export default function AboutPage() {
   return (
     <GridReveal>
       <TypewriterHero text={MISSION_TEXT} label="Our Mission" />
-      <OurApproach />
       <TeamSection />
       <ContactForm />
     </GridReveal>

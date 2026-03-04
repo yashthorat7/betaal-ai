@@ -38,7 +38,7 @@ export default function TypewriterHero({
   }, []);
 
   return (
-    <section ref={ref} className="relative overflow-hidden bg-white py-20">
+    <section ref={ref} className="relative overflow-hidden bg-white py-[160px] md:py-[200px] mt-[40px] md:mt-0">
       {squares.map((s, i) => (
         <div
           key={i}

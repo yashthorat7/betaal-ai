@@ -82,36 +82,18 @@ export default function Navbar() {
 
         <div className="flex items-center gap-6">
           {user ? (
-            <div className="flex items-center gap-4">
-              <div className="hidden flex-col items-end lg:flex">
-                <span className="text-[11px] leading-none font-black text-[#1C1C1C] uppercase">
-                  {user.name}
-                </span>
-                <button
-                  onClick={handleSignOut}
-                  className="mt-1 text-[9px] font-bold text-[#1C1C1C]/40 uppercase transition-colors hover:text-red-500"
-                >
-                  Sign Out
-                </button>
-              </div>
-              <div className="flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-[#1C1C1C]/10 bg-white ring-2 ring-transparent transition-all hover:ring-[#1C1C1C]/10">
-                {user.image ? (
-                  <img
-                    src={user.image}
-                    alt={user.name}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <span className="text-xs font-black">{user.name?.[0] || 'U'}</span>
-                )}
-              </div>
-            </div>
+            <span 
+              onClick={handleSignOut}
+              className="cursor-pointer text-[13px] font-black tracking-wider text-[#1C1C1C] uppercase transition-opacity hover:opacity-70"
+            >
+              {user.name}
+            </span>
           ) : (
             <Link
               href="/auth/signin"
-              className="rounded-full bg-[#1C1C1C] px-7 py-2.5 text-xs font-black text-[#FAFAFA] uppercase shadow-md shadow-[#1C1C1C]/10 transition-all hover:scale-105 hover:bg-[#1C1C1C]/90 active:scale-95"
+              className="text-[13px] font-black tracking-wider text-[#1C1C1C] uppercase transition-opacity hover:opacity-70"
             >
-              Sign In
+              Yash
             </Link>
           )}
         </div>

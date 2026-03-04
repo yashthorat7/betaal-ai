@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Shield, Check } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { updateStrictness } from '@/lib/api';
 
 export default function RehabCell({ plan }) {
@@ -10,6 +10,7 @@ export default function RehabCell({ plan }) {
 
   if (!plan) return null;
   const pct = Math.round((plan.current_day / plan.duration_days) * 100);
+  const currentPhase = plan.phases.find((p) => p.phase === plan.current_phase);
 
   const handleStrictnessChange = async (level) => {
     setIsUpdating(true);
@@ -26,24 +27,17 @@ export default function RehabCell({ plan }) {
   };
 
   return (
-    <div className="dash-card group h-full">
-      <div
-        className="dash-card-glow group-hover:opacity-100"
-        style={{
-          background: 'radial-gradient(ellipse at 60% 30%, rgba(175,82,222,0.05), transparent 70%)',
-        }}
-      />
-      <div className="relative z-10 mb-8 flex items-start justify-between">
+    <div className="h-full rounded-2xl border border-gray-200 bg-white p-6">
+      <div className="mb-5 flex items-start justify-between">
         <div>
-          <h3 className="stat-label mb-2">Recovery Path</h3>
-          <p className="text-2xl font-black tracking-tighter text-[#1C1C1C]">
-            Phase {plan.current_phase} —{' '}
-            {plan.phases.find((p) => p.phase === plan.current_phase)?.name}
+          <h3 className="text-sm font-semibold text-gray-900">Recovery Path</h3>
+          <p className="mt-1 text-lg font-semibold text-gray-800">
+            Phase {plan.current_phase} — {currentPhase?.name}
           </p>
         </div>
         <div className="flex flex-col items-end gap-2">
-          <span className="text-[10px] font-black text-[#1C1C1C]/15 uppercase">
-            Day {plan.current_day} / {plan.duration_days}
+          <span className="text-xs text-gray-400">
+            Day {plan.current_day}/{plan.duration_days}
           </span>
           <div className="flex gap-1.5">
             {['Normal', 'Strict', 'Extreme'].map((lv) => (
@@ -51,7 +45,7 @@ export default function RehabCell({ plan }) {
                 key={lv}
                 onClick={() => handleStrictnessChange(lv)}
                 disabled={isUpdating}
-                className={`cursor-pointer rounded-full border px-3 py-1 text-[8px] font-black uppercase transition-all ${currentStrictness === lv ? 'border-[#1C1C1C] bg-[#1C1C1C] text-white' : 'border-[#e8e8e8] bg-transparent text-[#1C1C1C]/40 hover:border-[#1C1C1C]/20'}`}
+                className={`cursor-pointer rounded-full px-3 py-1 text-xs font-medium transition-all ${currentStrictness === lv ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
               >
                 {lv}
               </button>
@@ -60,7 +54,8 @@ export default function RehabCell({ plan }) {
         </div>
       </div>
 
-      <div className="relative z-10 mb-10 flex items-center">
+      {/* Phase stepper */}
+      <div className="mb-6 flex items-center">
         {plan.phases.map((ph, i) => {
           const isActive = ph.phase === plan.current_phase;
           const isPast = ph.phase < plan.current_phase;
@@ -68,16 +63,22 @@ export default function RehabCell({ plan }) {
             <div key={i} className="relative flex flex-1 flex-col items-center">
               {i > 0 && (
                 <div
-                  className={`absolute top-4 right-1/2 h-[2px] w-full ${isPast ? 'bg-[#1C1C1C]' : 'bg-[#f0f0f0]'} z-0`}
+                  className={`absolute top-3.5 right-1/2 h-0.5 w-full ${isPast ? 'bg-gray-900' : 'bg-gray-200'} z-0`}
                 />
               )}
               <div
-                className={`relative z-10 flex h-8 w-8 items-center justify-center rounded-full text-[9px] font-black transition-all duration-700 ${isActive ? 'scale-[1.2] bg-[#1C1C1C] text-white ring-8 ring-[#1C1C1C]/5' : isPast ? 'bg-[#1C1C1C] text-white' : 'border border-[#e8e8e8] bg-[#f5f5f5] text-[#1C1C1C]/20'}`}
+                className={`relative z-10 flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold transition-all ${
+                  isActive
+                    ? 'bg-gray-900 text-white ring-4 ring-gray-200'
+                    : isPast
+                      ? 'bg-gray-900 text-white'
+                      : 'bg-gray-100 text-gray-400'
+                }`}
               >
                 {ph.phase}
               </div>
               <span
-                className={`mt-3 text-center text-[9px] font-black uppercase ${isActive ? 'text-[#1C1C1C]' : 'text-[#1C1C1C]/15'}`}
+                className={`mt-2 text-center text-[10px] font-medium ${isActive ? 'text-gray-900' : 'text-gray-400'}`}
               >
                 {ph.name}
               </span>
@@ -86,19 +87,18 @@ export default function RehabCell({ plan }) {
         })}
       </div>
 
-      <div className="relative z-10 mb-4 h-2 overflow-hidden rounded-full bg-[#f5f5f5]">
+      {/* Progress bar */}
+      <div className="mb-2 h-1.5 overflow-hidden rounded-full bg-gray-100">
         <div
-          className="h-full rounded-full bg-[#1C1C1C] transition-all duration-[2s] ease-out"
+          className="h-full rounded-full bg-gray-900 transition-all duration-[2s] ease-out"
           style={{ width: `${pct}%` }}
         />
       </div>
-      <div className="relative z-10 flex items-center justify-between">
-        <span className="text-[9px] font-black text-[#1C1C1C]/15 uppercase">
-          {pct}% Complete
-        </span>
+      <div className="flex items-center justify-between">
+        <span className="text-xs text-gray-400">{pct}% Complete</span>
         {showSuccess && (
-          <span className="flex items-center gap-1 text-[9px] font-black text-[#34c759] uppercase">
-            <Check size={10} /> Strictness Updated
+          <span className="flex items-center gap-1 text-xs font-medium text-teal-600">
+            <Check size={12} /> Updated
           </span>
         )}
       </div>

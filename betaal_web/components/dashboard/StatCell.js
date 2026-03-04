@@ -6,7 +6,6 @@ export default function StatCell({
   value,
   subtext,
   icon: Icon,
-  accent = '#1C1C1C',
   delay = 0,
 }) {
   const [count, setCount] = useState(0);
@@ -32,36 +31,26 @@ export default function StatCell({
 
   return (
     <div
-      className="dash-card group"
+      className="rounded-2xl border border-gray-200 bg-white p-5 transition-all duration-500"
       style={{
-        transitionDelay: `${delay * 0.08}s`,
         opacity: visible ? 1 : 0,
-        transform: visible ? undefined : 'translateY(12px)',
-        transition: 'opacity 0.6s ease, transform 0.6s ease',
+        transform: visible ? undefined : 'translateY(8px)',
+        transition: 'opacity 0.5s ease, transform 0.5s ease',
       }}
     >
-      <div
-        className="dash-card-glow group-hover:opacity-100"
-        style={{ background: `radial-gradient(circle at 30% 30%, ${accent}09, transparent 70%)` }}
-      />
-      <div className="relative z-10 mb-6 flex items-center justify-between">
-        <span className="stat-label">{label}</span>
-        <div
-          className="flex h-9 w-9 items-center justify-center rounded-2xl border border-[#f0f0f0] bg-[#FAFAFA]"
-          style={{ color: accent }}
-        >
-          <Icon size={14} />
+      <div className="mb-4 flex items-center justify-between">
+        <span className="text-sm font-medium text-gray-500">{label}</span>
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gray-100 text-gray-500">
+          <Icon size={16} />
         </div>
       </div>
-      <div className="relative z-10">
-        <div className="text-3xl font-black tracking-tighter text-[#1C1C1C]">
-          {isNum ? count : value}
-          {isNum && <span className="ml-1 text-lg text-[#1C1C1C]/20">m</span>}
-        </div>
-        {subtext && (
-          <p className="mt-3 text-[10px] leading-relaxed font-bold text-[#1C1C1C]/30">{subtext}</p>
-        )}
+      <div className="text-2xl font-semibold text-gray-900">
+        {isNum ? count : value}
+        {isNum && <span className="ml-1 text-base font-normal text-gray-300">min</span>}
       </div>
+      {subtext && (
+        <p className="mt-1.5 text-xs text-gray-400">{subtext}</p>
+      )}
     </div>
   );
 }

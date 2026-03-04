@@ -8,52 +8,47 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import { Activity } from 'lucide-react';
 import { useIsClient } from '@/lib/hooks/useIsClient';
 
 export default function ChartCell({ data }) {
   const isClient = useIsClient();
   return (
-    <div className="dash-card group h-full">
-      <div
-        className="dash-card-glow group-hover:opacity-100"
-        style={{
-          background: 'radial-gradient(circle at 80% 20%, rgba(0,122,255,0.04), transparent 60%)',
-        }}
-      />
-      <div className="relative z-10 mb-8 flex items-start justify-between">
+    <div className="h-full rounded-2xl border border-gray-200 bg-white p-6">
+      <div className="mb-5 flex items-center justify-between">
         <div>
-          <h3 className="stat-label mb-2">Screen Time</h3>
-          <p className="text-2xl font-black tracking-tighter text-[#1C1C1C]">14-Day Trend</p>
-        </div>
-        <div className="flex h-9 w-9 items-center justify-center rounded-2xl border border-[#f0f0f0] bg-[#FAFAFA] text-[#1C1C1C]/20">
-          <Activity size={14} />
+          <h3 className="text-sm font-semibold text-gray-900">Screen Time Trend</h3>
+          <p className="mt-0.5 text-xs text-gray-400">Last {data.length} days</p>
         </div>
       </div>
       {isClient && (
-        <div className="relative z-10 h-44">
+        <div className="h-52">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={data}>
               <defs>
-                <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#1C1C1C" stopOpacity={0.07} />
-                  <stop offset="100%" stopColor="#1C1C1C" stopOpacity={0} />
+                <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#0d9488" stopOpacity={0.15} />
+                  <stop offset="100%" stopColor="#0d9488" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f5f5f5" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
               <XAxis
                 dataKey="name"
-                tick={{ fontSize: 9, fill: '#1C1C1C', opacity: 0.15, fontWeight: 900 }}
+                tick={{ fontSize: 11, fill: '#9ca3af' }}
                 axisLine={false}
                 tickLine={false}
               />
-              <YAxis hide />
+              <YAxis
+                tick={{ fontSize: 11, fill: '#9ca3af' }}
+                axisLine={false}
+                tickLine={false}
+                width={32}
+              />
               <Tooltip
-                cursor={{ stroke: '#1C1C1C', strokeWidth: 1, strokeDasharray: '3 3' }}
+                cursor={{ stroke: '#d1d5db', strokeWidth: 1 }}
                 content={({ active, payload, label }) =>
                   active && payload?.length ? (
-                    <div className="rounded-xl bg-[#1C1C1C] px-3 py-2 text-[9px] font-black text-white uppercase shadow-2xl">
-                      {label} &mdash; {payload[0].value}M
+                    <div className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs font-medium text-gray-700 shadow-lg">
+                      Day {label} — <span className="font-semibold">{payload[0].value}m</span>
                     </div>
                   ) : null
                 }
@@ -61,11 +56,11 @@ export default function ChartCell({ data }) {
               <Area
                 type="monotone"
                 dataKey="mins"
-                stroke="#1C1C1C"
+                stroke="#0d9488"
                 strokeWidth={2}
-                fill="url(#areaGrad)"
+                fill="url(#chartGrad)"
                 dot={false}
-                activeDot={{ r: 3, fill: '#1C1C1C', strokeWidth: 0 }}
+                activeDot={{ r: 4, fill: '#0d9488', stroke: '#fff', strokeWidth: 2 }}
               />
             </AreaChart>
           </ResponsiveContainer>

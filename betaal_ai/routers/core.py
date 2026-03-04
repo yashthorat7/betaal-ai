@@ -20,7 +20,16 @@ async def verify_token(request: VerifyRequest):
 
 @router.post("/auth/login", response_model=LoginResponse)
 async def login(request: LoginRequest):
-    return LoginResponse(uid="demo_user_001", session_token="sess_abc123", message="Login successful")
+    name = None
+    if request.email in ["yshthrt@gmail.com", "thoraty10@gmail.com"]:
+        name = "Yash"
+    
+    return LoginResponse(
+        uid=request.uid, 
+        session_token="sess_abc123", 
+        message="Login successful",
+        name=name
+    )
 
 @router.post("/auth/logout", response_model=LogoutResponse)
 async def logout(request: LogoutRequest):

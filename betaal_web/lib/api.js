@@ -225,12 +225,15 @@ export const updateStrictness = async (childId, parentUid, newStrictness) => {
 
 // ====== AUTH ====== //
 
-export const loginUser = async (email, password) => {
+export const loginUser = async (email, uid) => {
   try {
-    const response = await api.post('/auth/login', { email, password });
+    const response = await api.post('/auth/login', { email, uid });
     if (typeof window !== 'undefined' && response.data?.uid) {
       localStorage.setItem('betaal_uid', response.data.uid);
       localStorage.setItem('betaal_session', response.data.session_token);
+      if (response.data?.name) {
+          localStorage.setItem('betaal_user_name', response.data.name);
+      }
     }
     return response.data;
   } catch (error) {

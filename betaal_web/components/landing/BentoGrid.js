@@ -41,9 +41,9 @@ const FEATURES = [
 
 export default function BentoGrid() {
   return (
-    <section className="bg-transparent py-[100px]">
+    <section className="bg-transparent py-[140px] md:py-[100px]">
       <div className="mx-auto max-w-[1200px] px-[60px]">
-        <h2 className="animate-fade-in mb-[60px] text-[clamp(32px,3.5vw,52px)] leading-none font-[900] tracking-[-0.04em] text-[#1C1C1C] uppercase">
+        <h2 className="animate-fade-in mb-[80px] md:mb-[60px] text-[clamp(32px,3.5vw,52px)] leading-none font-[900] tracking-tight text-[#1C1C1C]">
           Everything You Need
         </h2>
         <div className="grid auto-rows-[minmax(280px,auto)] grid-cols-3 gap-5">
@@ -59,7 +59,7 @@ export default function BentoGrid() {
                 style={{ background: f.gradient }}
               />
               <div className="relative z-[1] rounded-b-[20px] bg-gradient-to-t from-[rgba(250,250,250,0.95)] from-60% to-transparent p-10">
-                <h3 className="mb-2.5 text-[22px] font-[800] tracking-[-0.02em] text-[#1C1C1C] uppercase">
+                <h3 className="mb-2.5 text-[22px] font-[800] tracking-tight text-[#1C1C1C]">
                   {f.title}
                 </h3>
                 <p className="m-0 text-[15px] leading-[1.55] font-medium text-[#6B6B6B]">

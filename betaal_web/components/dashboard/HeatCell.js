@@ -1,58 +1,59 @@
 'use client';
 
-function getHeatColor(value, max) {
+const DAYS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+
+function getColor(value, max) {
   const t = Math.min(1, value / max);
-  if (t < 0.2) return '#f0f0f0';
-  if (t < 0.4) return '#d0d0d0';
-  if (t < 0.6) return '#a0a0a0';
-  if (t < 0.8) return '#606060';
-  return '#1C1C1C';
+  if (t < 0.15) return 'bg-gray-100';
+  if (t < 0.35) return 'bg-teal-200';
+  if (t < 0.55) return 'bg-teal-400';
+  if (t < 0.75) return 'bg-teal-600';
+  return 'bg-teal-800';
 }
 
 export default function HeatCell({ weeks }) {
   const max = Math.max(...weeks.flat(), 1);
+
   return (
-    <div className="dash-card group h-full">
-      <div
-        className="dash-card-glow group-hover:opacity-100"
-        style={{
-          background: 'radial-gradient(circle at 80% 80%, rgba(0,212,255,0.04), transparent 60%)',
-        }}
-      />
-      <div className="relative z-10 mb-8 flex items-center justify-between">
-        <h3 className="stat-label">Usage Density</h3>
-        <span className="text-[9px] font-black text-[#1C1C1C]/15 uppercase">
-          4-Week Grid
-        </span>
+    <div className="h-full rounded-2xl border border-gray-200 bg-white p-6">
+      <div className="mb-5 flex items-center justify-between">
+        <h3 className="text-sm font-semibold text-gray-900">Activity</h3>
+        <span className="text-xs text-gray-400">{weeks.length} weeks</span>
       </div>
-      <div className="relative z-10 flex gap-1.5">
-        {weeks.map((w, wi) => (
-          <div key={wi} className="flex flex-1 flex-col gap-1.5">
-            {w.map((v, di) => (
+
+      {/* Day column headers: 7 columns */}
+      <div className="mb-1.5 grid grid-cols-7 gap-1">
+        {DAYS.map((d, i) => (
+          <div key={i} className="text-center text-[10px] font-medium text-gray-400">
+            {d}
+          </div>
+        ))}
+      </div>
+
+      {/* Each row = 1 week, each cell = 1 day */}
+      <div className="space-y-1">
+        {weeks.map((week, wi) => (
+          <div key={wi} className="grid grid-cols-7 gap-1">
+            {week.map((val, di) => (
               <div
                 key={di}
-                title={`${v}m`}
-                className="group/cell relative aspect-square w-full cursor-default rounded-md transition-all duration-300 hover:z-10 hover:scale-125"
-                style={{ backgroundColor: getHeatColor(v, max) }}
-              >
-                <div className="absolute bottom-full left-1/2 z-50 mb-1.5 hidden -translate-x-1/2 rounded-md bg-[#1C1C1C] px-2 py-1 text-[8px] font-black whitespace-nowrap text-white uppercase shadow-2xl group-hover/cell:flex">
-                  {v}m
-                </div>
-              </div>
+                title={`${val}m`}
+                className={`aspect-square rounded-[3px] ${getColor(val, max)} cursor-default transition-transform duration-200 hover:scale-110`}
+              />
             ))}
           </div>
         ))}
       </div>
-      <div className="relative z-10 mt-6 flex items-center gap-1.5">
-        <span className="mr-1 text-[8px] font-black text-[#1C1C1C]/15 uppercase">
-          Low
-        </span>
-        {['#f0f0f0', '#d0d0d0', '#a0a0a0', '#606060', '#1C1C1C'].map((c) => (
-          <div key={c} className="h-1.5 flex-1 rounded-full" style={{ backgroundColor: c }} />
-        ))}
-        <span className="ml-1 text-[8px] font-black text-[#1C1C1C]/15 uppercase">
-          High
-        </span>
+
+      {/* Legend */}
+      <div className="mt-4 flex items-center justify-end gap-1">
+        <span className="mr-1 text-[10px] text-gray-400">Less</span>
+        {['bg-gray-100', 'bg-teal-200', 'bg-teal-400', 'bg-teal-600', 'bg-teal-800'].map(
+          (c, i) => (
+            <div key={i} className={`h-2.5 w-2.5 rounded-[2px] ${c}`} />
+          ),
+        )}
+        <span className="ml-1 text-[10px] text-gray-400">More</span>
       </div>
     </div>
   );

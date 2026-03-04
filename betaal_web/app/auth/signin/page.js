@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Mail } from 'lucide-react';
 import { loginUser } from '@/lib/api';
+import { auth } from '@/lib/firebase';
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
 export default function SignInPage() {
   const router = useRouter();
@@ -12,14 +14,30 @@ export default function SignInPage() {
   const handleSignIn = async () => {
     setIsLoading(true);
     try {
-      const data = await loginUser('Yash.demo@gmail.com', 'password123');
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      
+      let finalName = user.displayName;
+      if (
+        user.email === 'yshthrt@gmail.com' || 
+        user.email === 'thoraty10@gmail.com'
+      ) {
+        finalName = 'Yash';
+      }
+
+      const data = await loginUser(user.email, user.uid);
+      
       if (typeof window !== 'undefined') {
-        localStorage.setItem('betaal_uid', data.uid || 'demo_user_001');
-        localStorage.setItem('betaal_user_name', 'Yash');
+        localStorage.setItem('betaal_uid', data.uid || user.uid);
+        localStorage.setItem('betaal_user_name', finalName || 'Yash');
+        if (data.session_token) {
+           localStorage.setItem('betaal_session', data.session_token);
+        }
         window.dispatchEvent(new Event('betaal-session-update'));
       }
     } catch (err) {
-      console.warn('Login failed, using demo credentials', err);
+      console.warn('Login failed', err);
     } finally {
       setIsLoading(false);
       router.push('/dashboard');

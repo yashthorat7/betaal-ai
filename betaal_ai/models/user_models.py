@@ -12,12 +12,13 @@ class AuthResponse(BaseModel):
 
 class LoginRequest(BaseModel):
     email: str
-    password: str
+    uid: str
 
 class LoginResponse(BaseModel):
     uid: str
     session_token: str
     message: str
+    name: Optional[str] = None
 
 class LogoutRequest(BaseModel):
     uid: str

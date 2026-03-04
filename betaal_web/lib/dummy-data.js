@@ -66,6 +66,9 @@ export const usageLogs = [
   { date: '2025-01-12', total_min: 220, unlocks: 30, top_app: 'Instagram', under_quota: true },
   { date: '2025-01-13', total_min: 200, unlocks: 28, top_app: 'YouTube', under_quota: false },
   { date: '2025-01-14', total_min: 185, unlocks: 25, top_app: 'WhatsApp', under_quota: true },
+  { date: '2025-01-15', total_min: 170, unlocks: 22, top_app: 'Instagram', under_quota: true },
+  { date: '2025-01-16', total_min: 165, unlocks: 20, top_app: 'Twitter', under_quota: true },
+  { date: '2025-01-17', total_min: 150, unlocks: 18, top_app: 'Reddit', under_quota: true },
 ];
 
 export const appBreakdown = {
@@ -76,6 +79,9 @@ export const appBreakdown = {
     { app_name: 'WhatsApp', category: 'messaging', minutes: 38 },
     { app_name: 'BGMI', category: 'gaming', minutes: 28 },
     { app_name: 'Chrome', category: 'browser', minutes: 22 },
+    { app_name: 'Reddit', category: 'social', minutes: 18 },
+    { app_name: 'Spotify', category: 'music', minutes: 12 },
+    { app_name: 'Twitter', category: 'social', minutes: 10 },
   ],
 };
 

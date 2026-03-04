@@ -1,22 +1,15 @@
 from fastapi import APIRouter
-from google import genai
+from services.ai_service import generate_ai_response
 from models.chat_models import ChatMessage, ChatResponse, EvaluateRequest, EvaluateResponse
 from models.extension_models import MonitorStatsResponse, MonitorStrictnessUpdate, MonitorStrictnessResponse
 from config import settings
+import json
 
 router = APIRouter(tags=["AI, Chat, Youtube, Monitor"])
 
-# ====== INITIALIZE GENAI V1 CLIENT ====== #
-client = None
-if settings.GEMINI_API_KEY:
-    try:
-        client = genai.Client(api_key=settings.GEMINI_API_KEY)
-    except Exception as e:
-        print(f"⚠️ Error initializing Google GenAI Client: {e}. Using Plan B fallbacks.")
-
 # ====== INLINED CHAT LOGIC ====== #
 def generate_chat_response(uid: str, user_message: str, session_id: str) -> str:
-    """Calls Gemini with a fixed fallback context if DB/Live fails."""
+    """Calls AI service with a fixed fallback context if DB/Live fails."""
     context = """
     SYSTEM CONTEXT:
     User Name: Yash (Age 19)
@@ -27,39 +20,30 @@ def generate_chat_response(uid: str, user_message: str, session_id: str) -> str:
     """
     prompt = f"{context}\n\nYou are Betaal, a strict but caring digital rehab assistant. Reply concisely to the user.\nUser: {user_message}\nBetaal:"
     
-    if client:
-        try:
-            response = client.models.generate_content(
-                model="gemini-3-flash-preview",
-                contents=prompt
-            )
-            return response.text
-        except Exception as e:
-            print(f"⚠️ Gemini Chat Error: {e}. Falling back to default data.")
-            
-    # Plan B (Default Static Response)
-    return "Great progress, Yash! You're under your limit today. Keep focusing on reducing Instagram. Try replacing 15 minutes of scrolling with a short walk today."
+    fallback = "Great progress, Yash! You're under your limit today. Keep focusing on reducing Instagram. Try replacing 15 minutes of scrolling with a short walk today."
+    
+    return generate_ai_response(prompt=prompt, fallback_response=fallback)
 
 def evaluate_user_risk(uid: str) -> dict:
-    """Uses Gemini to output a structured JSON risk evaluation."""
-    if client:
-        try:
-            # Fake prompt to model since we don't have DB
-            prompt = "Output a strictly JSON formatted response evaluating risk for an addicted user: {classification: 'Moderate Risk', score: 65, details: 'Screen time is dropping generally, but late-night usage remains consistently high across Instagram and YouTube.', suggested_actions: ['Enable Wind Down mode by 10 PM', 'Increase interruption strictness in the evening']}"
-            response = client.models.generate_content(
-                model="gemini-3-flash-preview",
-                contents=prompt
-            )
-            # A real implementation would parse the response text. Here we fallback.
-        except Exception as e:
-            print(f"⚠️ Gemini Evaluate Error: {e}. Falling back to standard data.")
-
-    # Plan B
-    return {
+    """Uses AI to output a structured JSON risk evaluation."""
+    # Fake prompt to model since we don't have DB
+    prompt = "Output a strictly JSON formatted response evaluating risk for an addicted user: {\"classification\": \"Moderate Risk\", \"score\": 65, \"details\": \"Screen time is dropping generally, but late-night usage remains consistently high across Instagram and YouTube.\", \"suggested_actions\": [\"Enable Wind Down mode by 10 PM\", \"Increase interruption strictness in the evening\"]}"
+    
+    fallback = {
       "classification": "Moderate Risk", "score": 65,
       "details": "Screen time is dropping generally, but late-night usage remains consistently high across Instagram and YouTube.",
       "suggested_actions": ["Enable Wind Down mode by 10 PM", "Increase interruption strictness in the evening"]
     }
+    
+    response_text = generate_ai_response(prompt=prompt, json_mode=True, fallback_response=None)
+    
+    if response_text:
+        try:
+            return json.loads(response_text)
+        except Exception as e:
+            print(f"⚠️ Failed to parse AI JSON response: {e}")
+            
+    return fallback
 
 from services.youtube_service import get_youtube_recommendations
 

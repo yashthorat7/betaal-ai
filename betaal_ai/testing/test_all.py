@@ -40,7 +40,6 @@ ENDPOINTS = [
     
     # Usage
     {"method": "POST", "path": "/usage/log", "payload": {"uid": "demo_user_001", "events": [{"app_name": "Instagram", "category": "Social", "start": "2025-01-14T10:00:00Z", "end": "2025-01-14T10:15:00Z"}]}},
-
     {"method": "GET", "path": "/usage/stats", "params": {"uid": "demo_user_001"}},
     {"method": "GET", "path": "/usage/heatmap", "params": {"uid": "demo_user_001"}},
     {"method": "GET", "path": "/usage/summary", "params": {"uid": "demo_user_001"}},
@@ -48,6 +47,7 @@ ENDPOINTS = [
     # AI & Chat
     {"method": "POST", "path": "/chat", "payload": {"uid": "demo_user_001", "message": "I need help reducing screen time", "session_id": "sess_123"}},
     {"method": "POST", "path": "/ai/evaluate", "payload": {"uid": "demo_user_001"}},
+    {"method": "POST", "path": "/ai/schedule-session", "payload": {"user_name": "Yash", "daily_limit": 120, "recent_single_sitting_time": 45}},
     {"method": "POST", "path": "/youtube/recommend", "payload": {"uid": "demo_user_001", "prompt": "productivity", "topics": ["coding"], "keywords": ["python", "ai"]}},
     
     # Monitoring
@@ -61,11 +61,11 @@ ENDPOINTS = [
     {"method": "GET", "path": "/report/weekly", "params": {"uid": "demo_user_001"}},
     
     # Extension & System
-    {"method": "POST", "path": "/extension/heartbeat", "payload": {"uid": "demo_user_001", "today_browser_min": 45, "domains": [{"domain": "youtube.com", "minutes": 20}]}},
+    {"method": "POST", "path": "/extension/heartbeat", "payload": {"uid": "demo_user_001", "today_browser_sec": 2700, "domains": [{"domain": "youtube.com", "seconds": 1200}]}},
+    {"method": "POST", "path": "/extension/cooldown", "payload": {"uid": "demo_user_001", "daily_limit_sec": 1800, "num_effects": 4}},
     {"method": "GET", "path": "/dashboard", "params": {"uid": "demo_user_001"}},
     {"method": "GET", "path": "/features"},
-    {"method": "GET", "path": "/health"},
-    {"method": "GET", "path": "/"}
+    {"method": "GET", "path": "/health"}
 ]
 
 async def run_tests():

@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from config import settings
-from routers import core, rehab, ai, extension, youtube
+from routers import core, rehab, ai, extension, youtube, interruption
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -25,6 +25,7 @@ app.include_router(rehab.router)
 app.include_router(ai.router)
 app.include_router(extension.router)
 app.include_router(youtube.router)
+app.include_router(interruption.router)
 
 @app.get("/")
 def read_root():

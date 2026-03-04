@@ -18,8 +18,9 @@ class Settings(BaseSettings):
     # Firebase
     FIREBASE_CREDENTIALS_PATH: str = os.getenv("FIREBASE_CREDENTIALS_PATH", "./firebase/service_account_key.json")
 
-    # Gemini
+    # AI Models
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
+    GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
 
     # YouTube Data API
     YOUTUBE_API_KEY: str = os.getenv("YOUTUBE_API_KEY", "")

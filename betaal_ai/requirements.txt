@@ -17,6 +17,7 @@ joblib
 # AI Chat
 google-generativeai==0.3.1
 google-genai
+groq
 
 # HTTP Client
 httpx==0.25.2

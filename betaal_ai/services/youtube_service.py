@@ -1,4 +1,5 @@
 import httpx
+import html
 from google import genai
 from config import settings
 from models.extension_models import VideoResult
@@ -35,38 +36,31 @@ PLAN_B_VIDEOS = [
     ),
 ]
 
-def _extract_query_with_gemini(prompt: str, topics: List[str], keywords: List[str]) -> str:
-    """Uses Gemini to distill a user prompt/context into a 3-5 word YouTube search query."""
-    if not settings.GEMINI_API_KEY:
-        print("⚠️ Gemini API Key missing.")
-        return "digital wellness " + " ".join(topics[:2])
-        
-    try:
-        client = genai.Client(api_key=settings.GEMINI_API_KEY)
-        
-        system_prompt = (
-            "You are a mental health expert for Betaal AI, specializing in mental health therapy. "
-            "Convert the user's concern into a 5-12 word YouTube search query targeting "
-            "remedies, addiction cures, and mental health recovery strategies. "
-            "Concern: {user_prompt}\n"
-            "Query (KEYWORDS ONLY):"
-        )
-        
-        full_prompt = system_prompt.format(user_prompt=prompt)
-        response = client.models.generate_content(
-            model="gemini-3-flash-preview",
-            contents=full_prompt
-        )
-        
-        query = response.text.strip().replace('"', '').replace("'", "")
+from services.ai_service import generate_ai_response
+
+def _extract_query_with_ai(prompt: str, topics: List[str], keywords: List[str]) -> str:
+    """Uses AI to distill a user prompt/context into a 3-5 word YouTube search query."""
+    
+    system_prompt = (
+        "You are a mental health expert for Betaal AI. Regardless of the user's input, "
+        "always generate a 5-12 word YouTube search query focused on addiction recovery, "
+        "mental health therapy, or psychological wellness. "
+        "Concern: {user_prompt}\n"
+        "Query (KEYWORDS ONLY):"
+    )
+    
+    full_prompt = system_prompt.format(user_prompt=prompt)
+    fallback = f"{prompt[:20]} recovery" if prompt else "digital wellness tools"
+    
+    response_text = generate_ai_response(prompt=full_prompt, fallback_response=fallback)
+    
+    if response_text and response_text != fallback:
+        query = response_text.strip().replace('"', '').replace("'", "")
         if query:
-            print(f"✨ Gemini Search Query: '{query}'")
+            print(f"✨ AI Search Query: '{query}'")
             return query
             
-    except Exception as e:
-        print(f"⚠️ Gemini processing failed: {e}")
-        
-    return f"{prompt[:20]} recovery" if prompt else "digital wellness tools"
+    return fallback
 
 async def get_youtube_recommendations(prompt: str = None, topics: List[str] = [], keywords: List[str] = []) -> List[VideoResult]:
     """Fetches real YouTube videos using the YouTube Data API v3."""
@@ -74,7 +68,7 @@ async def get_youtube_recommendations(prompt: str = None, topics: List[str] = []
         print("⚠️ YOUTUBE_API_KEY is missing. Using Fallbacks.")
         return PLAN_B_VIDEOS
 
-    query = _extract_query_with_gemini(prompt or "", topics, keywords)
+    query = _extract_query_with_ai(prompt or "", topics, keywords)
     
     api_url = "https://www.googleapis.com/youtube/v3/search"
     params = {
@@ -114,13 +108,13 @@ async def get_youtube_recommendations(prompt: str = None, topics: List[str] = []
                 
                 videos.append(VideoResult(
                     id=vid_id,
-                    title=snippet["title"],
+                    title=html.unescape(snippet["title"]),
                     thumbnail=thumb_url,
                     url=f"https://www.youtube.com/watch?v={vid_id}"
                 ))
                 
-                # We only need 2 videos max.
-                if len(videos) >= 2:
+                # We only need 4 videos max.
+                if len(videos) >= 4:
                     break
             
             if not videos:

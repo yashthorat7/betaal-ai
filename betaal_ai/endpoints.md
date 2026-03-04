@@ -22,6 +22,7 @@
 ## AI/Chat Endpoints
 *   **POST** `/chat` - User interaction with the AI assistant.
 *   **POST** `/ai/evaluate` - Classify addiction risk based on user stats.
+*   **POST** `/ai/schedule-session` - Generate an adaptive interruption schedule using Custom ML.
 
 ## YouTube Recommendations
 *   **POST** `/youtube/recommend` - Return YouTube video links based on input (topics/keywords).

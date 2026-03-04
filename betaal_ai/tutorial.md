@@ -71,3 +71,12 @@ Start the FastAPI application using Uvicorn:
 - The API will be running at `http://localhost:8000`
 - Interactive API docs (Swagger UI) are available at `http://localhost:8000/docs`
 
+cd betaal_ai
+.\venv\Scripts\Activate.ps1 ; uvicorn main:app --reload
+
+
+.\venv\Scripts\Activate.ps1 ; python -m ml.models.train
+
+
+cd betaal_web
+npm run dev

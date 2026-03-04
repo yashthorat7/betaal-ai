@@ -376,6 +376,7 @@
             // AI & Chat
             { group: 'ai', method: 'POST', path: '/chat', desc: 'Live interaction with Betaal AI', body: { uid: 'demo_user_001', message: 'I need help reducing screen time', session_id: 'sess_123' } },
             { group: 'ai', method: 'POST', path: '/ai/evaluate', desc: 'Risk classification analysis', body: { uid: 'demo_user_001' } },
+            { group: 'ai', method: 'POST', path: '/ai/schedule-session', desc: 'Adaptive ML Interruption Scheduler', body: { user_name: 'Yash', daily_limit: 120, recent_single_sitting_time: 45 } },
             { group: 'ai', method: 'POST', path: '/youtube/recommend', desc: 'Productive video suggestions', body: { uid: 'demo_user_001', prompt: 'productivity', topics: ['coding'], keywords: ['python', 'ai'] } },
             
             // Monitoring

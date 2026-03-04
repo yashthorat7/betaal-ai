@@ -12,37 +12,44 @@ ai-backend/
 │
 ├── routers/                       # API route handlers
 │   ├── __init__.py
-│   ├── auth.py                    # POST /auth/verify
-│   ├── user.py                    # GET/PUT /user/profile
+│   ├── auth.py                    # POST /auth/verify, /auth/login, /auth/logout
+│   ├── user.py                    # GET/PUT /user/profile, GET /user/list, GET /user/{id}/stats, POST /user/link
 │   ├── rehab.py                   # GET /rehab/plan, POST /rehab/recalculate
 │   ├── interruption.py            # POST /interruption/schedule
-│   ├── usage.py                   # POST /usage/log, GET /usage/stats
+│   ├── usage.py                   # POST /usage/log, GET /usage/stats, GET /usage/summary
 │   ├── predict.py                 # GET /predict/today
-│   ├── chat.py                    # POST /chat
+│   ├── chat.py                    # POST /chat, POST /ai/evaluate
+│   ├── youtube.py                 # POST /youtube/recommend
 │   ├── report.py                  # GET /report/daily, GET /report/weekly
 │   ├── extension.py               # POST /extension/heartbeat
+│   ├── dashboard.py               # GET /dashboard
+│   ├── features.py                # GET /features
 │   └── monitor.py                 # GET /monitor/{child_id}/stats
 │
 ├── models/                        # Pydantic request/response schemas
 │   ├── __init__.py
-│   ├── user_models.py             # UserProfile, UserCreate, UserUpdate
+│   ├── auth_models.py             # LoginRequest, LogoutRequest, VerifyRequest
+│   ├── user_models.py             # UserProfile, UserCreate, UserLink, MonitorList
 │   ├── rehab_models.py            # RehabPlan, RehabPhase, RehabRecalcRequest
 │   ├── interruption_models.py     # InterruptionItem, InterruptionArray, SessionData
-│   ├── usage_models.py            # UsageEvent, UsageStats, HeatMapData
+│   ├── usage_models.py            # UsageEvent, UsageStats, HeatMapData, UsageSummary
 │   ├── predict_models.py          # PredictionRequest, PredictionResponse
-│   ├── chat_models.py             # ChatMessage, ChatResponse, ChatContext
-│   ├── report_models.py           # DailyReport, WeeklyReport
+│   ├── chat_models.py             # ChatMessage, ChatResponse, ChatContext, AIEvaluation
+│   ├── youtube_models.py          # RecommendRequest, VideoResponse
+│   ├── report_models.py           # DailyReport, WeeklyReport, DashboardStats
 │   └── extension_models.py        # HeartbeatRequest, HeartbeatResponse
 │
 ├── services/                      # Core business logic
 │   ├── __init__.py
-│   ├── auth_service.py            # Firebase token verification
-│   ├── user_service.py            # CRUD on user profiles
+│   ├── auth_service.py            # Login, logout, Firebase token verification
+│   ├── user_service.py            # CRUD on user profiles, account linking
 │   ├── rehab_service.py           # Rehab plan creation & recalculation
 │   ├── interruption_service.py    # Math engine for scheduling interruptions
-│   ├── usage_service.py           # Aggregation, heat maps, streaks
+│   ├── usage_service.py           # Aggregation, heat maps, streaks, usage summaries
 │   ├── predict_service.py         # ML model loading, inference
-│   ├── chat_service.py            # Gemini API integration, context building
+│   ├── chat_service.py            # Gemini API integration, context building, risk evaluation
+│   ├── youtube_service.py         # YouTube Data API data fetch & transformation
+│   ├── dashboard_service.py       # Aggregation logic for main user dashboard
 │   ├── report_service.py          # Report assembly from analytics
 │   ├── extension_service.py       # Browser time tracking + threshold logic
 │   └── monitor_service.py         # Parent-child linking & data fetch

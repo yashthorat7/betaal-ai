@@ -1,16 +1,17 @@
 # TODO — AI Backend (betaal_ai)
 
 > **Owner:** Yash
-> **Estimated Time:** 5–6 hours (Phase 5) + 3–4 hours (Integration) + 2 hours (Styling)
-> **Rule:** Demo-first. All endpoints must match `api_and_data.md` contracts. No styling until Phase 7.
+> **Estimated Time:** 4–5 hours (Phase 5) + 2–3 hours (Integration)
+> **Rule:** Demo-first. All endpoints must match `api_and_data.md` contracts. No styling. Mostly backend support for Web and Extension.
+> **Demo Focus:** Prioritize UX, smooth animations, and polished frontend. Backend calculations can be simplified or mocked if needed for time constraints.
 
 ---
 
-## Phase 5 — AI Backend Core
+## Phase 5 — Backend Support Core
 
 ### Step 1: Project Setup
 - [ ] Create virtual environment (`python -m venv venv`)
-- [ ] Copy `requirements.txt` from `tech_stack.md`
+- [ ] Copy `requirements.txt` from `tech_stack.md` (remove heavy ML libs like scikit-learn/pandas if present)
 - [ ] `pip install -r requirements.txt`
 - [ ] Create `main.py` — FastAPI app with CORS middleware
 - [ ] Create `config.py` — env vars, Firebase init, constants
@@ -29,66 +30,51 @@
 - [ ] Run once: `python scripts/seed_database.py`
 - [ ] Verify: Firebase Console shows seeded collections
 
-### Step 4: Auth Router
-- [ ] Create `routers/auth.py` — POST `/auth/verify`
-- [ ] Create `services/auth_service.py` — Firebase token verification
-- [ ] Create `middleware/auth_middleware.py` — token extraction from Authorization header
-- [ ] Verify: POST with valid token → returns uid
-
-### Step 5: User Router
+### Step 4: Auth & User Router
 - [ ] Create `models/user_models.py` — UserProfile, UserCreate, UserUpdate (Pydantic)
+- [ ] Create `routers/auth.py` — POST `/auth/verify` (Firebase token verification)
 - [ ] Create `routers/user.py` — GET/PUT `/user/profile`
 - [ ] Create `services/user_service.py` — Firestore CRUD
 - [ ] Verify: GET returns seeded user data matching `api_and_data.md`
 
-### Step 6: Rehab Engine
-- [ ] Create `engine/rehab_formula.py` — `duration = clamp(addiction × 3 × (6 - strictness), 7, 90)`
-- [ ] Create `engine/quota_calculator.py` — daily quota per phase (20/30/30/20 split)
-- [ ] Create `services/rehab_service.py` — plan creation & recalculation
+### Step 5: Rehab logic
+- [ ] Create `services/rehab_service.py` — basic plan creation (duration, phases)
 - [ ] Create `routers/rehab.py` — GET `/rehab/plan`, POST `/rehab/recalculate`
-- [ ] Verify: changing strictness 3→4 returns a different plan
+- [ ] Verify: changing strictness returns an updated plan
 
-### Step 7: Interruption Scheduler
-- [ ] Create `engine/curve_functions.py` — sigmoid, linear ramp, exponential decay
-- [ ] Create `engine/interruption_math.py` — weighted random selection from 20 types
-- [ ] Create `engine/cooldown_calculator.py` — cooldown period computation
-- [ ] Create `services/interruption_service.py` — math engine orchestration
-- [ ] Create `routers/interruption.py` — POST `/interruption/schedule`, POST `/interruption/extra-time`
-- [ ] Create `data/interruption_types.json` — 20 interruption definitions
-- [ ] Verify: returns different arrays for different usage levels
+### Step 6: Usage Analytics & Reports
+- [ ] Create `models/usage_models.py` — UsageEvent, UsageStats
+- [ ] Create `services/usage_service.py` — simple aggregation, heat maps
+- [ ] Create `routers/usage.py` — GET `/usage/stats`, GET `/usage/heatmap`
+- [ ] Create `routers/report.py` — GET `/report/weekly` (for Web Dashboard charts)
+- [ ] Ensure all user stats (app usage, screen time, rehab progress) are consistently stored and updated in Firebase
+- [ ] Confirm stats are linked to the right user profiles and ensure proper data refresh in the extension and app
+- [ ] Verify: stats endpoint returns correct aggregated data from seeded logs for the Next.js frontend
 
-### Step 8: Usage Analytics
-- [ ] Create `models/usage_models.py` — UsageEvent, UsageStats, HeatMapData
-- [ ] Create `services/usage_service.py` — aggregation, heat maps, streaks
-- [ ] Create `routers/usage.py` — POST `/usage/log`, GET `/usage/stats`, GET `/usage/heatmap`
-- [ ] Verify: stats endpoint returns correct aggregated data from seeded logs
-
-### Step 9: ML Model
-- [ ] Create `ml/dummy_data_generator.py` — generate 500 rows synthetic training data
-- [ ] Create `ml/feature_engineering.py` — feature extraction
-- [ ] Create `ml/train.py` — train RandomForestRegressor, save to `ml/saved_models/screen_time_model.pkl`
-- [ ] Create `ml/inference.py` — load model, predict
-- [ ] Create `routers/predict.py` — GET `/predict/today`
-- [ ] Run: `python ml/train.py`
-- [ ] Verify: prediction endpoint returns plausible minutes + confidence
-
-### Step 10: Chat AI (Gemini)
-- [ ] Create `services/chat_service.py` — Gemini API integration, context building
-- [ ] Create `models/chat_models.py` — ChatMessage, ChatResponse, ChatContext
+### Step 7: Chat AI (Gemini)
+- [ ] Create `services/chat_service.py` — Gemini API integration (gemini-pro)
+- [ ] Create `models/chat_models.py` — ChatMessage, ChatResponse
 - [ ] Create `routers/chat.py` — POST `/chat`
+- [ ] Identify and integrate APIs for Voice-Based AI (e.g., Google Cloud Speech-to-Text + Gemini for Text-to-Speech)
+- [ ] Design a simple conversational flow for real-time voice interaction (can be mocked for demo readiness)
 - [ ] Build system prompt: "You are Betaal, a rehab assistant. User data: [stats]..."
 - [ ] Verify: live chat returns personalized response mentioning user's actual stats
 
-### Step 11: Reports + Extension API + Monitor
-- [ ] Create `routers/report.py` — GET `/report/daily`, GET `/report/weekly`
-- [ ] Create `services/report_service.py` — report assembly
-- [ ] Create `routers/extension.py` — POST `/extension/heartbeat`
-- [ ] Create `services/extension_service.py` — browser time tracking + threshold logic
-- [ ] Create `routers/monitor.py` — GET `/monitor/{child_id}/stats`, PUT `/monitor/{child_id}/strictness`
-- [ ] Create `services/monitor_service.py` — parent-child linking & data fetch
-- [ ] Verify: all endpoints return responses matching `api_and_data.md`
+### Step 8: Extension API & Monitor
+- [ ] Create `routers/extension.py` — POST `/extension/heartbeat` (sync time from browser extension)
+- [ ] Create `services/extension_service.py` — update top-level stats in Firestore
+- [ ] Create `routers/monitor.py` — GET `/monitor/{child_id}/stats` (Parental monitoring)
+- [ ] Add endpoints to link accounts (child/peer) and monitor their usage stats
+- [ ] Create dashboard aggregation logic for parent and linked users' screen time and app usage
+- [ ] Verify: all endpoints return responses matching `api_and_data.md` to support Web and Extension
 
-### Step 12: Documentation
+### Step 9: YouTube Recommendation Logic
+- [ ] Confirm/integrate YouTube Data API (or alternative) to fetch video recommendations based on user topics/keywords
+- [ ] Create `services/youtube_service.py` and `routers/youtube.py` — GET `/youtube/recommend`
+- [ ] Ensure API call returns a list of videos to be displayed within the website dashboard
+- [ ] Verify: integration works or is mock-ready for the demo
+
+### Step 10: Documentation
 - [ ] Create `CONTEXT.md` in `betaal_ai/`
 - [ ] Update `progress.md`
 - [ ] Verify ALL responses match `api_and_data.md` contracts
@@ -105,9 +91,10 @@
 
 ---
 
-## Phase 7 — Styling (Backend Tasks)
+## Phase 7 — Final Polish
 
-- [ ] No visual styling needed (API only)
+- [ ] Identify hardcoded parts for the demo (e.g., AI model training logic, YouTube logic, stats aggregation)
+- [ ] Document modular design architecture for future scalability
 - [ ] Final API response format polish
 - [ ] Performance check (response times)
 - [ ] Final update to `progress.md` and `CONTEXT.md`

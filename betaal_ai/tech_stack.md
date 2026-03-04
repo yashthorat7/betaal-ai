@@ -1,5 +1,7 @@
 # AI Backend Tech Stack — Betaal AI
 
+> **Demo Plan B Context:** The stack below powers the core. To maintain a robust hackathon demo without restrictions like rate limits, if DB connections via `firebase-admin` or AI integrations via `google-generativeai` crash, endpoints will fallback to rendering static seeded JSON instead of throwing 500 errors.
+
 ## Core Framework
 
 | Component | Technology | Version | Why |
@@ -25,13 +27,14 @@
 | Serialisation | joblib / pickle | Save & load trained model |
 | Data Generation | numpy + pandas | Synthetic data for training |
 
-## AI Chat
+## AI Chat & External APIs
 
 | Component | Technology | Why |
 |-----------|-----------|-----|
 | LLM Provider | Google Gemini API | Free tier, good quality, fast |
-| Model | gemini-pro | Text generation with context |
+| Model | gemini-pro | Text generation with context / Risk Profiler |
 | SDK | google-generativeai | Official Python SDK |
+| Video Suggestions | YouTube Data API v3 | Feeds personalized videos to dashboard |
 
 ## Math Engine (Pure Python + NumPy)
 

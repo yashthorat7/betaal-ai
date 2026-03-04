@@ -1,0 +1,24 @@
+# Core
+fastapi==0.104.1
+uvicorn==0.24.0
+pydantic>=2.9.0
+python-dotenv==1.0.0
+pydantic-settings>=2.5.0
+
+# Firebase
+firebase-admin==6.2.0
+
+# Machine Learning
+scikit-learn
+numpy
+pandas
+joblib
+
+# AI Chat
+google-generativeai==0.3.1
+
+# HTTP Client
+httpx==0.25.2
+
+# Utilities
+python-dateutil==2.8.2

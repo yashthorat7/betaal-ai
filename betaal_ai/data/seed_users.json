@@ -1,0 +1,20 @@
+[
+  {
+    "uid": "demo_user_001",
+    "name": "Arjun",
+    "age": 19,
+    "email": "arjun.demo@gmail.com",
+    "addiction_level": 8,
+    "strictness": 3,
+    "created_at": "2025-01-01T00:00:00Z",
+    "linked_parent_id": "demo_parent_001",
+    "stealth_icon": "default"
+  },
+  {
+    "uid": "demo_parent_001",
+    "name": "Sunita",
+    "age": 45,
+    "email": "sunita.demo@gmail.com",
+    "linked_children": ["demo_user_001"]
+  }
+]

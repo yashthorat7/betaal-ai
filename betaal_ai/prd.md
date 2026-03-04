@@ -4,15 +4,16 @@
 
 The AI backend is the **brain** of the Betaal AI ecosystem. It serves the mobile app, website, and browser extension through a REST API. It handles:
 
-- User authentication verification
+- User authentication verification and session management
 - Personalized rehabilitation plan generation
 - Math-driven interruption scheduling
-- Usage analytics and aggregation
+- Usage analytics and dashboard aggregation
 - Predictive ML model (screen time forecasting)
-- AI chat assistant (Gemini-powered)
+- AI chat assistant and risk evaluation (Gemini-powered)
+- YouTube video recommendation integration
 - Report generation
 - Extension usage syncing
-- Parental monitoring
+- Parental monitoring and account linking
 
 ---
 
@@ -32,11 +33,12 @@ The AI backend is the **brain** of the Betaal AI ecosystem. It serves the mobile
 
 | ID | Requirement |
 |----|-------------|
-| M1.1 | Accept Firebase ID token, verify, return session |
+| M1.1 | Handle login, logout, and verify Firebase ID tokens |
 | M1.2 | Create user profile on first login |
 | M1.3 | Store name, age, addiction_level (1-10), strictness (1-5) |
-| M1.4 | Support linked/child accounts for parental monitoring |
-| M1.5 | Return user profile on GET request |
+| M1.4 | Support link code generation and linking parent/child accounts |
+| M1.5 | Fetch list of users an account is authorized to monitor |
+| M1.6 | Return user profile and individual user stats on GET request |
 
 ### M2 — Rehabilitation Engine
 
@@ -92,17 +94,18 @@ POST /rehab/plan { user_id, addiction_level, strictness }
 | 9 | ghost_touch | 19 | audio_alert |
 | 10 | progressive_dim | 20 | full_block |
 
-### M4 — Usage Analytics
+### M4 — Usage Analytics & Dashboard
 
 | ID | Requirement |
 |----|-------------|
 | M4.1 | Ingest usage events: {app_name, category, start, end, date} |
-| M4.2 | Aggregate daily totals per app category |
+| M4.2 | Aggregate daily totals per app category and summarize total scope |
 | M4.3 | Compute 7-day rolling average |
 | M4.4 | Generate heat map data (hour × day_of_week matrix) |
 | M4.5 | Return top-5 most used apps |
 | M4.6 | Calculate streak (consecutive days under quota) |
-| M4.7 | Serve data to mobile app, website dashboard, extension |
+| M4.7 | Return aggregated dashboard data pooling extension and app usage |
+| M4.8 | Serve data to mobile app, website dashboard, extension |
 
 ### M5 — Predictive Model (ML)
 
@@ -125,7 +128,17 @@ POST /rehab/plan { user_id, addiction_level, strictness }
 | M6.3 | Use Google Gemini API (gemini-pro) |
 | M6.4 | Maintain conversation history per session |
 | M6.5 | AI gives feedback, tips, motivation based on real data |
-| M6.6 | Expose POST /chat with {message, session_id} |
+| M6.6 | Provide AI risk evaluation to classify addiction risk based on stats |
+| M6.7 | Expose POST /chat, POST /ai/evaluate |
+
+### M7 — YouTube Recommendations
+
+| ID | Requirement |
+|----|-------------|
+| M7.1 | Interface with YouTube Data API or equivalent alternative |
+| M7.2 | Accept user intent keywords and topics (e.g., productivity, focus) |
+| M7.3 | Return formatted video results (Title, thumbnail, URL, video ID) |
+| M7.4 | Expose POST /youtube/recommend |
 
 ### M7 — Report Generator
 
@@ -162,8 +175,13 @@ POST /rehab/plan { user_id, addiction_level, strictness }
 | Method | Endpoint | Module |
 |--------|----------|--------|
 | POST | /auth/verify | auth |
+| POST | /auth/login | auth |
+| POST | /auth/logout | auth |
 | GET | /user/profile | user |
 | PUT | /user/profile | user |
+| GET | /user/list | user |
+| GET | /user/{user_id}/stats | user |
+| POST | /user/link | user |
 | GET | /rehab/plan | rehab |
 | POST | /rehab/recalculate | rehab |
 | POST | /interruption/schedule | interruption |
@@ -171,11 +189,16 @@ POST /rehab/plan { user_id, addiction_level, strictness }
 | POST | /usage/log | usage |
 | GET | /usage/stats | usage |
 | GET | /usage/heatmap | usage |
+| GET | /usage/summary | usage |
 | GET | /predict/today | predict |
 | POST | /chat | chat |
+| POST | /ai/evaluate | chat |
+| POST | /youtube/recommend | youtube |
 | GET | /report/daily | report |
 | GET | /report/weekly | report |
 | POST | /extension/heartbeat | extension |
+| GET | /dashboard | dashboard |
+| GET | /features | features |
 | GET | /monitor/{child_id}/stats | monitor |
 | PUT | /monitor/{child_id}/strictness | monitor |
 
@@ -186,7 +209,7 @@ POST /rehab/plan { user_id, addiction_level, strictness }
 ```
 users/{uid}/
     ├── name, age, addiction_level, strictness, created_at
-    ├── linked_parent_id, stealth_icon
+    ├── linked_parent_id, stealth_icon, linked_accounts[]
     
 rehab_plans/{uid}/
     ├── duration_days, start_date, current_phase
@@ -208,9 +231,9 @@ extension_sessions/{uid}/{date}/
 
 ## 6. Demo Strategy
 
-- Pre-seed Firestore with 14 days of dummy data for "Patient Zero"
-- ML model pre-trained on synthetic dataset (loaded on server startup)
-- Chat AI works live via Gemini API
-- Interruption demo: simulate a 5-minute session, show escalating interruptions
-- Dashboard shows pre-populated heat maps and trends
-- Rehab plan visibly adjusts when strictness is changed live
+- Focus on a clean, minimal "hackathon-ready" backend. No complex rate limits or heavy restrictions.
+- **Live Core:** Operations like Gemini Chat and Math engines run live. Database connections attempt to use real Firebase instances first.
+- **Plan B (Default Data):** If any core service (Firebase, Gemini) fails to respond or throws an error, the backend will catch it and immediately return the pre-defined default static data ("Patient Zero") from `api_and_data.md`. This ensures the demo never crashes on stage.
+- Pre-seed Firestore with 14 days of dummy data for "Patient Zero" (as the primary data source before fallback).
+- Interruption demo: simulate a 5-minute session, show escalating interruptions.
+- Rehab plan visibly adjusts when strictness is changed live.

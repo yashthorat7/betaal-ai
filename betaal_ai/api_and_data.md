@@ -20,6 +20,26 @@ This file contains two things:
 { "uid": "demo_user_001", "email": "arjun.demo@gmail.com", "session_token": "sess_abc123" }
 ```
 
+### POST /auth/login
+
+```json
+// Request
+{ "email": "arjun.demo@gmail.com", "password": "password123" }
+
+// Response 200
+{ "uid": "demo_user_001", "session_token": "sess_abc123", "message": "Login successful" }
+```
+
+### POST /auth/logout
+
+```json
+// Request
+{ "uid": "demo_user_001", "session_token": "sess_abc123" }
+
+// Response 200
+{ "status": "success", "message": "Logged out" }
+```
+
 ---
 
 ## User
@@ -48,6 +68,42 @@ This file contains two things:
 
 // Response 200
 { "status": "updated", "uid": "demo_user_001" }
+```
+
+### GET /user/list?uid=demo_parent_001
+
+```json
+// Response 200
+{
+  "monitoring": [
+    { "uid": "demo_user_001", "name": "Arjun", "relation": "child", "status": "active" }
+  ]
+}
+```
+
+### GET /user/demo_user_001/stats
+
+```json
+// Response 200
+{
+  "uid": "demo_user_001",
+  "today_min": 185,
+  "quota_min": 273,
+  "top_app": "Instagram",
+  "streak_days": 3,
+  "addiction_level": 7,
+  "rehab_phase": 2
+}
+```
+
+### POST /user/link
+
+```json
+// Request
+{ "parent_uid": "demo_parent_001", "child_uid": "demo_user_001", "relation": "child", "link_code": "AB12-CD34" }
+
+// Response 200
+{ "status": "success", "message": "Successfully linked Arjun's account." }
 ```
 
 ---
@@ -184,6 +240,19 @@ This file contains two things:
 }
 ```
 
+### GET /usage/summary?uid=demo_user_001
+
+```json
+// Response 200
+{
+  "total_screen_time_today": 185,
+  "daily_average_week": 241,
+  "total_unlocks": 25,
+  "status": "under_quota",
+  "recommendation": "Trending down! Keep maintaining focus."
+}
+```
+
 ---
 
 ## Predict
@@ -201,7 +270,7 @@ This file contains two things:
 
 ---
 
-## Chat
+## Chat & AI
 
 ### POST /chat
 
@@ -213,6 +282,21 @@ This file contains two things:
 {
   "response": "Great progress, Arjun! You're on Day 8 of your 24-day plan and your screen time dropped from 7 hours to about 3 hours. That's a 56% reduction! Keep focusing on reducing Instagram — it's still your #1 app. Try replacing 15 minutes of scrolling with a short walk today.",
   "session_id": "chat_session_001"
+}
+```
+
+### POST /ai/evaluate
+
+```json
+// Request
+{ "uid": "demo_user_001" }
+
+// Response 200
+{
+  "classification": "Moderate Risk",
+  "score": 65,
+  "details": "Screen time is dropping, but nighttime phone usage remains high.",
+  "suggested_actions": ["Enable Wind Down mode by 10 PM", "Increase interruption strictness in the evening"]
 }
 ```
 
@@ -249,6 +333,25 @@ This file contains two things:
   "phase": 2,
   "phase_name": "Reduction",
   "progress_pct": 33
+}
+```
+
+---
+
+## YouTube Recommendations
+
+### POST /youtube/recommend
+
+```json
+// Request
+{ "uid": "demo_user_001", "topics": ["Focus music", "Productivity tips"], "keywords": ["lofi", "ADHD management"] }
+
+// Response 200
+{
+  "videos": [
+    { "id": "videoId1", "title": "24/7 Lofi Hip Hop Radio", "thumbnail": "url1", "url": "youtube_link_1" },
+    { "id": "videoId2", "title": "How to beat phone addiction", "thumbnail": "url2", "url": "youtube_link_2" }
+  ]
 }
 ```
 
@@ -311,9 +414,39 @@ This file contains two things:
 
 ---
 
+## Dashboard & Features
+
+### GET /dashboard?uid=demo_user_001
+
+```json
+// Response 200
+{
+  "user_stats": { "today_min": 185, "limit_min": 273, "top_app": "Instagram" },
+  "extension_stats": { "browser_min": 63, "limit_min": 120 },
+  "linked_profiles": [
+    { "name": "Child Profile", "today_min": 225, "limit_min": 300 }
+  ]
+}
+```
+
+### GET /features
+
+```json
+// Response 200
+{
+  "active_features": [
+    { "name": "AI Chat", "status": "enabled", "version": "1.0" },
+    { "name": "YouTube Recommendations", "status": "enabled", "version": "1.0" },
+    { "name": "Parental Monitoring", "status": "enabled", "version": "1.1" }
+  ]
+}
+```
+
+---
+
 # Part 2: Seed Data
 
-Pre-seeded dummy data for the hackathon demo. All components pull from this.
+Pre-seeded default data for the hackathon demo. We prioritize live core logic, but if core connections (Firebase/Gemini) fail, endpoints should return this default data as a Plan B fallback so the demo doesn't crash.
 
 ## User Profile (Patient Zero)
 

@@ -446,7 +446,7 @@ This file contains two things:
 
 # Part 2: Seed Data
 
-Pre-seeded dummy data for the hackathon demo. All components pull from this.
+Pre-seeded default data for the hackathon demo. We prioritize live core logic, but if core connections (Firebase/Gemini) fail, endpoints should return this default data as a Plan B fallback so the demo doesn't crash.
 
 ## User Profile (Patient Zero)
 

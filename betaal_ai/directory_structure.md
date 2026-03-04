@@ -71,7 +71,7 @@ ai-backend/
 │   └── saved_models/
 │       └── screen_time_model.pkl  # Serialised trained model
 │
-├── data/                          # Seed & dummy data
+├── data/                          # Seed & dummy data (used as Plan B fallback)
 │   ├── seed_users.json            # Pre-built demo user profiles
 │   ├── seed_usage.json            # 14 days of fake usage data
 │   ├── interruption_types.json    # 20 interruption definitions

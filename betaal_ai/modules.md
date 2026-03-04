@@ -1,6 +1,7 @@
 # AI Backend Modules — Betaal AI
 
-This document details the discrete backend modules, mathematical models, and AI components powering the FastAPI server.
+This document details the discrete backend modules, mathematical models, and AI components powering the FastAPI server. 
+> **Hackathon Demo Philosophy:** The modules listed here execute *real calculations*. We do not use aggressive rate limiting. If any core module or external connection (like Firebase/Gemini) throws an error during the demo, the API endpoints will catch it and return predefined static data (Plan B) so the frontend does not crash.
 
 ## 1. Core Mathematical Engines (`engine/`)
 

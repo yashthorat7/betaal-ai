@@ -1,0 +1,16 @@
+[
+  { "date": "2025-01-01", "total_min": 420, "unlocks": 78, "top_app": "Instagram", "under_quota": false },
+  { "date": "2025-01-02", "total_min": 405, "unlocks": 72, "top_app": "YouTube",   "under_quota": false },
+  { "date": "2025-01-03", "total_min": 390, "unlocks": 65, "top_app": "Instagram", "under_quota": false },
+  { "date": "2025-01-04", "total_min": 410, "unlocks": 70, "top_app": "TikTok",    "under_quota": false },
+  { "date": "2025-01-05", "total_min": 370, "unlocks": 60, "top_app": "YouTube",   "under_quota": true  },
+  { "date": "2025-01-06", "total_min": 340, "unlocks": 55, "top_app": "Instagram", "under_quota": false },
+  { "date": "2025-01-07", "total_min": 310, "unlocks": 48, "top_app": "YouTube",   "under_quota": false },
+  { "date": "2025-01-08", "total_min": 285, "unlocks": 42, "top_app": "Instagram", "under_quota": false },
+  { "date": "2025-01-09", "total_min": 260, "unlocks": 38, "top_app": "WhatsApp",  "under_quota": true  },
+  { "date": "2025-01-10", "total_min": 240, "unlocks": 35, "top_app": "YouTube",   "under_quota": true  },
+  { "date": "2025-01-11", "total_min": 255, "unlocks": 40, "top_app": "TikTok",    "under_quota": true  },
+  { "date": "2025-01-12", "total_min": 220, "unlocks": 30, "top_app": "Instagram", "under_quota": true  },
+  { "date": "2025-01-13", "total_min": 200, "unlocks": 28, "top_app": "YouTube",   "under_quota": false },
+  { "date": "2025-01-14", "total_min": 185, "unlocks": 25, "top_app": "WhatsApp",  "under_quota": true  }
+]

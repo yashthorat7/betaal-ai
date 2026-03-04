@@ -1,5 +1,7 @@
 # AI Backend Tech Stack — Betaal AI
 
+> **Demo Plan B Context:** The stack below powers the core. To maintain a robust hackathon demo without restrictions like rate limits, if DB connections via `firebase-admin` or AI integrations via `google-generativeai` crash, endpoints will fallback to rendering static seeded JSON instead of throwing 500 errors.
+
 ## Core Framework
 
 | Component | Technology | Version | Why |

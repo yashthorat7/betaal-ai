@@ -1,5 +1,7 @@
 # API Endpoints (betaal_ai)
 
+> **Note:** All endpoints aim to execute live core logic. However, to ensure a smooth hackathon demo, if the core logic or DB fails, they will gracefully catch the error and return fallback static data (Plan B).
+
 ## Authentication & User Management
 *   **POST** `/auth/verify` - Verify user authentication.
 *   **POST** `/auth/login` - User login.

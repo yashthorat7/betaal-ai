@@ -231,9 +231,9 @@ extension_sessions/{uid}/{date}/
 
 ## 6. Demo Strategy
 
-- Pre-seed Firestore with 14 days of dummy data for "Patient Zero"
-- ML model pre-trained on synthetic dataset (loaded on server startup)
-- Chat AI works live via Gemini API
-- Interruption demo: simulate a 5-minute session, show escalating interruptions
-- Dashboard shows pre-populated heat maps and trends
-- Rehab plan visibly adjusts when strictness is changed live
+- Focus on a clean, minimal "hackathon-ready" backend. No complex rate limits or heavy restrictions.
+- **Live Core:** Operations like Gemini Chat and Math engines run live. Database connections attempt to use real Firebase instances first.
+- **Plan B (Default Data):** If any core service (Firebase, Gemini) fails to respond or throws an error, the backend will catch it and immediately return the pre-defined default static data ("Patient Zero") from `api_and_data.md`. This ensures the demo never crashes on stage.
+- Pre-seed Firestore with 14 days of dummy data for "Patient Zero" (as the primary data source before fallback).
+- Interruption demo: simulate a 5-minute session, show escalating interruptions.
+- Rehab plan visibly adjusts when strictness is changed live.

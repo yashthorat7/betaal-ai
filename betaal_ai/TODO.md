@@ -2,82 +2,82 @@
 
 > **Owner:** Yash
 > **Estimated Time:** 4–5 hours (Phase 5) + 2–3 hours (Integration)
-> **Rule:** Demo-first. All endpoints must match `api_and_data.md` contracts. No styling. Mostly backend support for Web and Extension.
-> **Demo Focus:** Prioritize UX, smooth animations, and polished frontend. Backend calculations can be simplified or mocked if needed for time constraints.
+> **Rule:** Demo-first hackathon project. No over-engineered rate limiting or strict industry-level restrictions. All endpoints must match `api_and_data.md` contracts.
+> **Demo Focus:** Prioritize a working core. If the core logic or DB connection fails, endpoints should gracefully catch errors and return the default fallback data (`api_and_data.md`) as a **Plan B** to ensure the frontend never crashes.
 
 ---
 
 ## Phase 5 — Backend Support Core
 
 ### Step 1: Project Setup
-- [ ] Create virtual environment (`python -m venv venv`)
-- [ ] Copy `requirements.txt` from `tech_stack.md` (remove heavy ML libs like scikit-learn/pandas if present)
-- [ ] `pip install -r requirements.txt`
-- [ ] Create `main.py` — FastAPI app with CORS middleware
-- [ ] Create `config.py` — env vars, Firebase init, constants
-- [ ] Create `.env.example` with placeholder keys
-- [ ] Verify: `uvicorn main:app --reload` → `localhost:8000` works, Swagger at `/docs`
+- [x] Create virtual environment (`python -m venv venv`)
+- [x] Copy `requirements.txt` from `tech_stack.md` (remove heavy ML libs like scikit-learn/pandas if present)
+- [x] `pip install -r requirements.txt`
+- [x] Create `main.py` — FastAPI app with CORS middleware
+- [x] Create `config.py` — env vars, Firebase init, constants
+- [x] Create `.env.example` with placeholder keys
+- [x] Verify: `uvicorn main:app --reload` → `localhost:8000` works, Swagger at `/docs`
 
 ### Step 2: Firebase Admin Setup
-- [ ] Create `firebase/firebase_admin_init.py` — initialize Admin SDK
-- [ ] Create `firebase/firestore_client.py` — read/write helpers
-- [ ] Add `service_account_key.json` (gitignored)
-- [ ] Verify: can read/write a test document to Firestore
+- [x] Create `firebase/firebase_admin_init.py` — initialize Admin SDK
+- [x] Create `firebase/firestore_client.py` — read/write helpers
+- [x] Add `service_account_key.json` (gitignored)
+- [x] Verify: can read/write a test document to Firestore
 
 ### Step 3: Seed Database Script
-- [ ] Create `scripts/seed_database.py`
-- [ ] Import JSON from `api_and_data.md` (user, rehab plan, 14 days usage, devices)
-- [ ] Run once: `python scripts/seed_database.py`
-- [ ] Verify: Firebase Console shows seeded collections
+- [x] Create `scripts/seed_database.py`
+- [x] Import JSON from `api_and_data.md` (user, rehab plan, 14 days usage, devices)
+- [x] Run once: `python scripts/seed_database.py`
+- [x] Verify: Firebase Console shows seeded collections
 
 ### Step 4: Auth & User Router
-- [ ] Create `models/user_models.py` — UserProfile, UserCreate, UserUpdate (Pydantic)
-- [ ] Create `routers/auth.py` — POST `/auth/verify` (Firebase token verification)
-- [ ] Create `routers/user.py` — GET/PUT `/user/profile`
-- [ ] Create `services/user_service.py` — Firestore CRUD
-- [ ] Verify: GET returns seeded user data matching `api_and_data.md`
+- [x] Create `models/user_models.py` — UserProfile, UserCreate, UserUpdate (Pydantic)
+- [x] Create `routers/auth.py` — POST `/auth/verify` (Firebase token verification)
+- [x] Create `routers/user.py` — GET/PUT `/user/profile`
+- [x] Create `services/user_service.py` — Firestore CRUD
+- [x] Verify: GET returns seeded user data matching `api_and_data.md`
 
 ### Step 5: Rehab logic
-- [ ] Create `services/rehab_service.py` — basic plan creation (duration, phases)
-- [ ] Create `routers/rehab.py` — GET `/rehab/plan`, POST `/rehab/recalculate`
-- [ ] Verify: changing strictness returns an updated plan
+- [x] Create `services/rehab_service.py` — basic plan creation (duration, phases)
+- [x] Create `routers/rehab.py` — GET `/rehab/plan`, POST `/rehab/recalculate`
+- [x] Verify: changing strictness returns an updated plan
 
 ### Step 6: Usage Analytics & Reports
-- [ ] Create `models/usage_models.py` — UsageEvent, UsageStats
-- [ ] Create `services/usage_service.py` — simple aggregation, heat maps
-- [ ] Create `routers/usage.py` — GET `/usage/stats`, GET `/usage/heatmap`
-- [ ] Create `routers/report.py` — GET `/report/weekly` (for Web Dashboard charts)
-- [ ] Ensure all user stats (app usage, screen time, rehab progress) are consistently stored and updated in Firebase
-- [ ] Confirm stats are linked to the right user profiles and ensure proper data refresh in the extension and app
-- [ ] Verify: stats endpoint returns correct aggregated data from seeded logs for the Next.js frontend
+- [x] Create `models/usage_models.py` — UsageEvent, UsageStats
+- [x] Create `services/usage_service.py` — simple aggregation, heat maps
+- [x] Create `routers/usage.py` — GET `/usage/stats`, GET `/usage/heatmap`
+- [x] Create `routers/report.py` — GET `/report/weekly` (for Web Dashboard charts)
+- [x] Ensure all user stats (app usage, screen time, rehab progress) are consistently stored and updated in Firebase
+- [x] Confirm stats are linked to the right user profiles and ensure proper data refresh in the extension and app
+- [x] Verify: stats endpoint returns correct aggregated data from seeded logs for the Next.js frontend
 
 ### Step 7: Chat AI (Gemini)
-- [ ] Create `services/chat_service.py` — Gemini API integration (gemini-pro)
-- [ ] Create `models/chat_models.py` — ChatMessage, ChatResponse
-- [ ] Create `routers/chat.py` — POST `/chat`
-- [ ] Identify and integrate APIs for Voice-Based AI (e.g., Google Cloud Speech-to-Text + Gemini for Text-to-Speech)
-- [ ] Design a simple conversational flow for real-time voice interaction (can be mocked for demo readiness)
-- [ ] Build system prompt: "You are Betaal, a rehab assistant. User data: [stats]..."
-- [ ] Verify: live chat returns personalized response mentioning user's actual stats
+- [x] Create `services/chat_service.py` — Gemini API integration (gemini-pro)
+- [x] Create `models/chat_models.py` — ChatMessage, ChatResponse
+- [x] Create `routers/chat.py` — POST `/chat`
+- [x] Identify and integrate APIs for Voice-Based AI (e.g., Google Cloud Speech-to-Text + Gemini for Text-to-Speech)
+- [x] Design a simple conversational flow for real-time voice interaction (can be mocked for demo readiness)
+- [x] Build system prompt: "You are Betaal, a rehab assistant. User data: [stats]..."
+- [x] Verify: live chat returns personalized response mentioning user's actual stats
 
 ### Step 8: Extension API & Monitor
-- [ ] Create `routers/extension.py` — POST `/extension/heartbeat` (sync time from browser extension)
-- [ ] Create `services/extension_service.py` — update top-level stats in Firestore
-- [ ] Create `routers/monitor.py` — GET `/monitor/{child_id}/stats` (Parental monitoring)
-- [ ] Add endpoints to link accounts (child/peer) and monitor their usage stats
-- [ ] Create dashboard aggregation logic for parent and linked users' screen time and app usage
-- [ ] Verify: all endpoints return responses matching `api_and_data.md` to support Web and Extension
+- [x] Create `routers/extension.py` — POST `/extension/heartbeat` (sync time from browser extension)
+- [x] Create `services/extension_service.py` — update top-level stats in Firestore
+- [x] Create `routers/monitor.py` — GET `/monitor/{child_id}/stats` (Parental monitoring)
+- [x] Add endpoints to link accounts (child/peer) and monitor their usage stats
+- [x] Create dashboard aggregation logic for parent and linked users' screen time and app usage
+- [x] Verify: all endpoints return responses matching `api_and_data.md` to support Web and Extension
 
 ### Step 9: YouTube Recommendation Logic
-- [ ] Confirm/integrate YouTube Data API (or alternative) to fetch video recommendations based on user topics/keywords
-- [ ] Create `services/youtube_service.py` and `routers/youtube.py` — GET `/youtube/recommend`
-- [ ] Ensure API call returns a list of videos to be displayed within the website dashboard
-- [ ] Verify: integration works or is mock-ready for the demo
+- [x] Confirm/integrate YouTube Data API (or alternative) to fetch video recommendations based on user topics/keywords
+- [x] Create `services/youtube_service.py` and `routers/youtube.py` — GET `/youtube/recommend`
+- [x] Ensure API call returns a list of videos to be displayed within the website dashboard
+- [x] Verify: integration works or is mock-ready for the demo
 
 ### Step 10: Documentation
-- [ ] Create `CONTEXT.md` in `betaal_ai/`
-- [ ] Update `progress.md`
-- [ ] Verify ALL responses match `api_and_data.md` contracts
+- [x] Create `CONTEXT.md` in `betaal_ai/`
+- [x] Update `progress.md`
+- [x] Verify ALL responses match `api_and_data.md` contracts
 
 ---
 

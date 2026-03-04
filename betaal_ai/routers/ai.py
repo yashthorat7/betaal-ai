@@ -8,7 +8,7 @@ router = APIRouter(tags=["AI, Chat, Youtube, Monitor"])
 
 # ====== INITIALIZE GENAI ====== #
 client = None
-MODEL_NAME = "gemini-3-flash-preview"
+MODEL_NAME = "gemini-2.5-flash"
 try:
     if settings.GEMINI_API_KEY:
         client = genai.Client(api_key=settings.GEMINI_API_KEY)

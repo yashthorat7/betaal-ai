@@ -5,6 +5,7 @@ class ChatMessage(BaseModel):
     uid: str
     message: str
     session_id: str
+    user_name: str = "User"
 
 class ChatResponse(BaseModel):
     response: str

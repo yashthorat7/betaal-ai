@@ -1,5 +1,5 @@
 // ── Config ──────────────────────────────────────────────────────────────────
-const BACKEND_ENABLED = false;
+const BACKEND_ENABLED = true;
 const DEFAULT_LIMIT   = 2;      // minutes
 const TICK_INTERVAL   = 10000;  // ms  (10 s = 1/6 min increment)
 const TICK_MINUTES    = 10 / 60;
@@ -151,13 +151,21 @@ function syncWithBackend() {
     if (!BACKEND_ENABLED) return;
     chrome.storage.local.get(['userId', 'todayUsage', 'domainUsage'], (data) => {
         if (!data.userId) return;
+
+        // Convert domainUsage object to array format expected by backend
+        const domainObj = data.domainUsage || {};
+        const domains = Object.entries(domainObj).map(([domain, minutes]) => ({
+            domain,
+            minutes: Math.round(minutes)
+        }));
+
         fetch('http://localhost:8000/extension/heartbeat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                user_id:         data.userId,
-                today_usage_min: data.todayUsage  || 0,
-                domain_usage:    data.domainUsage || {},
+                uid:              data.userId,
+                today_browser_min: Math.round(data.todayUsage || 0),
+                domains:          domains,
             }),
         }).catch(() => {});
     });

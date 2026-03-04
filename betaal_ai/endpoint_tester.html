@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Betaal AI | API Explorer (Single View)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #000000;
+            --bg: #ffffff;
+            --text-main: #000000;
+            --text-dim: #64748b;
+            --border-thick: 2px solid #000000;
+            --border-thin: 1px solid #e2e8f0;
+            --accent: #3b82f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 4rem 1rem;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            border: var(--border-thick);
+            padding: 2rem;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            padding-bottom: 1.5rem;
+            border-bottom: var(--border-thick);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+        }
+
+        .base-url-config {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .base-url-config label {
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .base-url-config input {
+            border: var(--border-thick);
+            padding: 0.4rem 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            outline: none;
+            width: 250px;
+        }
+
+        .section-header {
+            background: #000;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 4rem 0 2rem 0;
+            display: inline-block;
+        }
+
+        .section-header:first-of-type {
+            margin-top: 0;
+        }
+
+        .api-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .endpoint-card {
+            border-bottom: var(--border-thin);
+            padding: 2rem 0;
+            transition: background 0.1s;
+        }
+
+        .endpoint-card:last-child {
+            border-bottom: none;
+        }
+
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .method {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 800;
+            font-size: 0.75rem;
+            min-width: 60px;
+        }
+
+        .method.GET { color: #10b981; }
+        .method.POST { color: #3b82f6; }
+        .method.PUT { color: #f59e0b; }
+
+        .path {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .description {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            margin-left: 75px;
+        }
+
+        .endpoint-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-left: 75px;
+        }
+
+        @media (max-width: 900px) {
+            .endpoint-grid { grid-template-columns: 1fr; gap: 2rem; }
+        }
+
+        .grid-col h4 {
+            font-size: 0.7rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+            color: #000;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .field-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .field-row label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: lowercase;
+            color: var(--text-dim);
+        }
+
+        .field-row input {
+            border: 1px solid #000;
+            padding: 0.6rem;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .json-box {
+            border: 1px solid #000;
+            padding: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            background: #fdfdfd;
+            height: 150px;
+            width: 100%;
+            resize: vertical;
+        }
+
+        .toggle-json {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-decoration: underline;
+            cursor: pointer;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .test-btn {
+            margin-top: 2rem;
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 0.8rem 2.5rem;
+            font-weight: 800;
+            font-size: 0.8rem;
+            cursor: pointer;
+            width: fit-content;
+            text-transform: uppercase;
+        }
+
+        .test-btn:hover { background: #333; }
+
+        .google-mock {
+            border: 2px solid #000;
+            padding: 0.6rem 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            width: fit-content;
+            margin-bottom: 1.5rem;
+        }
+
+        .output-col {
+            border-left: var(--border-thin);
+            padding-left: 2rem;
+        }
+
+        .status-info {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .response-pre {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo">BETAAL.API</div>
+            <div class="base-url-config">
+                <label>ROOT</label>
+                <input type="text" id="baseUrl" value="http://localhost:8000">
+            </div>
+        </header>
+
+        <div id="renderTarget" class="api-list">
+            <!-- Content injected here -->
+        </div>
+    </div>
+
+    <script>
+        const endpoints = [
+            // Auth
+            { group: 'auth', method: 'POST', path: '/auth/verify', desc: 'Verify user session token', body: { id_token: 'demo_token_123' }, google: true },
+            { group: 'auth', method: 'POST', path: '/auth/login', desc: 'User authentication login', body: { email: 'arjun.demo@gmail.com', password: 'password123' }, google: true },
+            { group: 'auth', method: 'POST', path: '/auth/logout', desc: 'Terminate user session', body: { uid: 'demo_user_001', session_token: 'sess_abc123' } },
+            
+            // User
+            { group: 'user', method: 'GET', path: '/user/profile', desc: 'Retrieve full user profile', query: ['uid=demo_user_001'] },
+            { group: 'user', method: 'PUT', path: '/user/profile', desc: 'Update user profile attributes', body: { uid: 'demo_user_001', name: 'Arjun Updated', age: 20, addiction_level: 8, strictness: 3 } },
+            { group: 'user', method: 'GET', path: '/user/list', desc: 'Fetch accounts linked for monitoring', query: ['uid=demo_user_001'] },
+            { group: 'user', method: 'GET', path: '/user/{user_id}/stats', desc: 'Generic user usage statistics', params: { '{user_id}': 'demo_user_001' } },
+            { group: 'user', method: 'POST', path: '/user/link', desc: 'Establish parent-child link', body: { parent_uid: 'demo_parent_001', child_uid: 'demo_user_001', relation: 'child', link_code: 'LINK123' } },
+            
+            // Usage
+            { group: 'usage', method: 'POST', path: '/usage/log', desc: 'Submit raw app usage events', body: { uid: 'demo_user_001', events: [{app_name: 'Instagram', category: 'Social', start: '2025-01-14T10:00:00Z', end: '2025-01-14T10:15:00Z'}] } },
+
+            { group: 'usage', method: 'GET', path: '/usage/stats', desc: 'Detailed analytics breakdown', query: ['uid=demo_user_001'] },
+            { group: 'usage', method: 'GET', path: '/usage/heatmap', desc: 'Time-block intensity data', query: ['uid=demo_user_001'] },
+            { group: 'usage', method: 'GET', path: '/usage/summary', desc: 'Quick consumption summary', query: ['uid=demo_user_001'] },
+            
+            // AI & Chat
+            { group: 'ai', method: 'POST', path: '/chat', desc: 'Live interaction with Betaal AI', body: { uid: 'demo_user_001', message: 'I need help reducing screen time', session_id: 'sess_123' } },
+            { group: 'ai', method: 'POST', path: '/ai/evaluate', desc: 'Risk classification analysis', body: { uid: 'demo_user_001' } },
+            { group: 'ai', method: 'POST', path: '/youtube/recommend', desc: 'Productive video suggestions', body: { uid: 'demo_user_001', prompt: 'productivity', topics: ['coding'], keywords: ['python', 'ai'] } },
+            
+            // Monitoring
+            { group: 'monitor', method: 'GET', path: '/monitor/{child_id}/stats', desc: 'Parental dashboard view', params: { '{child_id}': 'demo_user_001' } },
+            { group: 'monitor', method: 'PUT', path: '/monitor/{child_id}/strictness', desc: 'Adjust enforcement level', params: { '{child_id}': 'demo_user_001' }, body: { parent_uid: 'demo_parent_001', new_strictness: 5 } },
+            
+            // Rehab & Reports
+            { group: 'rehab', method: 'GET', path: '/rehab/plan', desc: 'Current phased rehab strategy', query: ['uid=demo_user_001'] },
+            { group: 'rehab', method: 'POST', path: '/rehab/recalculate', desc: 'Trigger plan recalculation', body: { uid: 'demo_user_001', addiction_level: 8, strictness: 4 } },
+            { group: 'rehab', method: 'GET', path: '/report/daily', desc: 'End-of-day productivity report', query: ['uid=demo_user_001'] },
+            { group: 'rehab', method: 'GET', path: '/report/weekly', desc: 'Seven-day trend analysis', query: ['uid=demo_user_001'] },
+            
+            // Extension & System
+            { group: 'extension', method: 'POST', path: '/extension/heartbeat', desc: 'Extension sync & rule check', body: { uid: 'demo_user_001', today_browser_min: 45, domains: [{domain: 'youtube.com', minutes: 20}] } },
+            { group: 'system', method: 'GET', path: '/dashboard', desc: 'Aggregated ecosystem view', query: ['uid=demo_user_001'] },
+            { group: 'system', method: 'GET', path: '/features', desc: 'Active feature directory' },
+            { group: 'system', method: 'GET', path: '/health', desc: 'Backend health heartbeat' }
+        ];
+
+        function render() {
+            const target = document.getElementById('renderTarget');
+            let currentGroup = '';
+            
+            endpoints.forEach((ep, i) => {
+                if (ep.group !== currentGroup) {
+                    currentGroup = ep.group;
+                    const header = document.createElement('div');
+                    header.className = 'section-header';
+                    header.innerText = currentGroup;
+                    target.appendChild(header);
+                }
+
+                const card = document.createElement('div');
+                card.className = 'endpoint-card';
+                card.id = `ep-${i}`;
+                
+                let inputs = '';
+                if (ep.google) inputs += `<div class="google-mock">Continue with Google</div>`;
+                if (ep.params) Object.entries(ep.params).forEach(([k, v]) => inputs += `<div class="field-row"><label>${k}</label><input type="text" data-type="param" data-key="${k}" value="${v}"></div>`);
+                if (ep.query) ep.query.forEach(q => { const [k, v] = q.split('='); inputs += `<div class="field-row"><label>${k}</label><input type="text" data-type="query" data-key="${k}" value="${v}"></div>`});
+                
+                if (ep.body) {
+                    inputs += `
+                        <div class="field-row">
+                            <span class="toggle-json" onclick="document.getElementById('json-${i}').classList.toggle('hidden')">toggle raw json body</span>
+                            <textarea id="json-${i}" class="json-box hidden" data-type="body">${JSON.stringify(ep.body, null, 2)}</textarea>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div class="endpoint-header">
+                        <span class="method ${ep.method}">${ep.method}</span>
+                        <span class="path">${ep.path}</span>
+                    </div>
+                    <div class="description">${ep.desc}</div>
+                    <div class="endpoint-grid">
+                        <div class="grid-col">
+                            <h4>PARAMETERIZATION</h4>
+                            <div class="input-group">${inputs || '<i>none</i>'}</div>
+                            <button class="test-btn" onclick="run(${i})">Execute</button>
+                        </div>
+                        <div class="output-col">
+                            <h4>RESPONSE_BLOCK</h4>
+                            <div id="status-${i}" class="status-info hidden"></div>
+                            <pre id="output-${i}" class="response-pre">/* standby */</pre>
+                        </div>
+                    </div>
+                `;
+                target.appendChild(card);
+            });
+        }
+
+        async function run(i) {
+            const ep = endpoints[i];
+            const base = document.getElementById('baseUrl').value.replace(/\/$/, '');
+            const card = document.getElementById(`ep-${i}`);
+            const out = document.getElementById(`output-${i}`);
+            const stat = document.getElementById(`status-${i}`);
+            
+            out.innerText = 'running...';
+            stat.classList.add('hidden');
+
+            let path = ep.path;
+            const query = new URLSearchParams();
+            let body = null;
+
+            card.querySelectorAll('input, textarea').forEach(el => {
+                const type = el.getAttribute('data-type');
+                if (type === 'param') path = path.replace(el.getAttribute('data-key'), encodeURIComponent(el.value));
+                if (type === 'query') query.append(el.getAttribute('data-key'), el.value);
+                if (type === 'body') body = el.value;
+            });
+
+            const url = `${base}${path}${query.toString() ? '?' + query.toString() : ''}`;
+
+            try {
+                const r = await fetch(url, {
+                    method: ep.method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: ep.method !== 'GET' ? body : undefined
+                });
+                const d = await r.json();
+                stat.innerText = `STATUS: ${r.status} / TIME: ${Math.round(performance.now())}ms`;
+                stat.classList.remove('hidden');
+                out.innerText = JSON.stringify(d, null, 2);
+            } catch (e) {
+                out.innerText = `ERROR: ${e.message}`;
+            }
+        }
+
+        render();
+    </script>
+</body>
+</html>

@@ -33,12 +33,24 @@ class SignInScreen extends StatelessWidget {
                 child: ElevatedButton.icon(
                   onPressed: () async {
                     final auth = context.read<AuthProvider>();
-                    await auth.signIn();
-                    if (context.mounted) {
-                      final route = PreferencesService.onboardingDone
-                          ? '/main'
-                          : '/onboarding';
-                      Navigator.pushReplacementNamed(context, route);
+                    try {
+                      await auth.signIn();
+                      if (!auth.isSignedIn) return; // user cancelled
+                      if (context.mounted) {
+                        final route = PreferencesService.onboardingDone
+                            ? '/main'
+                            : '/onboarding';
+                        Navigator.pushReplacementNamed(context, route);
+                      }
+                    } catch (e) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Sign-in failed: $e'),
+                            backgroundColor: Colors.red.shade400,
+                          ),
+                        );
+                      }
                     }
                   },
                   icon: const Icon(Icons.login),

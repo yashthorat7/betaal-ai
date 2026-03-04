@@ -56,7 +56,7 @@ class UsageTrackingService : Service() {
 
         // Read engine config
         val quotaMin = prefs.getLong("${KEY_PREFIX}daily_quota_min", 378L).toInt()
-        val targetApps = prefs.getStringSet("${KEY_PREFIX}target_apps", emptySet()) ?: emptySet()
+        val targetApps = readTargetApps(prefs)
         val lastTriggerMs = prefs.getLong("${KEY_PREFIX}last_trigger_time_ms", 0L)
 
         // Read current state
@@ -131,6 +131,31 @@ class UsageTrackingService : Service() {
         }
         startService(intent)
         overlayActive = false
+    }
+
+    private fun readTargetApps(prefs: android.content.SharedPreferences): Set<String> {
+        // Flutter shared_preferences may store List<String> as StringSet or JSON string
+        val key = "${KEY_PREFIX}target_apps"
+        try {
+            val stringSet = prefs.getStringSet(key, null)
+            if (stringSet != null) return stringSet
+        } catch (_: ClassCastException) {
+            // Not a StringSet, try reading as String (JSON array)
+        }
+        try {
+            val jsonStr = prefs.getString(key, null)
+            if (jsonStr != null) {
+                // Parse simple JSON array: ["com.instagram.android","com.google.android.youtube"]
+                return jsonStr.trim('[', ']')
+                    .split(",")
+                    .map { it.trim().trim('"') }
+                    .filter { it.isNotEmpty() }
+                    .toSet()
+            }
+        } catch (_: ClassCastException) {
+            // Neither format
+        }
+        return emptySet()
     }
 
     private fun readEnabledTypes(prefs: android.content.SharedPreferences): List<String> {

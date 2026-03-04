@@ -161,10 +161,29 @@ class OverlayService : Service() {
         clearViews()
         val mode = activeDisturbances[currentIndex]
         activateMode(mode)
-        val duration = if (activeDisturbances.size == 1) 120_000L else 6_000L
+        // In debug mode, show each overlay for 6s with 10s gap between them
+        val prefs = getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE)
+        val debugMode = prefs.getBoolean("flutter.debug_mode", false)
+        val duration = if (activeDisturbances.size == 1) {
+            120_000L
+        } else if (debugMode) {
+            6_000L // overlay visible time in debug; gap is added after clearViews
+        } else {
+            6_000L
+        }
         currentIndex = (currentIndex + 1) % activeDisturbances.size
         mainHandler.postDelayed({
-            if (isCycleActive) runCycleStep()
+            if (isCycleActive) {
+                if (debugMode && activeDisturbances.size > 1) {
+                    // Clear the current overlay, then wait 10s before next
+                    clearViews()
+                    mainHandler.postDelayed({
+                        if (isCycleActive) runCycleStep()
+                    }, 10_000L)
+                    return@postDelayed
+                }
+                runCycleStep()
+            }
         }, duration)
     }
 

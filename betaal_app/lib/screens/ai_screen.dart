@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
 import '../providers/chat_provider.dart';
 
 class AiScreen extends StatefulWidget {
@@ -23,7 +24,11 @@ class _AiScreenState extends State<AiScreen> {
     final text = _controller.text.trim();
     if (text.isEmpty) return;
     _controller.clear();
-    context.read<ChatProvider>().sendMessage(text).then((_) {
+    final userName = context.read<AuthProvider>().user?.name ?? 'User';
+    context.read<ChatProvider>().sendMessage(
+      text,
+      userName: userName,
+    ).then((_) {
       _scrollToBottom();
     });
     _scrollToBottom();
@@ -136,8 +141,13 @@ class _AiScreenState extends State<AiScreen> {
               child: ListView.builder(
                 controller: _scrollController,
                 padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                itemCount: messages.length,
+                itemCount: messages.length + (chat.isTyping ? 1 : 0),
                 itemBuilder: (_, i) {
+                  // Typing indicator at the end
+                  if (i == messages.length && chat.isTyping) {
+                    return const _TypingIndicator();
+                  }
+
                   final msg = messages[i];
                   final isUser = msg.isUser;
 
@@ -312,6 +322,95 @@ class _AssistantMessage extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// --- Typing indicator (three animated dots) ---
+class _TypingIndicator extends StatefulWidget {
+  const _TypingIndicator();
+
+  @override
+  State<_TypingIndicator> createState() => _TypingIndicatorState();
+}
+
+class _TypingIndicatorState extends State<_TypingIndicator>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12, right: 48),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 28,
+            height: 28,
+            margin: const EdgeInsets.only(right: 10, top: 2),
+            decoration: BoxDecoration(
+              color: const Color(0xFF2DD4BF).withOpacity(0.15),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(Icons.smart_toy, color: Color(0xFF2DD4BF), size: 16),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: const Color(0xFFE5E7EB)),
+            ),
+            child: AnimatedBuilder(
+              animation: _controller,
+              builder: (_, __) {
+                return Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: List.generate(3, (i) {
+                    final delay = i * 0.2;
+                    final t = ((_controller.value - delay) % 1.0).clamp(0.0, 1.0);
+                    final bounce = t < 0.5 ? t * 2 : (1.0 - t) * 2;
+                    return Container(
+                      margin: EdgeInsets.only(right: i < 2 ? 4 : 0),
+                      child: Transform.translate(
+                        offset: Offset(0, -4 * bounce),
+                        child: Container(
+                          width: 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            color: Color.lerp(
+                              const Color(0xFFD1D5DB),
+                              const Color(0xFF2DD4BF),
+                              bounce,
+                            ),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+                );
+              },
             ),
           ),
         ],

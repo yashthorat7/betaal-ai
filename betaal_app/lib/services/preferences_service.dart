@@ -16,6 +16,7 @@ class PreferencesService {
   static const _keyMilestoneAlerts = 'notif_milestone_alerts';
   static const _keyRehabReminders = 'notif_rehab_reminders';
   static const _keyInterruptionPrefix = 'interruption_';
+  static const _keyAge = 'user_age';
   static const _keyDevUnlocked = 'dev_unlocked';
   static const _keyDailyQuotaMin = 'daily_quota_min';
   static const _keyTargetApps = 'target_apps';
@@ -28,6 +29,7 @@ class PreferencesService {
 
   // --- Onboarding ---
   static bool get onboardingDone => _prefs?.getBool(_keyOnboardingDone) ?? false;
+ // static bool get onboardingDone => false; // was: _prefs?.getBool(_keyOnboardingDone) ?? false;  for testing onboarding screen
   static Future<void> setOnboardingDone(bool v) async =>
       await _prefs?.setBool(_keyOnboardingDone, v);
 
@@ -36,11 +38,23 @@ class PreferencesService {
   static Future<void> setStealthMode(String v) async =>
       await _prefs?.setString(_keyStealthMode, v);
 
+  // --- User Profile (from onboarding) ---
+  static const _keyUserName = 'user_name';
+
+  static String getUserName() => _prefs?.getString(_keyUserName) ?? '';
+  static Future<void> setUserName(String v) async =>
+      await _prefs?.setString(_keyUserName, v);
+
+  static int getAge() => _prefs?.getInt(_keyAge) ?? 0;
+  static Future<void> setAge(int v) async => await _prefs?.setInt(_keyAge, v);
+
   // --- Rehab Parameters ---
+  static int getAddictionLevel() => _prefs?.getInt(_keyAddictionLevel) ?? 8;
   static int get addictionLevel => _prefs?.getInt(_keyAddictionLevel) ?? 8;
   static Future<void> setAddictionLevel(int v) async =>
       await _prefs?.setInt(_keyAddictionLevel, v);
 
+  static int getStrictness() => _prefs?.getInt(_keyStrictness) ?? 3;
   static int get strictness => _prefs?.getInt(_keyStrictness) ?? 3;
   static Future<void> setStrictness(int v) async =>
       await _prefs?.setInt(_keyStrictness, v);
@@ -125,6 +139,11 @@ class PreferencesService {
   static bool get devUnlocked => _prefs?.getBool(_keyDevUnlocked) ?? false;
   static Future<void> setDevUnlocked(bool v) async =>
       await _prefs?.setBool(_keyDevUnlocked, v);
+
+  // --- Debug Mode (10s gap between interruptions for demos) ---
+  static bool get debugMode => _prefs?.getBool('debug_mode') ?? false;
+  static Future<void> setDebugMode(bool v) async =>
+      await _prefs?.setBool('debug_mode', v);
 
   // --- Clear All (for sign out) ---
   static Future<void> clearAll() async => await _prefs?.clear();

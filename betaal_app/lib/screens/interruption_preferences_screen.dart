@@ -107,55 +107,47 @@ class _InterruptionPreferencesScreenState
     }
   }
 
+  static const _blue = Color(0xFF3A86FF);
+
   Color _getColorForType(String key) {
     switch (key) {
+      // Visual / screen-based interruptions → teal
       case 'black_screen':
       case 'blur_screen':
       case 'half_block':
-        return const Color(0xFF333333);
-      case 'warning':
-      case 'flicker':
-      case 'close_app':
-        return const Color(0xFFE17070);
-      case 'loading':
-      case 'timer_overlay':
-      case 'shame_counter':
-        return const Color(0xFFFBBF24);
       case 'tint':
       case 'grayscale':
       case 'invert_colors':
-        return const Color(0xFF8B5CF6);
+      case 'flicker':
+      case 'progressive_dim':
+      case 'glitch_effect':
+      case 'screen_shrink':
+      case 'pixel_rain':
+      case 'static_noise':
+      case 'fly':
+      case 'warning':
+      case 'random_popup':
+      case 'loading':
+      case 'timer_overlay':
+      case 'shame_counter':
+      case 'quiz_gate':
+        return _teal;
+      // Input / system-level interruptions → blue
       case 'mistouch':
       case 'delayed_touch':
       case 'swapped_touch':
-        return const Color(0xFF3A86FF);
-      case 'fly':
-      case 'pixel_rain':
-      case 'static_noise':
-        return const Color(0xFF14B8A6);
       case 'status_bar':
       case 'brightness_zero':
       case 'lock_screen':
       case 'volume_zero':
-        return const Color(0xFF6366F1);
       case 'vibrate_pulse':
       case 'force_rotate':
-        return const Color(0xFFEC4899);
-      case 'quiz_gate':
-        return _teal;
       case 'screen_shake':
       case 'earthquake':
-        return const Color(0xFFDC2626);
-      case 'progressive_dim':
-        return const Color(0xFF374151);
-      case 'glitch_effect':
-        return const Color(0xFFEF4444);
-      case 'screen_shrink':
-        return const Color(0xFF1F2937);
-      case 'random_popup':
-        return const Color(0xFFEA580C);
+      case 'close_app':
+        return _blue;
       default:
-        return Colors.grey;
+        return _teal;
     }
   }
 
@@ -216,9 +208,22 @@ class _InterruptionPreferencesScreenState
                   GestureDetector(
                     onTap: () {
                       final allOn = _enabled.values.every((v) => v);
+                      if (allOn) {
+                        // Can't disable all — keep first 5 enabled
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: const Text('Minimum 5 interruptions must stay enabled'),
+                            backgroundColor: Colors.orange.shade600,
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
+                        return;
+                      }
                       setState(() {
                         for (final key in _enabled.keys) {
-                          _enabled[key] = !allOn;
+                          _enabled[key] = true;
                         }
                       });
                     },
@@ -353,7 +358,22 @@ class _InterruptionPreferencesScreenState
                           height: 28,
                           child: Switch(
                             value: enabled,
-                            onChanged: (v) => setState(() => _enabled[key] = v),
+                            onChanged: (v) {
+                              // Enforce minimum 5 enabled
+                              if (!v && _enabledCount <= 5) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: const Text('Minimum 5 interruptions must stay enabled'),
+                                    backgroundColor: Colors.orange.shade600,
+                                    behavior: SnackBarBehavior.floating,
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                    duration: const Duration(seconds: 2),
+                                  ),
+                                );
+                                return;
+                              }
+                              setState(() => _enabled[key] = v);
+                            },
                             activeColor: color,
                             activeTrackColor: color.withOpacity(0.3),
                             inactiveThumbColor: Colors.grey.shade300,

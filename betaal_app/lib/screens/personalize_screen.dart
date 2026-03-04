@@ -291,7 +291,8 @@ class _PersonalizeScreenState extends State<PersonalizeScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  // Extra padding so content doesn't hide behind floating nav bar
+                  const SizedBox(height: 88),
                 ],
               ),
             ),

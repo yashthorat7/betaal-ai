@@ -96,7 +96,7 @@ class DummyData {
 
   static List<ChatMessage> getInitialChat() => [
     ChatMessage(
-      message: "Hi Arjun! I'm Betaal, your digital rehab assistant. How can I help you today?",
+      message: "Hi! I'm Betaal, your digital rehab assistant. How can I help you today?",
       role: 'assistant',
       timestamp: DateTime.now().subtract(const Duration(minutes: 5)),
     ),
@@ -104,11 +104,11 @@ class DummyData {
 
   static String getAIResponse(String userMessage) {
     final responses = [
-      "Great progress, Arjun! You're on Day 8 of your 24-day plan and your screen time dropped from 7 hours to about 3 hours. That's a 56% reduction!",
-      "I see Instagram is still your #1 app at 52 minutes today. Try replacing 15 minutes of scrolling with a short walk.",
-      "Your 3-day streak is impressive! Just 4 more days to unlock the 7-Day Streak badge. You've got this!",
-      "You're currently in Phase 2 (Reduction) with a daily quota of 273 minutes. Today you used 185 minutes — well under quota!",
-      "Tip: The hardest part of rehab is Phase 3 (Discipline). Build strong habits now so you're ready for the intensity increase.",
+      "Great progress! Your screen time has been dropping. That's a solid reduction — keep it going.",
+      "I see Instagram is still your top app today. Try replacing 15 minutes of scrolling with a short walk.",
+      "Your streak is impressive! Keep going and you'll unlock the next badge soon.",
+      "You're well under quota today. That's exactly where you want to be in this phase.",
+      "Tip: Build strong habits now so you're ready for the next phase. Small wins compound over time.",
     ];
     return responses[userMessage.length % responses.length];
   }

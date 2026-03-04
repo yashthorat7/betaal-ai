@@ -35,11 +35,13 @@ class _DebugScreenState extends State<DebugScreen>
   String? _activeOverlay;
   bool _cycleRunning = false;
   int _savedQuota = 0; // to restore after test
+  late bool _debugMode;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _debugMode = PreferencesService.debugMode;
     _refreshAll();
   }
 
@@ -287,6 +289,45 @@ class _DebugScreenState extends State<DebugScreen>
                   Text(
                     'Current quota: ${PreferencesService.dailyQuotaMin}m | Cooldown: 10m between triggers',
                     style: TextStyle(fontSize: 10, color: Colors.grey.shade400),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // --- DEBUG MODE TOGGLE ---
+                  _sectionHeader('DEMO MODE'),
+                  const SizedBox(height: 10),
+                  _buildCard(
+                    child: Row(
+                      children: [
+                        const Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Debug Mode',
+                                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: _charcoal),
+                              ),
+                              SizedBox(height: 2),
+                              Text(
+                                '10s gap between each interruption for demos',
+                                style: TextStyle(fontSize: 11, color: _textMuted),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 28,
+                          child: Switch(
+                            value: _debugMode,
+                            onChanged: (v) {
+                              setState(() => _debugMode = v);
+                              PreferencesService.setDebugMode(v);
+                            },
+                            activeColor: _teal,
+                            activeTrackColor: _teal.withOpacity(0.3),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 20),
 

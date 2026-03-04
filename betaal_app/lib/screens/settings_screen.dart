@@ -102,10 +102,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               ),
                             ],
                           ),
-                          child: const CircleAvatar(
+                          child: CircleAvatar(
                             radius: 40,
-                            backgroundColor: Color(0xFFE8E8E8),
-                            child: Icon(Icons.person, color: Color(0xFF888888), size: 40),
+                            backgroundColor: const Color(0xFFE8E8E8),
+                            backgroundImage: user?.avatarUrl != null
+                                ? NetworkImage(user!.avatarUrl!)
+                                : null,
+                            child: user?.avatarUrl == null
+                                ? const Icon(Icons.person, color: Color(0xFF888888), size: 40)
+                                : null,
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -397,9 +402,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   // --- SIGN OUT ---
                   GestureDetector(
                     onTap: () async {
-                      await PreferencesService.clearAll();
+                      await auth.signOut();
                       if (!context.mounted) return;
-                      auth.signOut();
                       Navigator.pushReplacementNamed(context, '/signin');
                     },
                     child: Container(
@@ -434,7 +438,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  // Extra padding so content doesn't hide behind floating nav bar
+                  const SizedBox(height: 88),
                 ],
               ),
             ),

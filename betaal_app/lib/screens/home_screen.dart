@@ -5,7 +5,6 @@ import '../providers/usage_provider.dart';
 import '../providers/rehab_provider.dart';
 import '../widgets/monitoring_ring.dart';
 import '../widgets/weekly_summary.dart';
-import 'ai_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -26,35 +25,6 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: _bgColor,
-      floatingActionButton: Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: _teal.withOpacity(0.3),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
-            ),
-            BoxShadow(
-              color: Colors.black.withOpacity(0.08),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const AiScreen()),
-            );
-          },
-          backgroundColor: _teal,
-          elevation: 0,
-          shape: const CircleBorder(),
-          child: const Icon(Icons.smart_toy, color: Colors.white, size: 26),
-        ),
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -101,10 +71,15 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        child: const CircleAvatar(
+                        child: CircleAvatar(
                           radius: 24,
-                          backgroundColor: Color(0xFFE8E8E8),
-                          child: Icon(Icons.person, color: Color(0xFF888888), size: 26),
+                          backgroundColor: const Color(0xFFE8E8E8),
+                          backgroundImage: user?.avatarUrl != null
+                              ? NetworkImage(user!.avatarUrl!)
+                              : null,
+                          child: user?.avatarUrl == null
+                              ? const Icon(Icons.person, color: Color(0xFF888888), size: 26)
+                              : null,
                         ),
                       ),
                       Positioned(
@@ -234,7 +209,8 @@ class HomeScreen extends StatelessWidget {
               // --- REHAB DAY PROGRESS ---
               if (plan != null) _RehabProgress(plan: plan),
 
-              const SizedBox(height: 32),
+              // Extra padding so content doesn't hide behind floating nav bar
+              const SizedBox(height: 88),
             ],
           ),
         ),

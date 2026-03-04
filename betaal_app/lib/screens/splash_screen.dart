@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../services/preferences_service.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -13,10 +14,22 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) {
-        final route = PreferencesService.onboardingDone ? '/main' : '/signin';
-        Navigator.pushReplacementNamed(context, route);
+      if (!mounted) return;
+      final hasUser = FirebaseAuth.instance.currentUser != null;
+      final onboarded = PreferencesService.onboardingDone;
+
+      String route;
+      if (hasUser && onboarded) {
+        // Returning user — go straight to main
+        route = '/main';
+      } else if (hasUser && !onboarded) {
+        // Signed in but never onboarded — go to onboarding
+        route = '/onboarding';
+      } else {
+        // Not signed in
+        route = '/signin';
       }
+      Navigator.pushReplacementNamed(context, route);
     });
   }
 

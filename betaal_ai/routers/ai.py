@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 from models.chat_models import ChatMessage, ChatResponse, EvaluateRequest, EvaluateResponse
-from models.extension_models import YoutubeRecommendRequest, YoutubeRecommendResponse
 from models.extension_models import MonitorStatsResponse, MonitorStrictnessUpdate, MonitorStrictnessResponse
 from config import settings
 import google.generativeai as genai
@@ -58,7 +57,7 @@ def evaluate_user_risk(uid: str) -> dict:
     }
 
 # ====== CHAT ROUTES ====== #
-@router.post("/ai/chat", response_model=ChatResponse)
+@router.post("/chat", response_model=ChatResponse)
 async def chat_with_betaal(request: ChatMessage):
     # Sends user message to Gemini
     response_text = generate_chat_response(request.uid, request.message, request.session_id)
@@ -69,15 +68,7 @@ async def evaluate_risk(request: EvaluateRequest):
     evaluation = evaluate_user_risk(request.uid)
     return EvaluateResponse(**evaluation)
 
-# ====== YOUTUBE ROUTES ====== #
-@router.post("/youtube/recommend", response_model=YoutubeRecommendResponse)
-async def get_youtube_recommendations(request: YoutubeRecommendRequest):
-    return {
-      "videos": [
-        { "id": "jfKfPfyJRdk", "title": "lofi hip hop radio - beats to relax/study to", "thumbnail": "https://img.youtube.com/vi/jfKfPfyJRdk/hqdefault.jpg", "url": "https://www.youtube.com/watch?v=jfKfPfyJRdk" },
-        { "id": "5qap5aO4i9A", "title": "lofi hip hop radio - beats to sleep/chill to", "thumbnail": "https://img.youtube.com/vi/5qap5aO4i9A/hqdefault.jpg", "url": "https://www.youtube.com/watch?v=5qap5aO4i9A" }
-      ]
-    }
+
 
 # ====== MONITOR ROUTES ====== #
 @router.get("/monitor/{child_id}/stats", response_model=MonitorStatsResponse)

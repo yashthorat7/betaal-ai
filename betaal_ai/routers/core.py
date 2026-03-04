@@ -8,6 +8,7 @@ from models.usage_models import (
     UsageLogRequest, UsageStatsResponse, HeatMapResponse, UsageSummaryResponse, 
     GenericResponse as UsageGenericResponse
 )
+from models.extension_models import DashboardResponse, FeaturesResponse
 from firebase import firebase_admin_init
 
 router = APIRouter(tags=["Core (Auth, User, Usage)"])
@@ -95,4 +96,25 @@ async def get_summary(uid: str):
     return {
       "total_screen_time_today": 185, "daily_average_week": 241, "total_unlocks": 25,
       "status": "under_quota", "recommendation": "Trending down! Keep maintaining focus."
+    }
+
+# ====== DASHBOARD & FEATURES ====== #
+@router.get("/dashboard", response_model=DashboardResponse)
+async def get_dashboard(uid: str):
+    return {
+      "user_stats": { "today_min": 185, "limit_min": 273, "top_app": "Instagram" },
+      "extension_stats": { "browser_min": 63, "limit_min": 120 },
+      "linked_profiles": [
+        { "name": "Child Profile", "today_min": 225, "limit_min": 300 }
+      ]
+    }
+
+@router.get("/features", response_model=FeaturesResponse)
+async def get_features():
+    return {
+      "active_features": [
+        { "name": "AI Chat", "status": "enabled", "version": "1.0" },
+        { "name": "YouTube Recommendations", "status": "enabled", "version": "1.0" },
+        { "name": "Parental Monitoring", "status": "enabled", "version": "1.1" }
+      ]
     }

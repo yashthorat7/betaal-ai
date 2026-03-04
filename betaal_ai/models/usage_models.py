@@ -59,3 +59,7 @@ class WeeklyReportResponse(BaseModel):
     phase: int
     phase_name: str
     progress_pct: int
+
+class GenericResponse(BaseModel):
+    status: str
+    message: str

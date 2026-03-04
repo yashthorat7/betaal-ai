@@ -21,6 +21,9 @@ class Settings(BaseSettings):
     # Gemini
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
 
+    # YouTube Data API
+    YOUTUBE_API_KEY: str = os.getenv("YOUTUBE_API_KEY", "")
+
     class Config:
         env_file = ".env"
 

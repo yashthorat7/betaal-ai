@@ -71,6 +71,7 @@ class VideoResult(BaseModel):
 
 class YoutubeRecommendRequest(BaseModel):
     uid: str
+    prompt: Optional[str] = None
     topics: List[str]
     keywords: List[str]
 

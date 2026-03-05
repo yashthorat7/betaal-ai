@@ -181,7 +181,7 @@ class _SignInScreenState extends State<SignInScreen>
                         ],
                       ),
                       Text(
-                        'v.2.0.4-recovery',
+                        'v - 1.0',
                         style: TextStyle(
                           fontSize: 10,
                           letterSpacing: 3,

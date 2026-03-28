@@ -60,6 +60,6 @@ Each component folder also has copies of its relevant vibecoding docs (`prd.md`,
 | Name | Role |
 |------|------|
 | Yash | Lead, Ideation, AI/Backend, Integration |
-| Divesh | Flutter Mobile App |
+| Divesh | Flutter + kotlin Mobile App |
 | Bhumika | Website, UI/UX |
 | Diya | Browser Extension, Dummy Data |

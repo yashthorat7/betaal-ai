@@ -35,19 +35,24 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.shield, size: 80),
-            SizedBox(height: 16),
-            Text(
+            // 👇 Replaced the shield icon with your local image 👇
+            Image.asset(
+              'assets/icon.png',
+              width: 80,
+              height: 80,
+            ),
+            const SizedBox(height: 16),
+            const Text(
               'Betaal AI',
               style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8),
-            Text(
+            const SizedBox(height: 8),
+            const Text(
               'Your Digital Rehab Companion',
               style: TextStyle(fontSize: 14, color: Colors.grey),
             ),

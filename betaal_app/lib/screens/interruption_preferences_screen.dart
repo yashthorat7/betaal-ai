@@ -364,13 +364,13 @@ class _InterruptionPreferencesScreenState
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: const Text('Minimum 5 interruptions must stay enabled'),
-                                    backgroundColor: Colors.orange.shade600,
-                                    behavior: SnackBarBehavior.floating,
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                    duration: const Duration(seconds: 2),
-                                  ),
+               ),
                                 );
-                                return;
+                                backgroundColor: Colors.orange.shade600,
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                              duration: const Duration(seconds: 2),
+                              return;
                               }
                               setState(() => _enabled[key] = v);
                             },

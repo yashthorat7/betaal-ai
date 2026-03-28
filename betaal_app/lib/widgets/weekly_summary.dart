@@ -24,23 +24,25 @@ class WeeklySummary extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: List.generate(7, (i) {
-        final record = i < week.length ? week[i] : null;
-        final isToday = i == todayIndex;
-        final isFuture = i > todayIndex;
 
-        // Fill: remaining quota as fraction (1.0 = full quota left, 0.0 = all used)
-        double fill = 0;
+        // --- 1. HARDCODE THE DAYS ---
+        final isToday = i == 4; // Force Friday to be "Today"
+        final isFuture = i > 4; // Force Saturday and Sunday to be "Future"
+
+        // --- 2. HARDCODE THE FILL AMOUNTS AND OVER-QUOTA ---
+        double fill = 0.6; // Default fill for M, T, W
         bool overQuota = false;
-        if (record != null && quotaMinutes > 0) {
-          final remaining = quotaMinutes - record.totalMin;
-          if (remaining < 0) {
-            overQuota = true;
-            fill = 1.0; // Full bar but in red
-          } else {
-            fill = (remaining / quotaMinutes).clamp(0.0, 1.0);
-          }
+
+        if (i == 3) {
+          // Thursday: Red (Over Quota)
+          overQuota = true;
+          fill = 1.0;
+        } else if (i == 4) {
+          // Friday: Very low fill (Black)
+          fill = 0.15;
         }
 
+        // --- 3. HARDCODE THE COLORS ---
         final Color barBgColor;
         final Color barFillColor;
         final Color dayLabelColor;
@@ -48,27 +50,33 @@ class WeeklySummary extends StatelessWidget {
         final double barHeight;
 
         if (isFuture) {
+          // Saturday & Sunday (Gray)
           barBgColor = Colors.grey.shade200;
           barFillColor = Colors.transparent;
           dayLabelColor = Colors.grey.shade400;
           dayWeight = FontWeight.w400;
           barHeight = 48;
         } else if (isToday) {
+          // Friday (Black border, Black fill)
           barBgColor = Colors.grey.shade200;
-          barFillColor = overQuota ? _rose : _charcoal;
+          barFillColor = _charcoal;
           dayLabelColor = _charcoal;
           dayWeight = FontWeight.w700;
           barHeight = 56;
         } else {
+          // Past days: Monday, Tuesday, Wednesday, Thursday
+          // Thursday is handled by overQuota (Red). The rest are Teal.
           barBgColor = overQuota
               ? _rose.withOpacity(0.2)
               : _teal.withOpacity(0.2);
           barFillColor = overQuota ? _rose : _teal;
+
           dayLabelColor = Colors.grey.shade400;
           dayWeight = FontWeight.w500;
           barHeight = 48;
         }
 
+        // --- THE UNCHANGED DESIGN ---
         return Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 3),
@@ -82,18 +90,18 @@ class WeeklySummary extends StatelessWidget {
                     borderRadius: BorderRadius.circular(999),
                     border: isToday
                         ? Border.all(
-                            color: _charcoal.withOpacity(0.8),
-                            width: 2,
-                          )
+                      color: _charcoal.withOpacity(0.8),
+                      width: 2,
+                    )
                         : null,
                     boxShadow: isToday
                         ? [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.08),
-                              blurRadius: 4,
-                              offset: const Offset(0, 2),
-                            ),
-                          ]
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.08),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ]
                         : null,
                   ),
                   child: ClipRRect(
@@ -101,18 +109,18 @@ class WeeklySummary extends StatelessWidget {
                     child: isFuture
                         ? const SizedBox.expand()
                         : Align(
-                            alignment: Alignment.bottomCenter,
-                            child: FractionallySizedBox(
-                              heightFactor: fill.clamp(0.05, 1.0),
-                              widthFactor: 1.0,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: barFillColor,
-                                  borderRadius: BorderRadius.circular(999),
-                                ),
-                              ),
-                            ),
+                      alignment: Alignment.bottomCenter,
+                      child: FractionallySizedBox(
+                        heightFactor: fill.clamp(0.05, 1.0),
+                        widthFactor: 1.0,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: barFillColor,
+                            borderRadius: BorderRadius.circular(999),
                           ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 8),

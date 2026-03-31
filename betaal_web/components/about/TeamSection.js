@@ -1,9 +1,10 @@
 'use client';
+import Image from 'next/image';
 import { useInView } from '@/lib/hooks/useInView';
-import { Linkedin, UserCircle } from 'lucide-react';
+import { Linkedin } from 'lucide-react';
 
 const TEAM = [
-  { name: 'Yash Thorat', linkedin: 'https://linkedin.com/in/yashthorat' },
+  { name: 'Yash Thorat', linkedin: 'https://linkedin.com/in/yashthorat7' },
   { name: 'Divesh Patil', linkedin: 'https://linkedin.com/in/diveshpatil' },
   { name: 'Bhumika Desale', linkedin: 'https://linkedin.com/in/bhumikadesale' },
   { name: 'Diya Mali', linkedin: 'https://linkedin.com/in/diyamali' },
@@ -44,31 +45,22 @@ export default function TeamSection() {
                   size={14}
                   className="text-[#1C1C1C]/20 transition-all duration-300 group-hover:scale-110 group-hover:text-[#0077B5]"
                 />
-                <div className="pointer-events-none absolute inset-0 rounded-2xl bg-black/[0.02] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                <div className="pointer-events-none absolute inset-0 rounded-2xl bg-black/2 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
               </a>
             ))}
           </div>
         </div>
 
         <div
-          className={`relative mx-auto flex aspect-[21/9] max-w-5xl flex-col items-center justify-center overflow-hidden rounded-[40px] border-2 border-dashed border-[#e0e0e0] bg-[#FAFAFA] transition-all duration-1000 ease-out ${visible ? 'translate-y-0 scale-100 opacity-100' : 'translate-y-12 scale-[0.98] opacity-0'}`}
+          className={`relative mx-auto aspect-21/9 max-w-5xl overflow-hidden rounded-[40px] transition-all duration-1000 ease-out ${visible ? 'translate-y-0 scale-100 opacity-100' : 'translate-y-12 scale-[0.98] opacity-0'}`}
           style={{ transitionDelay: '0.4s' }}
         >
-          <div
-            className="pointer-events-none absolute inset-0 opacity-[0.03]"
-            style={{
-              backgroundImage: 'radial-gradient(#1C1C1C 1px, transparent 1px)',
-              backgroundSize: '24px 24px',
-            }}
+          <Image
+            src="/team.png"
+            alt="Betaal AI Team"
+            fill
+            className="object-cover"
           />
-          <UserCircle size={64} className="mb-4 text-[#1C1C1C]/10" />
-          <span className="text-xs font-black tracking-[0.3em] text-[#1C1C1C]/20 uppercase">
-            Team Photo Coming Soon
-          </span>
-          <div className="absolute top-8 left-8 h-4 w-4 rounded-tl-lg border-t-2 border-l-2 border-[#1C1C1C]/10" />
-          <div className="absolute top-8 right-8 h-4 w-4 rounded-tr-lg border-t-2 border-r-2 border-[#1C1C1C]/10" />
-          <div className="absolute bottom-8 left-8 h-4 w-4 rounded-bl-lg border-b-2 border-l-2 border-[#1C1C1C]/10" />
-          <div className="absolute right-8 bottom-8 h-4 w-4 rounded-br-lg border-r-2 border-b-2 border-[#1C1C1C]/10" />
         </div>
 
         <div className="mx-auto mt-20 max-w-2xl text-center">

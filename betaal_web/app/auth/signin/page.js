@@ -4,8 +4,13 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Mail } from 'lucide-react';
 import { loginUser } from '@/lib/api';
-import { auth } from '@/lib/firebase';
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+
+// Hardcoded demo user — no Firebase needed
+const DEMO_USER = {
+  email: 'diveshpatil9104@gmail.com',
+  uid: 'divesh_001',
+  name: 'Divesh',
+};
 
 export default function SignInPage() {
   const router = useRouter();
@@ -14,30 +19,25 @@ export default function SignInPage() {
   const handleSignIn = async () => {
     setIsLoading(true);
     try {
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      
-      let finalName = user.displayName;
-      if (
-        user.email === 'yshthrt@gmail.com' || 
-        user.email === 'thoraty10@gmail.com'
-      ) {
-        finalName = 'Yash';
-      }
+      const data = await loginUser(DEMO_USER.email, DEMO_USER.uid);
 
-      const data = await loginUser(user.email, user.uid);
-      
       if (typeof window !== 'undefined') {
-        localStorage.setItem('betaal_uid', data.uid || user.uid);
-        localStorage.setItem('betaal_user_name', finalName || 'Yash');
+        localStorage.setItem('betaal_uid', data.uid || DEMO_USER.uid);
+        localStorage.setItem('betaal_user_name', data.name || DEMO_USER.name);
         if (data.session_token) {
-           localStorage.setItem('betaal_session', data.session_token);
+          localStorage.setItem('betaal_session', data.session_token);
         }
         window.dispatchEvent(new Event('betaal-session-update'));
       }
     } catch (err) {
       console.warn('Login failed', err);
+      // Fallback: set locally even if backend is down
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('betaal_uid', DEMO_USER.uid);
+        localStorage.setItem('betaal_user_name', DEMO_USER.name);
+        localStorage.setItem('betaal_session', 'sess_demo');
+        window.dispatchEvent(new Event('betaal-session-update'));
+      }
     } finally {
       setIsLoading(false);
       router.push('/dashboard');
@@ -51,17 +51,17 @@ export default function SignInPage() {
           <Mail size={32} />
         </div>
 
-        <h1 className="mb-4 text-3xl font-[900] tracking-tighter text-[#1C1C1C] uppercase">
+        <h1 className="mb-4 text-3xl font-black tracking-tighter text-[#1C1C1C] uppercase">
           Welcome to Betaal AI
         </h1>
-        <p className="mb-10 text-[11px] leading-relaxed font-[900] tracking-[0.2em] text-[#1C1C1C]/40 uppercase">
+        <p className="mb-10 text-[11px] leading-relaxed font-black tracking-[0.2em] text-[#1C1C1C]/40 uppercase">
           Sign in to access your digital rehab dashboard and track your progress today.
         </p>
 
         <button
           onClick={handleSignIn}
           disabled={isLoading}
-          className="flex w-full items-center justify-center gap-3 rounded-2xl bg-[#1C1C1C] py-5 text-xs font-[900] tracking-[0.15em] text-white uppercase transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-95 disabled:opacity-60"
+          className="flex w-full items-center justify-center gap-3 rounded-2xl bg-[#1C1C1C] py-5 text-xs font-black tracking-[0.15em] text-white uppercase transition-all duration-300 hover:scale-[1.02] hover:shadow-xl active:scale-95 disabled:opacity-60"
         >
           {isLoading ? (
             <>
@@ -69,7 +69,7 @@ export default function SignInPage() {
               Signing in...
             </>
           ) : (
-            'Continue with Google'
+            'Continue as Divesh'
           )}
         </button>
 
@@ -82,4 +82,3 @@ export default function SignInPage() {
     </div>
   );
 }
-

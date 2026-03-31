@@ -13,7 +13,7 @@ export default function Navbar() {
     if (typeof window !== 'undefined') {
       const uid = localStorage.getItem('betaal_uid');
       const name = localStorage.getItem('betaal_user_name');
-      if (uid) setCustomUser({ name: name || 'Yash', image: null });
+      if (uid) setCustomUser({ name: name || 'Divesh', image: null });
       else setCustomUser(null);
     }
   };
@@ -58,12 +58,12 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 right-0 left-0 z-[100] border-b border-[#1C1C1C]/10 bg-[#FAFAFA]/80 backdrop-blur-xl transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}
+      className={`fixed top-0 left-0 right-0 z-100 border-b border-[#1C1C1C]/10 bg-[#FAFAFA]/80 backdrop-blur-xl transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}
     >
       <div className="container-pro relative flex h-20 items-center justify-between">
         <Link
           href="/"
-          className="text-xl font-[900] tracking-tighter text-[#1C1C1C] transition-opacity hover:opacity-70"
+          className="text-xl font-black tracking-tighter text-[#1C1C1C] transition-opacity hover:opacity-70"
         >
           BETAAL AI
         </Link>
@@ -73,7 +73,7 @@ export default function Navbar() {
             <Link
               key={l.name}
               href={l.href}
-              className="text-[13px] font-[900] tracking-[0.12em] text-[#1C1C1C]/50 uppercase transition-all hover:text-[#1C1C1C]"
+              className="text-[13px] font-bold tracking-[0.12em] text-[#1C1C1C]/50 uppercase transition-all hover:text-[#1C1C1C]"
             >
               {l.name}
             </Link>
@@ -82,18 +82,18 @@ export default function Navbar() {
 
         <div className="flex items-center gap-6">
           {user ? (
-            <span 
+            <span
               onClick={handleSignOut}
-              className="cursor-pointer text-[13px] font-black tracking-wider text-[#1C1C1C] uppercase transition-opacity hover:opacity-70"
+              className="cursor-pointer text-[13px] font-bold text-[#1C1C1C] uppercase transition-opacity hover:opacity-70"
             >
               {user.name}
             </span>
           ) : (
             <Link
               href="/auth/signin"
-              className="text-[13px] font-black tracking-wider text-[#1C1C1C] uppercase transition-opacity hover:opacity-70"
+              className="text-[14px] font-bold text-[#1C1C1C] uppercase transition-opacity hover:opacity-70"
             >
-              Yash
+              Login
             </Link>
           )}
         </div>

@@ -4,8 +4,8 @@ import { Download, Puzzle } from 'lucide-react';
 
 function CtaButton({ icon: Icon, label, delay }) {
   return (
-    <div className="animate-fade-in z-[2] mt-[400px]" style={{ animationDelay: delay }}>
-      <button className="inline-flex cursor-pointer items-center gap-3 rounded-full border-[1.5px] border-[#1C1C1C] bg-[#FAFAFA] px-9 py-[18px] text-[13px] font-[800] text-[#1C1C1C] uppercase transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:shadow-[0_14px_32px_rgba(28,28,28,0.13)]">
+    <div className="animate-fade-in z-2 mt-[400px]" style={{ animationDelay: delay }}>
+      <button className="inline-flex cursor-pointer items-center gap-3 rounded-full border-[1.5px] border-[#1C1C1C] bg-[#FAFAFA] px-9 py-[18px] text-[13px] font-extrabold text-[#1C1C1C] uppercase transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:shadow-[0_14px_32px_rgba(28,28,28,0.13)]">
         <Icon size={18} />
         {label}
       </button>
@@ -19,7 +19,7 @@ export default function HeroSection() {
 
   return (
     <section className="relative bg-transparent pt-[140px] md:pt-[100px] pb-[40px]">
-      <div className="relative z-[1] px-[60px] text-center">
+      <div className="relative z-1 px-[60px] text-center">
         <div
           ref={headingRef}
           onMouseMove={(e) => {
@@ -29,14 +29,14 @@ export default function HeroSection() {
           onMouseLeave={() => setMask({ x: -999, y: -999 })}
           className="relative -m-20 inline-block cursor-default p-20"
         >
-          <h1 className="m-0 text-[clamp(48px,5.5vw,88px)] leading-[0.95] font-[900] tracking-tight text-[#1C1C1C]">
+          <h1 className="font-bricolage m-0 text-[clamp(48px,5.5vw,88px)] leading-[0.95] font-black tracking-tight text-[#1C1C1C]">
             Reclaim Your Life From
             <br />
             Digital Addiction
           </h1>
           <h1
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 m-0 bg-gradient-to-r from-[#ff2d55] via-[#5ac8fa] via-[#af52de] to-[#007aff] bg-clip-text p-20 text-[clamp(48px,5.5vw,88px)] leading-[0.95] font-[900] tracking-tight text-transparent"
+            className="font-bricolage pointer-events-none absolute inset-0 m-0 bg-linear-to-r from-[#ff2d55] via-[#af52de] via-50% to-[#007aff] bg-clip-text p-20 text-[clamp(48px,5.5vw,88px)] leading-[0.95] font-black tracking-tight text-transparent"
             style={{
               maskImage: `radial-gradient(circle 480px at ${mask.x}px ${mask.y}px, black 0%, transparent 100%)`,
               WebkitMaskImage: `radial-gradient(circle 480px at ${mask.x}px ${mask.y}px, black 0%, transparent 100%)`,
@@ -49,16 +49,14 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <div className="relative z-[2] mt-20 flex flex-col items-center justify-center gap-14 md:mt-10 md:flex-row md:items-start md:gap-10">
+      <div className="relative z-2 mt-20 flex flex-col items-center justify-center gap-14 md:mt-10 md:flex-row md:items-start md:gap-10">
         <CtaButton icon={Download} label="Download the App" delay="0.3s" />
-        <div className="animate-slide-up relative z-[3] h-[1020px] w-[570px] shrink-0 overflow-hidden rounded-[60px] border border-[#d0d0d0] bg-gradient-to-b from-[#F0F0F0] to-[#E8E8E8] shadow-[0_-30px_70px_10px_rgba(250,250,250,0.6),0_12px_40px_rgba(0,0,0,0.04)]">
-          <div className="mx-auto h-9 w-[160px] rounded-b-[20px] bg-[#d0d0d0]" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-            <div className="text-[56px] font-[900] tracking-tight text-[#c0c0c0]">BETAAL</div>
-            <div className="mt-1.5 text-sm font-bold tracking-widest text-[#b0b0b0] uppercase">
-              App Preview
-            </div>
-          </div>
+        <div className="animate-slide-up relative z-3 h-[1122px] w-[627px] shrink-0 overflow-hidden rounded-[60px]">
+          <img
+            src="/mobile-app.png"
+            alt="Betaal App Preview"
+            className="h-full w-full object-cover"
+          />
         </div>
         <CtaButton icon={Puzzle} label="Get Extension" delay="0.3s" />
       </div>

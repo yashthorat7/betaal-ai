@@ -32,7 +32,7 @@ export default function RehabCell({ plan }) {
         <div>
           <h3 className="text-sm font-semibold text-gray-900">Recovery Path</h3>
           <p className="mt-1 text-lg font-semibold text-gray-800">
-            Phase {plan.current_phase} — {currentPhase?.name}
+            Phase {plan.current_phase} - {currentPhase?.name}
           </p>
         </div>
         <div className="flex flex-col items-end gap-2">
@@ -67,13 +67,12 @@ export default function RehabCell({ plan }) {
                 />
               )}
               <div
-                className={`relative z-10 flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold transition-all ${
-                  isActive
+                className={`relative z-10 flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold transition-all ${isActive
                     ? 'bg-gray-900 text-white ring-4 ring-gray-200'
                     : isPast
                       ? 'bg-gray-900 text-white'
                       : 'bg-gray-100 text-gray-400'
-                }`}
+                  }`}
               >
                 {ph.phase}
               </div>

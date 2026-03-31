@@ -21,10 +21,10 @@ export const YOUTUBE_VIDEOS = [
     category: 'Science',
   },
   {
-    id: 'AUoVn4sEGnM',
-    title: 'The Deep Focus Method . 4 Hours of Flow',
+    id: 'ROK_7zDkQeg',
+    title: 'How To Stop Procrastinating',
     channel: 'Productivity Game',
-    duration: '18:35',
+    duration: '5:31',
     category: 'Focus',
   },
   {
@@ -49,7 +49,7 @@ export const YOUTUBE_VIDEOS = [
     category: 'Focus',
   },
   {
-    id: 'jkp0un2ER2c',
+    id: 'QYAnJ_QyCQg',
     title: "Your Brain on Dopamine . Why You Can't Stop Scrolling",
     channel: 'Veritasium',
     duration: '12:38',

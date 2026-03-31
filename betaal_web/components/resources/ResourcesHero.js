@@ -1,15 +1,39 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
 import { Search, Sparkles, ArrowRight } from 'lucide-react';
 import { PROMPT_SUGGESTIONS } from '@/lib/resources-data';
 import { sendChatMessage } from '@/lib/api';
 
-const SQUARES = [
-  { size: 70, top: '8%', left: '4%', rotate: -20, depth: 0.04 },
-  { size: 60, top: '12%', right: '6%', rotate: 55, depth: 0.06 },
-  { size: 85, bottom: '15%', left: '6%', rotate: 130, depth: 0.035 },
-  { size: 50, bottom: '20%', right: '5%', rotate: -50, depth: 0.05 },
+const ALL_ICONS = [
+  '/resource_icons/icon_social_media.png',
+  '/resource_icons/icon_book.png',
+  '/resource_icons/icon_video.png',
+  '/resource_icons/icon_mindfulness.png',
+  '/resource_icons/icon_community.png',
 ];
+
+function seededRandom(seed) {
+  let s = seed;
+  return () => {
+    s = (s * 9301 + 49297) % 233280;
+    return s / 233280;
+  };
+}
+
+function buildCards(seed) {
+  const rand = seededRandom(seed);
+  const shuffled = [...ALL_ICONS].sort(() => rand() - 0.5);
+  const picked = shuffled.slice(0, 5);
+  const positions = [
+    { top: `${6 + rand() * 10}%`, left: `${2 + rand() * 8}%`, rotate: -15 + rand() * 20, depth: 0.04 + rand() * 0.03 },
+    { top: `${5 + rand() * 10}%`, right: `${2 + rand() * 8}%`, rotate: 10 + rand() * 25, depth: 0.05 + rand() * 0.03 },
+    { bottom: `${8 + rand() * 8}%`, left: `${3 + rand() * 8}%`, rotate: -20 + rand() * 30, depth: 0.03 + rand() * 0.02 },
+    { bottom: `${8 + rand() * 8}%`, right: `${3 + rand() * 8}%`, rotate: 15 + rand() * 20, depth: 0.05 + rand() * 0.03 },
+    { top: `${40 + rand() * 10}%`, left: `${1 + rand() * 5}%`, rotate: -10 + rand() * 20, depth: 0.025 + rand() * 0.02 },
+  ];
+  return picked.map((src, i) => ({ src, ...positions[i] }));
+}
 
 export default function ResourcesHero() {
   const [query, setQuery] = useState('');
@@ -21,8 +45,12 @@ export default function ResourcesHero() {
   const [parallax, setParallax] = useState({ x: 0, y: 0 });
   const [activePill, setActivePill] = useState(-1);
   const [sessionId, setSessionId] = useState(null);
-
   const [recommendedVideos, setRecommendedVideos] = useState([]);
+  const [cards, setCards] = useState([]);
+
+  useEffect(() => {
+    setCards(buildCards(Date.now() % 99991));
+  }, []);
 
   useEffect(() => {
     const fn = (e) =>
@@ -53,7 +81,6 @@ export default function ResourcesHero() {
     setRecommendedVideos([]);
     setChars(0);
     setIsLoading(true);
-
     try {
       const data = await sendChatMessage(text, sessionId);
       if (data.session_id) setSessionId(data.session_id);
@@ -68,20 +95,43 @@ export default function ResourcesHero() {
 
   return (
     <section className="relative overflow-hidden bg-white pt-36 pb-24">
-      {SQUARES.map((s, i) => (
+      {/* Floating keyframes */}
+      <style>{`
+        @keyframes iconFloat0 { 0%, 100% { translate: 0 0px; } 50% { translate: 0 -10px; } }
+        @keyframes iconFloat1 { 0%, 100% { translate: 0 0px; } 50% { translate: 0 -7px;  } }
+        @keyframes iconFloat2 { 0%, 100% { translate: 0 0px; } 50% { translate: 0 -13px; } }
+      `}</style>
+
+      {/* Floating icon cards */}
+      {cards.map((card, i) => (
         <div
           key={i}
-          className="pointer-events-none absolute rounded-[10px] border-[1.5px] border-purple-500/15 bg-purple-500/[0.02] transition-transform duration-[400ms] ease-out"
+          className="pointer-events-none absolute"
           style={{
-            width: s.size,
-            height: s.size,
-            top: s.top,
-            left: s.left,
-            right: s.right,
-            bottom: s.bottom,
-            transform: `rotate(${s.rotate}deg) translate(${parallax.x * s.depth}px, ${parallax.y * s.depth}px)`,
+            top: card.top, left: card.left, right: card.right, bottom: card.bottom,
+            transform: `rotate(${card.rotate}deg) translate(${parallax.x * card.depth}px, ${parallax.y * card.depth}px)`,
+            transition: 'transform 0.5s ease-out',
+            animation: `iconFloat${i % 3} ${3.5 + i * 0.4}s ease-in-out infinite`,
+            zIndex: 0,
           }}
-        />
+        >
+          <div style={{
+            width: 100, height: 100, borderRadius: 20,
+            background: 'rgba(255,255,255,0.18)',
+            backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)',
+            border: '1.5px solid rgba(255,255,255,0.35)',
+            boxShadow: '0 8px 32px rgba(120,80,200,0.13), 0 2px 8px rgba(0,0,0,0.07)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden',
+          }}>
+            <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+              <Image
+                src={card.src} alt="icon" fill
+                style={{ objectFit: 'cover', transform: 'scale(1.2)' }}
+                sizes="100px"
+              />
+            </div>
+          </div>
+        </div>
       ))}
 
       <div className="container-pro relative z-10 text-center">
@@ -151,7 +201,7 @@ export default function ResourcesHero() {
                 AI ASSISTANT {isLoading ? '· FINDING RESOURCES...' : '· RECOMMENDED FOR YOU'}
               </span>
             </div>
-            
+
             <div className="space-y-8">
               {isLoading ? (
                 <div className="flex flex-col items-center justify-center py-10 gap-4">

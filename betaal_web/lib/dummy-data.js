@@ -2,9 +2,9 @@
 
 export const userProfile = {
   uid: 'demo_user_001',
-  name: 'Yash',
+  name: 'Divesh',
   age: 19,
-  email: 'Yash.demo@gmail.com',
+  email: 'diveshpatil9104@gmail.com',
   avatar_url: null,
   addiction_level: 8,
   strictness: 3,
@@ -88,14 +88,14 @@ export const appBreakdown = {
 export const connectedDevices = [
   {
     device_id: 'phone_001',
-    name: "Yash's Phone",
+    name: "Divesh's Phone",
     type: 'phone',
     status: 'active',
     today_min: 185,
   },
   {
     device_id: 'laptop_001',
-    name: "Yash's Laptop",
+    name: "Divesh's Laptop",
     type: 'laptop',
     status: 'active',
     today_min: 63,

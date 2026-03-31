@@ -126,7 +126,7 @@ export default function DashboardPage() {
           <StatCell
             label="Daily Goal"
             value={quota}
-            subtext={`Phase ${data.rehabPlan?.current_phase || '—'} target`}
+            subtext={`Phase ${data.rehabPlan?.current_phase || '-'} target`}
             icon={Target}
             delay={1}
           />
@@ -139,7 +139,7 @@ export default function DashboardPage() {
           />
           <StatCell
             label="Top App"
-            value={apps[0]?.app_name || '—'}
+            value={apps[0]?.app_name || '-'}
             subtext={apps[0] ? `${apps[0].minutes}m · ${apps[0].category}` : 'No data'}
             icon={Smartphone}
             delay={3}
@@ -206,7 +206,7 @@ export default function DashboardPage() {
           <div className="rounded-2xl border border-gray-200 bg-gray-900 p-6 text-white lg:col-span-1">
             <p className="mb-3 text-xs font-medium text-gray-400">Digital Rehab Plan</p>
             <h3 className="mb-4 text-lg font-semibold leading-snug">
-              Phase {data.rehabPlan?.current_phase || '—'}
+              Phase {data.rehabPlan?.current_phase || '-'}
               <br />
               <span className="text-gray-500">
                 {(data.rehabPlan?.duration_days || 0) - (data.rehabPlan?.current_day || 0)} days left

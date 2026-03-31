@@ -48,7 +48,7 @@ export default function ChartCell({ data }) {
                 content={({ active, payload, label }) =>
                   active && payload?.length ? (
                     <div className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs font-medium text-gray-700 shadow-lg">
-                      Day {label} — <span className="font-semibold">{payload[0].value}m</span>
+                      Day {label} - <span className="font-semibold">{payload[0].value}m</span>
                     </div>
                   ) : null
                 }

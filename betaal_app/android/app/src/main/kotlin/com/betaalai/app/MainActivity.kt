@@ -1,0 +1,158 @@
+package com.betaalai.app
+
+import android.app.admin.DevicePolicyManager
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.MethodChannel
+
+class MainActivity : FlutterActivity() {
+
+    companion object {
+        const val USAGE_CHANNEL = "com.betaalai.app/usage"
+        const val OVERLAY_CHANNEL = "com.betaalai.app/overlay"
+        const val STEALTH_CHANNEL = "com.betaalai.app/stealth"
+    }
+
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+        super.configureFlutterEngine(flutterEngine)
+
+        // Usage Tracking Channel
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, USAGE_CHANNEL).setMethodCallHandler { call, result ->
+            when (call.method) {
+                "startTracking" -> {
+                    val intent = Intent(this, UsageTrackingService::class.java)
+                    startForegroundService(intent)
+                    result.success(true)
+                }
+                "stopTracking" -> {
+                    val intent = Intent(this, UsageTrackingService::class.java)
+                    stopService(intent)
+                    result.success(true)
+                }
+                "getForegroundApp" -> {
+                    val tracker = UsageTrackingHelper(this)
+                    result.success(tracker.getForegroundApp())
+                }
+                "getTodayScreenTime" -> {
+                    val tracker = UsageTrackingHelper(this)
+                    result.success(tracker.getTodayScreenTime())
+                }
+                "getTodayAppUsage" -> {
+                    val tracker = UsageTrackingHelper(this)
+                    result.success(tracker.getTodayAppUsage())
+                }
+                "getTodayUnlocks" -> {
+                    val tracker = UsageTrackingHelper(this)
+                    result.success(tracker.getTodayUnlocks())
+                }
+                "hasUsagePermission" -> {
+                    val tracker = UsageTrackingHelper(this)
+                    result.success(tracker.hasUsagePermission())
+                }
+                "requestUsagePermission" -> {
+                    val tracker = UsageTrackingHelper(this)
+                    tracker.requestUsagePermission(this)
+                    result.success(true)
+                }
+                else -> result.notImplemented()
+            }
+        }
+
+        // Overlay Channel
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, OVERLAY_CHANNEL).setMethodCallHandler { call, result ->
+            when (call.method) {
+                "showOverlay" -> {
+                    val type = call.argument<String>("type") ?: "black_screen"
+                    val intent = Intent(this, OverlayService::class.java).apply {
+                        action = OverlayService.ACTION_SHOW
+                        putExtra("type", type)
+                    }
+                    startForegroundService(intent)
+                    result.success(true)
+                }
+                "hideOverlay" -> {
+                    val intent = Intent(this, OverlayService::class.java).apply {
+                        action = OverlayService.ACTION_HIDE
+                    }
+                    startForegroundService(intent)
+                    result.success(true)
+                }
+                "startCycle" -> {
+                    val types = call.argument<List<String>>("types") ?: listOf()
+                    val intent = Intent(this, OverlayService::class.java).apply {
+                        action = OverlayService.ACTION_START_CYCLE
+                        putStringArrayListExtra("types", ArrayList(types))
+                    }
+                    startForegroundService(intent)
+                    result.success(true)
+                }
+                "stopAll" -> {
+                    val intent = Intent(this, OverlayService::class.java).apply {
+                        action = OverlayService.ACTION_STOP_ALL
+                    }
+                    startForegroundService(intent)
+                    result.success(true)
+                }
+                "hasOverlayPermission" -> {
+                    result.success(android.provider.Settings.canDrawOverlays(this))
+                }
+                "requestOverlayPermission" -> {
+                    val intent = Intent(
+                        android.provider.Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        android.net.Uri.parse("package:$packageName")
+                    )
+                    startActivity(intent)
+                    result.success(true)
+                }
+                "hasWriteSettingsPermission" -> {
+                    result.success(android.provider.Settings.System.canWrite(this))
+                }
+                "requestWriteSettingsPermission" -> {
+                    val intent = Intent(
+                        android.provider.Settings.ACTION_MANAGE_WRITE_SETTINGS,
+                        android.net.Uri.parse("package:$packageName")
+                    )
+                    startActivity(intent)
+                    result.success(true)
+                }
+                "hasDeviceAdminPermission" -> {
+                    val dpm = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
+                    val adminComponent = ComponentName(this, BetaalDeviceAdmin::class.java)
+                    result.success(dpm.isAdminActive(adminComponent))
+                }
+                "requestDeviceAdminPermission" -> {
+                    val adminComponent = ComponentName(this, BetaalDeviceAdmin::class.java)
+                    val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN).apply {
+                        putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, adminComponent)
+                        putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,
+                            "Betaal needs Device Admin to lock your screen as a distraction interruption.")
+                    }
+                    startActivity(intent)
+                    result.success(true)
+                }
+                else -> result.notImplemented()
+            }
+        }
+
+        // Stealth Channel
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, STEALTH_CHANNEL).setMethodCallHandler { call, result ->
+            when (call.method) {
+                "setStealthMode" -> {
+                    val mode = call.argument<String>("mode") ?: "default"
+                    val stealthHelper = StealthHelper(this)
+                    stealthHelper.setStealthMode(mode)
+                    result.success(true)
+                }
+                "getCurrentMode" -> {
+                    val stealthHelper = StealthHelper(this)
+                    result.success(stealthHelper.getCurrentMode())
+                }
+                else -> result.notImplemented()
+            }
+        }
+    }
+}

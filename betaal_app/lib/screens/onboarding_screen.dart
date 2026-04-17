@@ -257,7 +257,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
             border: Border.all(color: _borderColor),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.04),
+                color: Colors.black.withValues(alpha: 0.04),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               ),
@@ -277,7 +277,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       child: Column(
         children: [
           const SizedBox(height: 4),
-          Text(
+          const Text(
             'PATIENT INTAKE FORM 01/05',
             style: TextStyle(
               fontSize: 12,
@@ -322,7 +322,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                         color: _bgColor,
                       ),
                       child: Icon(Icons.person,
-                          size: 40, color: _charcoal.withOpacity(0.6)),
+                          size: 40, color: _charcoal.withValues(alpha: 0.6)),
                     ),
                     const SizedBox(height: 20),
                     // Name input with underline
@@ -332,7 +332,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                       style: const TextStyle(fontSize: 14, color: _charcoal),
                       decoration: InputDecoration(
                         hintText: 'Full Name',
-                        hintStyle: TextStyle(color: _textMuted),
+                        hintStyle: const TextStyle(color: _textMuted),
                         errorText: _nameError,
                         errorStyle: const TextStyle(fontSize: 11),
                         border: UnderlineInputBorder(
@@ -347,7 +347,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                                   ? Colors.red
                                   : _charcoal),
                         ),
-                        focusedBorder: UnderlineInputBorder(
+                        focusedBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: _charcoal),
                         ),
                         contentPadding:
@@ -382,7 +382,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                           ),
                         ),
                         const SizedBox(width: 10),
-                        Text(
+                        const Text(
                           'years old',
                           style: TextStyle(fontSize: 14, color: _textMuted),
                         ),
@@ -538,7 +538,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             letterSpacing: 2,
-                            color: _textMuted.withOpacity(0.7),
+                            color: _textMuted.withValues(alpha: 0.7),
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -557,7 +557,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                             activeTrackColor: Colors.grey.shade400,
                             inactiveTrackColor: Colors.grey.shade200,
                             thumbColor: Colors.white,
-                            overlayColor: Colors.grey.withOpacity(0.1),
+                            overlayColor: Colors.grey.withValues(alpha: 0.1),
                             trackHeight: 4,
                             thumbShape: _CustomThumbShape(),
                           ),
@@ -581,7 +581,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                               style: TextStyle(
                                 fontSize: 10,
                                 letterSpacing: 2,
-                                color: _textMuted.withOpacity(0.5),
+                                color: _textMuted.withValues(alpha: 0.5),
                               ),
                             ),
                             Text(
@@ -589,7 +589,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                               style: TextStyle(
                                 fontSize: 10,
                                 letterSpacing: 2,
-                                color: _textMuted.withOpacity(0.5),
+                                color: _textMuted.withValues(alpha: 0.5),
                               ),
                             ),
                           ],
@@ -609,9 +609,9 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                   decoration: BoxDecoration(
                     border: Border(
                       top: BorderSide(
-                          color: _charcoal.withOpacity(0.15), width: 2),
+                          color: _charcoal.withValues(alpha: 0.15), width: 2),
                       right: BorderSide(
-                          color: _charcoal.withOpacity(0.15), width: 2),
+                          color: _charcoal.withValues(alpha: 0.15), width: 2),
                     ),
                     borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(24),
@@ -627,7 +627,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
             style: TextStyle(
               fontSize: 10,
               letterSpacing: 2.5,
-              color: _textMuted.withOpacity(0.6),
+              color: _textMuted.withValues(alpha: 0.6),
             ),
           ),
           const Spacer(),
@@ -687,7 +687,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
                     letterSpacing: 2,
-                    color: _textMuted.withOpacity(0.7),
+                    color: _textMuted.withValues(alpha: 0.7),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -706,7 +706,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                     activeTrackColor: Colors.grey.shade400,
                     inactiveTrackColor: Colors.grey.shade200,
                     thumbColor: Colors.white,
-                    overlayColor: Colors.grey.withOpacity(0.1),
+                    overlayColor: Colors.grey.withValues(alpha: 0.1),
                     trackHeight: 4,
                     thumbShape: _CustomThumbShape(),
                   ),
@@ -727,7 +727,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                       style: TextStyle(
                         fontSize: 10,
                         letterSpacing: 2,
-                        color: _textMuted.withOpacity(0.5),
+                        color: _textMuted.withValues(alpha: 0.5),
                       ),
                     ),
                     Text(
@@ -735,7 +735,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                       style: TextStyle(
                         fontSize: 10,
                         letterSpacing: 2,
-                        color: _textMuted.withOpacity(0.5),
+                        color: _textMuted.withValues(alpha: 0.5),
                       ),
                     ),
                   ],
@@ -751,13 +751,13 @@ class _OnboardingScreenState extends State<OnboardingScreen>
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: _borderColor.withOpacity(0.5)),
+              border: Border.all(color: _borderColor.withValues(alpha: 0.5)),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.calendar_today,
-                    size: 16, color: _textMuted.withOpacity(0.6)),
+                    size: 16, color: _textMuted.withValues(alpha: 0.6)),
                 const SizedBox(width: 8),
                 Text(
                   'YOUR REHAB: $_rehabDays DAYS',
@@ -765,7 +765,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                     fontSize: 11,
                     fontWeight: FontWeight.w500,
                     letterSpacing: 1.5,
-                    color: _textMuted.withOpacity(0.7),
+                    color: _textMuted.withValues(alpha: 0.7),
                   ),
                 ),
               ],
@@ -955,7 +955,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                                   width: 80,
                                   height: 1,
                                   color: Colors.grey.shade800
-                                      .withOpacity(0.5),
+                                      .withValues(alpha: 0.5),
                                 ),
                               ],
                             ),
@@ -998,15 +998,15 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: _teal.withOpacity(0.3),
+                    color: _teal.withValues(alpha: 0.3),
                     blurRadius: 12,
                     offset: const Offset(0, 4),
                   ),
                 ],
               ),
-              child: Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   Icon(Icons.check_circle, color: Color(0xFF1A1A2E), size: 22),
                   SizedBox(width: 10),
                   Text(
@@ -1136,10 +1136,10 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: granted ? _teal.withOpacity(0.06) : Colors.white,
+          color: granted ? _teal.withValues(alpha: 0.06) : Colors.white,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-              color: granted ? _teal.withOpacity(0.2) : Colors.grey.shade200),
+              color: granted ? _teal.withValues(alpha: 0.2) : Colors.grey.shade200),
         ),
         child: Row(
           children: [
@@ -1148,7 +1148,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
               height: 40,
               decoration: BoxDecoration(
                 color:
-                    (granted ? _teal : Colors.grey.shade300).withOpacity(0.15),
+                    (granted ? _teal : Colors.grey.shade300).withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(icon,
@@ -1162,7 +1162,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                 children: [
                   Text(
                     title,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: _charcoal,
@@ -1181,7 +1181,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                 width: 28,
                 height: 28,
                 decoration: BoxDecoration(
-                  color: _teal.withOpacity(0.15),
+                  color: _teal.withValues(alpha: 0.15),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(Icons.check, size: 16, color: _teal),
@@ -1261,7 +1261,7 @@ class _PulsePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = const Color(0xFF333333).withOpacity(0.5)
+      ..color = const Color(0xFF333333).withValues(alpha: 0.5)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.5
       ..strokeCap = StrokeCap.round
@@ -1283,7 +1283,7 @@ class _PulsePainter extends CustomPainter {
     // Frequency of spikes
     final spikeFreq = (1.0 - normalized) * 4 + 1; // 5 spikes when healthy, 1 when dying
 
-    final totalPoints = 200;
+    const totalPoints = 200;
     final phaseOffset = phase * 2 * pi;
 
     for (int i = 0; i <= totalPoints; i++) {

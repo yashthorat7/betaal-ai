@@ -265,13 +265,13 @@ class _InterruptionPreferencesScreenState
                         color: isTesting
                             ? _teal
                             : enabled
-                                ? color.withOpacity(0.2)
+                                ? color.withValues(alpha: 0.2)
                                 : _borderColor,
                         width: isTesting ? 2 : 1,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.02),
+                          color: Colors.black.withValues(alpha: 0.02),
                           blurRadius: 4,
                           offset: const Offset(0, 1),
                         ),
@@ -283,7 +283,7 @@ class _InterruptionPreferencesScreenState
                           width: 36,
                           height: 36,
                           decoration: BoxDecoration(
-                            color: (enabled ? color : Colors.grey.shade300).withOpacity(0.12),
+                            color: (enabled ? color : Colors.grey.shade300).withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Icon(
@@ -327,7 +327,7 @@ class _InterruptionPreferencesScreenState
                             margin: const EdgeInsets.only(right: 8),
                             decoration: BoxDecoration(
                               color: isTesting
-                                  ? _teal.withOpacity(0.15)
+                                  ? _teal.withValues(alpha: 0.15)
                                   : Colors.grey.shade100,
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -364,18 +364,18 @@ class _InterruptionPreferencesScreenState
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: const Text('Minimum 5 interruptions must stay enabled'),
-               ),
+                                    backgroundColor: Colors.orange.shade600,
+                                    behavior: SnackBarBehavior.floating,
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                    duration: const Duration(seconds: 2),
+                                  ),
                                 );
-                                backgroundColor: Colors.orange.shade600,
-                              behavior: SnackBarBehavior.floating,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                              duration: const Duration(seconds: 2),
-                              return;
+                                return;
                               }
                               setState(() => _enabled[key] = v);
                             },
-                            activeColor: color,
-                            activeTrackColor: color.withOpacity(0.3),
+                            activeThumbColor: color,
+                            activeTrackColor: color.withValues(alpha: 0.3),
                             inactiveThumbColor: Colors.grey.shade300,
                             inactiveTrackColor: Colors.grey.shade200,
                             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

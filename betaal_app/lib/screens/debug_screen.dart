@@ -322,8 +322,8 @@ class _DebugScreenState extends State<DebugScreen>
                               setState(() => _debugMode = v);
                               PreferencesService.setDebugMode(v);
                             },
-                            activeColor: _teal,
-                            activeTrackColor: _teal.withOpacity(0.3),
+                            activeThumbColor: _teal,
+                            activeTrackColor: _teal.withValues(alpha: 0.3),
                           ),
                         ),
                       ],
@@ -353,7 +353,7 @@ class _DebugScreenState extends State<DebugScreen>
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                           decoration: BoxDecoration(
-                            color: isActive ? _teal.withOpacity(0.15) : Colors.white,
+                            color: isActive ? _teal.withValues(alpha: 0.15) : Colors.white,
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
                               color: isActive ? _teal : _borderColor,
@@ -456,7 +456,7 @@ class _DebugScreenState extends State<DebugScreen>
         border: Border.all(color: _borderColor),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withValues(alpha: 0.03),
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),
@@ -488,9 +488,9 @@ class _DebugScreenState extends State<DebugScreen>
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 14),
         decoration: BoxDecoration(
-          color: onTap != null ? color.withOpacity(0.1) : Colors.grey.shade100,
+          color: onTap != null ? color.withValues(alpha: 0.1) : Colors.grey.shade100,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: onTap != null ? color.withOpacity(0.2) : _borderColor),
+          border: Border.all(color: onTap != null ? color.withValues(alpha: 0.2) : _borderColor),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

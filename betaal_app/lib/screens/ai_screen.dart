@@ -73,7 +73,7 @@ class _AiScreenState extends State<AiScreen> {
                         border: Border.all(color: _borderColor),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.03),
+                            color: Colors.black.withValues(alpha: 0.03),
                             blurRadius: 4,
                             offset: const Offset(0, 1),
                           ),
@@ -88,7 +88,7 @@ class _AiScreenState extends State<AiScreen> {
                     width: 36,
                     height: 36,
                     decoration: BoxDecoration(
-                      color: _teal.withOpacity(0.15),
+                      color: _teal.withValues(alpha: 0.15),
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(Icons.smart_toy, color: _teal, size: 20),
@@ -201,7 +201,7 @@ class _AiScreenState extends State<AiScreen> {
                 border: Border.all(color: _borderColor),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.04),
+                    color: Colors.black.withValues(alpha: 0.04),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
@@ -233,7 +233,7 @@ class _AiScreenState extends State<AiScreen> {
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: _teal.withOpacity(0.3),
+                            color: _teal.withValues(alpha: 0.3),
                             blurRadius: 6,
                             offset: const Offset(0, 2),
                           ),
@@ -290,7 +290,7 @@ class _AssistantMessage extends StatelessWidget {
               height: 28,
               margin: const EdgeInsets.only(right: 10, top: 2),
               decoration: BoxDecoration(
-                color: _teal.withOpacity(0.15),
+                color: _teal.withValues(alpha: 0.15),
                 shape: BoxShape.circle,
               ),
               child: const Icon(Icons.smart_toy, color: _teal, size: 16),
@@ -369,7 +369,7 @@ class _TypingIndicatorState extends State<_TypingIndicator>
             height: 28,
             margin: const EdgeInsets.only(right: 10, top: 2),
             decoration: BoxDecoration(
-              color: const Color(0xFF2DD4BF).withOpacity(0.15),
+              color: const Color(0xFF2DD4BF).withValues(alpha: 0.15),
               shape: BoxShape.circle,
             ),
             child: const Icon(Icons.smart_toy, color: Color(0xFF2DD4BF), size: 16),
@@ -441,7 +441,7 @@ class _UserBubble extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.08),
+              color: Colors.black.withValues(alpha: 0.08),
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),

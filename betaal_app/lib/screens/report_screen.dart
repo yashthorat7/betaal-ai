@@ -110,7 +110,7 @@ class _ReportScreenState extends State<ReportScreen> {
                           border: selected ? null : Border.all(color: _borderColor),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.03),
+                              color: Colors.black.withValues(alpha: 0.03),
                               blurRadius: 4,
                               offset: const Offset(0, 1),
                             ),
@@ -184,7 +184,7 @@ class _ReportScreenState extends State<ReportScreen> {
                       ],
                     ),
                     borderRadius: 24,
-                    bgColor: Colors.white.withOpacity(0.5),
+                    bgColor: Colors.white.withValues(alpha: 0.5),
                   ),
                   const SizedBox(height: 16),
 
@@ -210,8 +210,8 @@ class _ReportScreenState extends State<ReportScreen> {
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                               decoration: BoxDecoration(
                                 color: isStable
-                                    ? _teal.withOpacity(0.1)
-                                    : Colors.red.withOpacity(0.1),
+                                    ? _teal.withValues(alpha: 0.1)
+                                    : Colors.red.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(4),
                               ),
                               child: Text(
@@ -588,7 +588,7 @@ class _ReportScreenState extends State<ReportScreen> {
         border: Border.all(color: _borderColor),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withValues(alpha: 0.03),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -715,8 +715,8 @@ class _ReportScreenState extends State<ReportScreen> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  _primary.withOpacity(0.2),
-                  _primary.withOpacity(0.0),
+                  _primary.withValues(alpha: 0.2),
+                  _primary.withValues(alpha: 0.0),
                 ],
               ),
             ),
@@ -743,7 +743,7 @@ class _ReportScreenState extends State<ReportScreen> {
                 width: 6,
                 height: 6,
                 decoration: BoxDecoration(
-                  color: _textMain.withOpacity(fraction > 0.5 ? 1.0 : 0.4),
+                  color: _textMain.withValues(alpha: fraction > 0.5 ? 1.0 : 0.4),
                   shape: BoxShape.circle,
                 ),
               ),
@@ -778,7 +778,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   widthFactor: fraction.clamp(0.05, 1.0),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: _teal.withOpacity(0.6 + fraction * 0.4),
+                      color: _teal.withValues(alpha: 0.6 + fraction * 0.4),
                       borderRadius: BorderRadius.circular(999),
                     ),
                   ),
@@ -808,7 +808,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   borderRadius: BorderRadius.circular(4),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: Colors.black.withValues(alpha: 0.1),
                       blurRadius: 4,
                     ),
                   ],
@@ -896,7 +896,7 @@ class _ReportScreenState extends State<ReportScreen> {
                     border: Border.all(color: Colors.white, width: 3),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.15),
+                        color: Colors.black.withValues(alpha: 0.15),
                         blurRadius: 4,
                       ),
                     ],

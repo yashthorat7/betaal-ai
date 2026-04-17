@@ -96,7 +96,7 @@ class _PersonalizeScreenState extends State<PersonalizeScreen> {
                             Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: _teal.withOpacity(0.1),
+                                color: _teal.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: const Icon(Icons.visibility_off, color: _teal, size: 20),
@@ -167,7 +167,7 @@ class _PersonalizeScreenState extends State<PersonalizeScreen> {
                             Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: const Color(0xFF3A86FF).withOpacity(0.1),
+                                color: const Color(0xFF3A86FF).withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: const Icon(Icons.tune, color: Color(0xFF3A86FF), size: 20),
@@ -219,9 +219,9 @@ class _PersonalizeScreenState extends State<PersonalizeScreen> {
                           width: double.infinity,
                           padding: const EdgeInsets.all(14),
                           decoration: BoxDecoration(
-                            color: _teal.withOpacity(0.06),
+                            color: _teal.withValues(alpha: 0.06),
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: _teal.withOpacity(0.15)),
+                            border: Border.all(color: _teal.withValues(alpha: 0.15)),
                           ),
                           child: Row(
                             children: [
@@ -259,7 +259,7 @@ class _PersonalizeScreenState extends State<PersonalizeScreen> {
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: const Color(0xFFE17070).withOpacity(0.1),
+                              color: const Color(0xFFE17070).withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: const Icon(Icons.notifications_active, color: Color(0xFFE17070), size: 20),
@@ -311,7 +311,7 @@ class _PersonalizeScreenState extends State<PersonalizeScreen> {
         border: Border.all(color: _borderColor),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withValues(alpha: 0.03),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -345,7 +345,7 @@ class _PersonalizeScreenState extends State<PersonalizeScreen> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
-                color: _teal.withOpacity(0.1),
+                color: _teal.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
@@ -365,7 +365,7 @@ class _PersonalizeScreenState extends State<PersonalizeScreen> {
             activeTrackColor: _teal,
             inactiveTrackColor: Colors.grey.shade200,
             thumbColor: _teal,
-            overlayColor: _teal.withOpacity(0.1),
+            overlayColor: _teal.withValues(alpha: 0.1),
             trackHeight: 4,
             thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
           ),

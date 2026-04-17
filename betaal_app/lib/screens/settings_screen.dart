@@ -88,15 +88,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.white,
-                            border: Border.all(color: _teal.withOpacity(0.3), width: 3),
+                            border: Border.all(color: _teal.withValues(alpha: 0.3), width: 3),
                             boxShadow: [
                               BoxShadow(
-                                color: _teal.withOpacity(0.12),
+                                color: _teal.withValues(alpha: 0.12),
                                 blurRadius: 16,
                                 offset: const Offset(0, 4),
                               ),
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.05),
+                                color: Colors.black.withValues(alpha: 0.05),
                                 blurRadius: 8,
                                 offset: const Offset(0, 2),
                               ),
@@ -140,7 +140,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           margin: const EdgeInsets.only(top: 4),
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                           decoration: BoxDecoration(
-                            color: _teal.withOpacity(0.08),
+                            color: _teal.withValues(alpha: 0.08),
                             borderRadius: BorderRadius.circular(999),
                           ),
                           child: Text(
@@ -201,7 +201,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: const Color(0xFF3A86FF).withOpacity(0.1),
+                                color: const Color(0xFF3A86FF).withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: const Icon(Icons.notifications_outlined, color: Color(0xFF3A86FF), size: 20),
@@ -243,7 +243,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF8B5CF6).withOpacity(0.1),
+                            color: const Color(0xFF8B5CF6).withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: const Icon(Icons.info_outline, color: Color(0xFF8B5CF6), size: 20),
@@ -337,7 +337,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                             decoration: BoxDecoration(
-                              color: _teal.withOpacity(0.1),
+                              color: _teal.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: const Text(
@@ -370,7 +370,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFE17070).withOpacity(0.1),
+                                color: const Color(0xFFE17070).withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: const Icon(Icons.bug_report, color: Color(0xFFE17070), size: 20),
@@ -412,10 +412,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: const Color(0xFFE17070).withOpacity(0.3)),
+                        border: Border.all(color: const Color(0xFFE17070).withValues(alpha: 0.3)),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.02),
+                            color: Colors.black.withValues(alpha: 0.02),
                             blurRadius: 4,
                             offset: const Offset(0, 1),
                           ),
@@ -458,7 +458,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         border: Border.all(color: _borderColor),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withValues(alpha: 0.03),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -488,8 +488,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             child: Switch(
               value: value,
               onChanged: onChanged,
-              activeColor: _teal,
-              activeTrackColor: _teal.withOpacity(0.3),
+              activeThumbColor: _teal,
+              activeTrackColor: _teal.withValues(alpha: 0.3),
               inactiveThumbColor: Colors.grey.shade300,
               inactiveTrackColor: Colors.grey.shade200,
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -524,18 +524,18 @@ class _BadgeCard extends StatelessWidget {
         color: earned ? Colors.white : const Color(0xFFF9FAFB),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: earned ? _teal.withOpacity(0.25) : _borderColor,
+          color: earned ? _teal.withValues(alpha: 0.25) : _borderColor,
         ),
         boxShadow: [
           if (earned)
             BoxShadow(
-              color: _teal.withOpacity(0.08),
+              color: _teal.withValues(alpha: 0.08),
               blurRadius: 10,
               offset: const Offset(0, 3),
             )
           else
             BoxShadow(
-              color: Colors.black.withOpacity(0.02),
+              color: Colors.black.withValues(alpha: 0.02),
               blurRadius: 4,
               offset: const Offset(0, 1),
             ),
@@ -549,7 +549,7 @@ class _BadgeCard extends StatelessWidget {
             width: 44,
             height: 44,
             decoration: BoxDecoration(
-              color: accentColor.withOpacity(0.12),
+              color: accentColor.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(14),
             ),
             child: Icon(badge.icon, size: 22, color: accentColor),
@@ -574,7 +574,7 @@ class _BadgeCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
               decoration: BoxDecoration(
-                color: _teal.withOpacity(0.1),
+                color: _teal.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(999),
               ),
               child: const Row(
@@ -612,7 +612,7 @@ class _BadgeCard extends StatelessWidget {
                         widthFactor: (badge.progress / 100).clamp(0.05, 1.0),
                         child: Container(
                           decoration: BoxDecoration(
-                            color: _teal.withOpacity(0.45),
+                            color: _teal.withValues(alpha: 0.45),
                             borderRadius: BorderRadius.circular(999),
                           ),
                         ),

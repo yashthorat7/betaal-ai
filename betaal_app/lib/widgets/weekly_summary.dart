@@ -67,8 +67,8 @@ class WeeklySummary extends StatelessWidget {
           // Past days: Monday, Tuesday, Wednesday, Thursday
           // Thursday is handled by overQuota (Red). The rest are Teal.
           barBgColor = overQuota
-              ? _rose.withOpacity(0.2)
-              : _teal.withOpacity(0.2);
+              ? _rose.withValues(alpha: 0.2)
+              : _teal.withValues(alpha: 0.2);
           barFillColor = overQuota ? _rose : _teal;
 
           dayLabelColor = Colors.grey.shade400;
@@ -90,14 +90,14 @@ class WeeklySummary extends StatelessWidget {
                     borderRadius: BorderRadius.circular(999),
                     border: isToday
                         ? Border.all(
-                      color: _charcoal.withOpacity(0.8),
+                        color: _charcoal.withValues(alpha: 0.8),
                       width: 2,
                     )
                         : null,
                     boxShadow: isToday
                         ? [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.08),
+                        color: Colors.black.withValues(alpha: 0.08),
                         blurRadius: 4,
                         offset: const Offset(0, 2),
                       ),

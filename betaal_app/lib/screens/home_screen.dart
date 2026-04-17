@@ -56,16 +56,16 @@ class HomeScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: Colors.black.withOpacity(0.06),
+                            color: Colors.black.withValues(alpha: 0.06),
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
+                              color: Colors.black.withValues(alpha: 0.05),
                               offset: const Offset(4, 4),
                               blurRadius: 10,
                             ),
                             BoxShadow(
-                              color: Colors.white.withOpacity(0.8),
+                              color: Colors.white.withValues(alpha: 0.8),
                               offset: const Offset(-4, -4),
                               blurRadius: 10,
                             ),
@@ -148,7 +148,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.03),
+                          color: Colors.black.withValues(alpha: 0.03),
                           blurRadius: 4,
                           offset: const Offset(0, 2),
                         ),
@@ -171,7 +171,7 @@ class HomeScreen extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w500,
-                            color: _charcoal.withOpacity(0.85),
+                            color: _charcoal.withValues(alpha: 0.85),
                           ),
                         ),
                       ],
@@ -186,7 +186,7 @@ class HomeScreen extends StatelessWidget {
                   Expanded(
                     child: _ActionCard(
                       icon: Icons.lock_open_rounded,
-                      iconBgColor: _teal.withOpacity(0.1),
+                      iconBgColor: _teal.withValues(alpha: 0.1),
                       iconColor: _teal,
                       title: '${today?.unlocks ?? 0}',
                       subtitle: 'Unlocks',
@@ -196,7 +196,7 @@ class HomeScreen extends StatelessWidget {
                   Expanded(
                     child: _ActionCard(
                       icon: Icons.shield_outlined,
-                      iconBgColor: const Color(0xFF3838FF).withOpacity(0.1),
+                      iconBgColor: const Color(0xFF3838FF).withValues(alpha: 0.1),
                       iconColor: const Color(0xFF3838FF),
                       title: plan?.activePhase.name ?? '-',
                       subtitle: 'Current Phase',
@@ -248,10 +248,10 @@ class _ActionCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.black.withOpacity(0.06)),
+        border: Border.all(color: Colors.black.withValues(alpha: 0.06)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withValues(alpha: 0.03),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -312,10 +312,10 @@ class _RehabProgress extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.black.withOpacity(0.06)),
+        border: Border.all(color: Colors.black.withValues(alpha: 0.06)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withValues(alpha: 0.03),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -366,7 +366,7 @@ class _RehabProgress extends StatelessWidget {
                       borderRadius: BorderRadius.circular(999),
                       boxShadow: [
                         BoxShadow(
-                          color: _teal.withOpacity(0.4),
+                          color: _teal.withValues(alpha: 0.4),
                           blurRadius: 6,
                           offset: const Offset(0, 2),
                         ),

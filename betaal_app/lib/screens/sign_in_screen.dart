@@ -160,15 +160,15 @@ class _SignInScreenState extends State<SignInScreen>
             child: Column(
               children: [
                 // Header
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
                           Icon(Icons.local_hospital_outlined, size: 16, color: _charcoal),
-                          const SizedBox(width: 6),
+                          SizedBox(width: 6),
                           Text(
                             'betaal.ai',
                             style: TextStyle(
@@ -201,7 +201,7 @@ class _SignInScreenState extends State<SignInScreen>
                       _undulateCtrl,
                       _pullCtrl,
                       _loadCtrl,
-                    ])!,
+                    ]) ,
                     builder: (context, _) {
                       return CustomPaint(
                         size: Size(size.width, double.infinity),
@@ -218,8 +218,8 @@ class _SignInScreenState extends State<SignInScreen>
                 ),
 
                 // Title
-                Padding(
-                  padding: const EdgeInsets.only(top: 4),
+                const Padding(
+                  padding: EdgeInsets.only(top: 4),
                   child: Column(
                     children: [
                       Text(
@@ -231,7 +231,7 @@ class _SignInScreenState extends State<SignInScreen>
                           color: _charcoal,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: 8),
                       Text(
                         'RECLAIMING HUMAN PRESENCE',
                         style: TextStyle(
@@ -253,7 +253,7 @@ class _SignInScreenState extends State<SignInScreen>
                   child: Column(
                     children: [
                       // Protocol label
-                      Column(
+                      const Column(
                         children: [
                           Text(
                             'Sign in : Google',
@@ -264,55 +264,58 @@ class _SignInScreenState extends State<SignInScreen>
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          const SizedBox(height: 6),
-                          Container(width: 32, height: 1, color: _slate200.withOpacity(0.6)),
+                          SizedBox(height: 6),
                         ],
                       ),
+                      Container(width: 32, height: 1, color: const Color(0x99E2E8F0)), // fixed const color
                       const SizedBox(height: 20),
-
-                      // Sign-in button / loading state
-                      _isLoading
-                          ? _buildLoadingButton()
-                          : _buildSignInButton(),
-
-                      const SizedBox(height: 28),
-
-                      //**// Heartbeat status
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          AnimatedBuilder(
-                            animation: _heartCtrl,
-                            builder: (context, child) {
-                              return Transform.scale(
-                                scale: _heartAnim.value,
-                                child: Container(
-                                  width: 8,
-                                  height: 8,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: _mint,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            _isLoading
-                                ? 'INITIATING RECOVERY PROTOCOL...'
-                                : 'BIOMETRIC SYNC ENABLED',
-                            style: TextStyle(
-                              fontSize: 9,
-                              letterSpacing: 3,
-                              color: _slate400,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
                     ],
                   ),
+                ),
+                
+                // Sign-in button / loading state
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: _isLoading
+                      ? _buildLoadingButton()
+                      : _buildSignInButton(),
+                ),
+
+                const SizedBox(height: 28),
+
+                //**// Heartbeat status
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AnimatedBuilder(
+                      animation: _heartCtrl,
+                      builder: (context, child) {
+                        return Transform.scale(
+                          scale: _heartAnim.value,
+                          child: Container(
+                            width: 8,
+                            height: 8,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: _mint,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      _isLoading
+                          ? 'INITIATING RECOVERY PROTOCOL...'
+                          : 'BIOMETRIC SYNC ENABLED',
+                      style: const TextStyle(
+                        fontSize: 9,
+                        letterSpacing: 3,
+                        color: _slate400,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
                 ),
 
                 SizedBox(height: MediaQuery.of(context).padding.bottom + 32),
@@ -336,7 +339,7 @@ class _SignInScreenState extends State<SignInScreen>
           boxShadow: [
             BoxShadow(
               offset: const Offset(4, 4),
-              color: Colors.black.withOpacity(0.03),
+              color: Colors.black.withValues(alpha: 0.03),
               blurRadius: 0,
             ),
           ],
@@ -351,7 +354,7 @@ class _SignInScreenState extends State<SignInScreen>
               child: CustomPaint(painter: _GoogleLogoPainter()),
             ),
             const SizedBox(width: 16),
-            Text(
+            const Text(
               'begin clinical intake',
               style: TextStyle(
                 fontSize: 12,
@@ -381,12 +384,12 @@ class _SignInScreenState extends State<SignInScreen>
             boxShadow: [
               BoxShadow(
                 offset: const Offset(0, 0),
-                color: _mint.withOpacity(0.15 * _loadAnim.value),
+                color: _mint.withValues(alpha: 0.15 * _loadAnim.value),
                 blurRadius: 15 * _loadAnim.value,
               ),
             ],
           ),
-          child: Row(
+          child: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
@@ -397,7 +400,7 @@ class _SignInScreenState extends State<SignInScreen>
                   valueColor: AlwaysStoppedAnimation(_mint),
                 ),
               ),
-              const SizedBox(width: 16),
+              SizedBox(width: 16),
               Text(
                 'signing...',
                 style: TextStyle(
@@ -443,7 +446,7 @@ class _PulseUntanglePainter extends CustomPainter {
 
     // --- Breathing glow shadow ---
     final glowPaint = Paint()
-      ..color = _charcoal.withOpacity(breathGlow * 0.3)
+      ..color = _charcoal.withValues(alpha: breathGlow * 0.3)
       ..maskFilter = MaskFilter.blur(BlurStyle.normal, 8 + breathGlow * 12);
     final phoneRect = RRect.fromRectAndRadius(
       Rect.fromLTWH(phoneX, phoneY, phoneW, phoneH),
@@ -465,7 +468,7 @@ class _PulseUntanglePainter extends CustomPainter {
     );
     final screenPaint = Paint()
       ..style = PaintingStyle.stroke
-      ..color = _charcoal.withOpacity(0.3)
+      ..color = _charcoal.withValues(alpha: 0.3)
       ..strokeWidth = 0.75;
     canvas.drawRRect(screenRect, screenPaint);
 
@@ -485,7 +488,7 @@ class _PulseUntanglePainter extends CustomPainter {
 
     final chainPaint = Paint()
       ..style = PaintingStyle.stroke
-      ..color = _charcoal.withOpacity(chainOpacity)
+      ..color = _charcoal.withValues(alpha: chainOpacity)
       ..strokeWidth = 3
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round;
@@ -542,7 +545,7 @@ class _PulseUntanglePainter extends CustomPainter {
 
     if (mintGlow > 0) {
       final mintGlowPaint = Paint()
-        ..color = _mint.withOpacity(0.3 * mintGlow)
+        ..color = _mint.withValues(alpha: 0.3 * mintGlow)
         ..maskFilter = MaskFilter.blur(BlurStyle.normal, 8 + mintGlow * 12);
       canvas.drawLine(
         Offset(cx, mintStartY),

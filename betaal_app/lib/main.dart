@@ -163,12 +163,12 @@ class _MainShellState extends State<MainShell> with WidgetsBindingObserver {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFF2DD4BF).withOpacity(0.35),
+                      color: const Color(0xFF2DD4BF).withValues(alpha: 0.35),
                       blurRadius: 14,
                       offset: const Offset(0, 5),
                     ),
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: Colors.black.withValues(alpha: 0.1),
                       blurRadius: 6,
                       offset: const Offset(0, 2),
                     ),
@@ -191,13 +191,13 @@ class _MainShellState extends State<MainShell> with WidgetsBindingObserver {
                   borderRadius: BorderRadius.circular(999),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.25),
+                      color: Colors.black.withValues(alpha: 0.25),
                       blurRadius: 20,
                       offset: const Offset(0, 8),
                     ),
                   ],
                   border: Border.all(
-                    color: Colors.white.withOpacity(0.08),
+                    color: Colors.white.withValues(alpha: 0.08),
                   ),
                 ),
                 child: Row(

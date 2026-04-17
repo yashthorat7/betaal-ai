@@ -81,7 +81,7 @@ class AppUsageScreen extends StatelessWidget {
                 border: Border.all(color: _borderColor),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.03),
+                    color: Colors.black.withValues(alpha: 0.03),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
@@ -182,7 +182,7 @@ class AppUsageScreen extends StatelessWidget {
                       border: Border.all(color: _borderColor),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.02),
+                          color: Colors.black.withValues(alpha: 0.02),
                           blurRadius: 4,
                           offset: const Offset(0, 1),
                         ),
@@ -221,7 +221,7 @@ class AppUsageScreen extends StatelessWidget {
                                     style: TextStyle(
                                       fontSize: 10,
                                       fontWeight: FontWeight.w500,
-                                      color: color.withOpacity(0.7),
+                                      color: color.withValues(alpha: 0.7),
                                       letterSpacing: 0.5,
                                     ),
                                   ),

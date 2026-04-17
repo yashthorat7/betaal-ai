@@ -92,20 +92,20 @@ class _MonitoringRingState extends State<MonitoringRing>
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: const Color(0xFFF2F2F2),
-            border: Border.all(color: Colors.black.withOpacity(0.06)),
+            border: Border.all(color: Colors.black.withValues(alpha: 0.06)),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 offset: const Offset(4, 4),
                 blurRadius: 10,
               ),
               BoxShadow(
-                color: Colors.white.withOpacity(0.8),
+                color: Colors.white.withValues(alpha: 0.8),
                 offset: const Offset(-4, -4),
                 blurRadius: 10,
               ),
               BoxShadow(
-                color: Colors.black.withOpacity(0.02),
+                color: Colors.black.withValues(alpha: 0.02),
                 offset: const Offset(2, 2),
                 blurRadius: 4,
               ),
@@ -199,7 +199,7 @@ class _RingPainter extends CustomPainter {
 
       // Glow effect
       final glowPaint = Paint()
-        ..color = ringColor.withOpacity(0.3)
+        ..color = ringColor.withValues(alpha: 0.3)
         ..style = PaintingStyle.stroke
         ..strokeWidth = strokeWidth + 6
         ..strokeCap = StrokeCap.round
